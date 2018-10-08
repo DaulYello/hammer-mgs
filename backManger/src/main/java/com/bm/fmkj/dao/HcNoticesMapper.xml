@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bm.fmkj.dao.HcNoticesMapper">
+  <resultMap id="BaseResultMap" type="com.bm.fmkj.dao.HcNotices">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+    <result column="pass" jdbcType="INTEGER" property="pass" />
+    <result column="contents" jdbcType="LONGVARCHAR" property="contents" />
+  </resultMap>
+  
+  <sql id="selectNoticeVo">
+  	select id,title,contents,time,pass from hc_notices
+  </sql>
+  <select id="selectNotices" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+  	<include refid="selectNoticeVo" />
+  	<where>
+  		<if test="title != null and title != ''">
+  			and title like concat('%',#{title},'%')
+  		</if>
+  		<if test="contents != null and contents != ''">
+  			and title like concat('%',#{contents},'%')
+  		</if>
+  	</where>
+  	order by time desc
+  </select>
+  
+</mapper>

@@ -1,0 +1,17 @@
+package com.bm.fmkj.dao;
+
+import java.util.List;
+
+import com.bm.fmkj.model.PageModel;
+
+import tk.mybatis.mapper.common.Mapper;
+
+public interface HcAssetsMapper extends Mapper<HcAssets> {
+	
+	/**
+	 * 查询交易信息
+	 * @param ph
+	 * @return
+	 */
+	public List<HcAssets> selectAssetsAndTransaction(PageModel<HcAssets> ph);
+}

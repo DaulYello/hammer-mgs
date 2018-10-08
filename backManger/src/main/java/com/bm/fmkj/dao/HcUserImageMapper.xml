@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bm.fmkj.dao.HcUserImageMapper">
+  <resultMap id="BaseResultMap" type="com.bm.fmkj.dao.HcUserImage">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="Id" jdbcType="INTEGER" property="id" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="full_photo" jdbcType="VARCHAR" property="fullPhoto" />
+    <result column="reverse_photo" jdbcType="VARCHAR" property="reversePhoto" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="alipay_account" jdbcType="VARCHAR" property="alipayAccount" />
+    <result column="alipay_photo" jdbcType="VARCHAR" property="alipayPhoto" />
+    <result column="wechat_account" jdbcType="VARCHAR" property="wechatAccount" />
+    <result column="wechat_photo" jdbcType="VARCHAR" property="wechatPhoto" />
+  </resultMap>
+  
+  <!-- &amp;amp;amp;amp;lt;select id="updateById"&amp;amp;amp;amp;gt;
+  	update hc_userimage set status=0 where id=1; 
+  &amp;amp;amp;amp;lt;/select&amp;amp;amp;amp;gt; -->
+  
+  <resultMap id="ResultMapInfo" type="java.util.HashMap">
+
+    <id column="Id" jdbcType="INTEGER" property="id" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="cardnum" jdbcType="VARCHAR" property="cardnum" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="url" jdbcType="VARCHAR" property="url" />
+    <result column="full_photo" jdbcType="VARCHAR" property="fullPhoto" />
+    <result column="reverse_photo" jdbcType="VARCHAR" property="reversePhoto" />
+    <result column="alipay_account" jdbcType="VARCHAR" property="alipayAccount" />
+    <result column="alipay_photo" jdbcType="VARCHAR" property="alipayPhoto" />
+    <result column="wechat_account" jdbcType="VARCHAR" property="wechatAccount" />
+    <result column="wechat_photo" jdbcType="VARCHAR" property="wechatPhoto" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="time" jdbcType="TIMESTAMP" property="time" />
+  </resultMap>
+  
+  <sql id="selectUserImageInfoVo">
+  	select hu.id,hu.uid,ha.name as name,ha.nickname as nickname,ha.cardnum as cardnum,ha.telephone as telephone,hu.url,
+  	hu.full_photo,hu.reverse_photo,hu.alipay_account,hu.alipay_photo,
+  	hu.wechat_account,hu.wechat_photo,hu.status,hu.time from hc_userimage as hu left join hc_account as ha on hu.uid = ha.id
+  </sql>
+  <select id="getUserRealInfo" parameterType="java.util.HashMap" resultMap="ResultMapInfo">
+  	<include refid="selectUserImageInfoVo" />
+  	<where>
+        <if test="cardnum != null and cardnum != ''">
+            AND ha.cardnum like concat('%', #{cardnum}, '%')
+        </if>
+  		<if test="nickname != null and nickname != ''">
+			AND ha.nickname like concat('%', #{nickname}, '%')
+		</if>
+		<if test="telephone != null and telephone != ''">
+			AND ha.telephone=#{telephone}
+		</if>
+  	</where>
+  	order by hu.time
+  </select>
+  
+</mapper>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bm.fmkj.dao.HcPointsRecordMapper">
+	<resultMap id="BaseResultMap"
+		type="com.bm.fmkj.dao.HcPointsRecord">
+		<!-- WARNING - @mbg.generated -->
+		<id column="Id" jdbcType="INTEGER" property="id" />
+		<result column="uid" jdbcType="INTEGER" property="uid" />
+		<result column="points_id" jdbcType="INTEGER"
+			property="pointsId" />
+		<result column="points_num" jdbcType="DOUBLE"
+			property="pointsNum" />
+		<result column="time" jdbcType="TIMESTAMP" property="time" />
+	</resultMap>
+
+	<resultMap id="OnlineNumByMonth" type="java.util.HashMap">
+		<result column="month" jdbcType="INTEGER" property="month" />
+		<result column="number" jdbcType="INTEGER" property="number" />
+	</resultMap>
+
+	<!-- 统计在线人数 -->
+	<select id="queryOnlineNumber" resultMap="OnlineNumByMonth">
+		select month(hpr.time)
+		AS month,count(*) as number from hc_points_record hpr
+		where
+		hpr.points_id in(1,4,5) group by month;
+	</select>
+</mapper>

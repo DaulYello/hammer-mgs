@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bm.fmkj.dao.HcTransactioninfoMapper">
+	<resultMap id="BaseResultMap"
+		type="com.bm.fmkj.dao.HcTransactioninfo">
+		<!-- WARNING - @mbg.generated -->
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="uid" jdbcType="INTEGER" property="uid" />
+		<result column="assetskind" jdbcType="INTEGER"
+			property="assetskind" />
+		<result column="transactioninfo" jdbcType="VARCHAR"
+			property="transactioninfo" />
+		<result column="addtime" jdbcType="TIMESTAMP"
+			property="addtime" />
+	</resultMap>
+
+	<resultMap id="ResultMap1" type="java.util.HashMap">
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="uid" jdbcType="INTEGER" property="uid" />
+		<result column="askind" jdbcType="VARCHAR"
+			property="askind" />
+		<result column="transactioninfo" jdbcType="VARCHAR"
+			property="transactioninfo" />
+		<result column="addtime" jdbcType="TIMESTAMP"
+			property="addtime" />
+		<result column="walletfile" jdbcType="VARCHAR"
+			property="walletfile" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="keystore" jdbcType="LONGVARCHAR"
+			property="keystore" />
+	</resultMap>
+	<!-- 查询用户的资产记录 -->
+	<select id="selectAssetsAndTransaction"
+		parameterType="com.bm.fmkj.model.PageModel" resultMap="ResultMap1">
+		select ht.id,
+		ht.uid,ht.askind,ht.transactioninfo,ht.addtime,ha.walletfile as
+		walletfile,ha.`status` as status,ha.keystore as keystore from
+		hc_transactioninfo ht left join hc_assets ha on ht.uid = ha.userId
+		where 1=1
+		<if test="uid != null">
+			and ht.uid=#{uid}
+		</if>
+		<if test="askind != null">
+			and ht.askind=#{askind}
+		</if>
+		group by ha.id Order By addtime desc limit #{start},#{row}
+	</select>
+</mapper>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bm.fmkj.dao.HcAssetsMapper">
+  <resultMap id="BaseResultMap" type="com.bm.fmkj.dao.HcAssets">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="userId" jdbcType="INTEGER" property="userid" />
+    <result column="walletfile" jdbcType="VARCHAR" property="walletfile" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="assetskind" jdbcType="VARCHAR" property="assetskind" />
+    <result column="createtime" jdbcType="TIMESTAMP" property="createtime" />
+    <result column="keystore" jdbcType="LONGVARCHAR" property="keystore" />
+  </resultMap>
+  
+</mapper>

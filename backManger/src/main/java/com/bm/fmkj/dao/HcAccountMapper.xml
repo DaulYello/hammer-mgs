@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bm.fmkj.dao.HcAccountMapper">
+  <resultMap id="BaseResultMap" type="com.bm.fmkj.dao.HcAccount">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="nation" jdbcType="VARCHAR" property="nation" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="dycode" jdbcType="VARCHAR" property="dycode" />
+    <result column="dycodetime" jdbcType="TIMESTAMP" property="dycodetime" />
+    <result column="logo" jdbcType="VARCHAR" property="logo" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="cardnum" jdbcType="VARCHAR" property="cardnum" />
+    <result column="authlock" jdbcType="BIT" property="authlock" />
+    <result column="rid" jdbcType="INTEGER" property="rid" />
+    <result column="make_weight" jdbcType="VARCHAR" property="makeWeight" />
+    <result column="my_p" jdbcType="DOUBLE" property="myP" />
+    <result column="score" jdbcType="INTEGER" property="score" />
+    <result column="grade_id" jdbcType="INTEGER" property="gradeId" />
+    <result column="card_status" jdbcType="INTEGER" property="cardStatus" />
+    <result column="isboong" jdbcType="INTEGER" property="isboong" />
+    <result column="cdbid" jdbcType="BIGINT" property="cdbid" />
+    <result column="realnam_info" jdbcType="VARCHAR" property="realnamInfo" />
+  </resultMap>
+
+	<resultMap id="RankWeekMap" type="java.util.HashMap">
+		<id column="Id" jdbcType="INTEGER" property="id" />
+		<result column="uid" jdbcType="INTEGER" property="uid" />
+		<result column="nickname" jdbcType="INTEGER" property="nickname" />
+		<result column="invitingNum" jdbcType="INTEGER" property="invitingNum" />
+		<result column="points" jdbcType="DOUBLE" property="points" />
+		<result column="logo" jdbcType="VARCHAR" property="logo" />
+		<result column="time" jdbcType="TIMESTAMP" property="time" />
+	</resultMap>
+
+	<resultMap id="RankWeekMap1" type="java.util.HashMap">
+		<id column="Id" jdbcType="INTEGER" property="id" />
+		<result column="uid" jdbcType="INTEGER" property="uid" />
+		<result column="telephone" jdbcType="VARCHAR" property="telephone" />
+		<result column="nickname" jdbcType="VARCHAR" property="nickname" />
+		<result column="name1" jdbcType="VARCHAR" property="name1" />
+		<result column="name2" jdbcType="VARCHAR" property="name2" />
+	</resultMap>
+
+	<resultMap id="BaseResultMap2" type="java.util.HashMap">
+
+		<id column="id" jdbcType="INTEGER" property="id" />
+		<result column="telephone" jdbcType="VARCHAR" property="telephone" />
+		<result column="nickname" jdbcType="VARCHAR" property="nickname" />
+		<result column="email" jdbcType="VARCHAR" property="email" />
+		<result column="name" jdbcType="VARCHAR" property="name" />
+		<result column="cardnum" jdbcType="VARCHAR" property="cardnum" />
+		<result column="my_p" jdbcType="DOUBLE" property="myP" />
+		<result column="score" jdbcType="INTEGER" property="score" />
+		<result column="grade_id" jdbcType="INTEGER" property="gradeId" />
+		<result column="card_status" jdbcType="INTEGER" property="cardStatus" />
+		<result column="isboong" jdbcType="INTEGER" property="isboong" />
+		<result column="cdbid" jdbcType="BIGINT" property="cdbid" />
+		<result column="status" jdbcType="INTEGER" property="status" />
+		<result column="limitLogin" jdbcType="INTEGER" property="limitLogin" />
+	</resultMap>
+
+	<!-- 差选用户邀请人数得周榜单(本周至当前得数据) -->
+	<select id="queryUserRank" parameterType="com.bm.fmkj.model.PageModel" resultMap="RankWeekMap">
+		select
+		tab.uid,tab.nickname,tab.invitingNum,tab.points,tab.time,tab.logo,tab.telephone
+		from (
+		select hpr.uid as uid,hc.nickname as nickname, count(hpr.uid) as
+		invitingNum,
+		count(hpr.uid)*5 as points,hpr.time as time,hc.logo as logo,hc.telephone as telephone
+		from hc_points_record as hpr
+		left join hc_account as hc on hpr.uid=hc.id
+		where points_id=6 and YEARWEEK(date_format(time,'%Y-%m-%d')) =
+		YEARWEEK(now()) and hpr.uid&gt;1
+		group by hc.id
+		order by points desc,time asc) tab
+		limit #{start},#{row}
+	</select>
+
+	<!-- 条件查询app用户 -->
+	<select id="queryUserByExample" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+	     SELECT
+		  hc.id,
+		  hc.telephone,
+		  hc.nickname,
+		  hc.email,
+		  hc.name,
+		  hc.cardnum,
+		  hc.my_p,
+		  hc.score,
+		  hc.grade_id,
+		  hc.card_status,
+		  hc.isboong,
+		  hc.cdbid,
+		  hc.logo
+		FROM
+		  hc_account hc
+		  WHERE
+		  EXISTS (SELECT 1 FROM bm_list bm WHERE hc.id = bm.uid AND bm.status = #{status}) and 1 = 1 
+		<if test="telephone != null">
+			and hc.telephone = #{telephone}
+		</if>
+		<if test="cdbid != null">
+			and hc.cdbid = #{cdbid}
+		</if>
+		
+	</select>
+
+	<!-- 查询所有没有审核的用户证件照片 -->
+	<select id="queryUserIdImage" parameterType="com.bm.fmkj.model.PageModel" resultMap="RankWeekMap1">
+		select
+		userimage.id,userimage.uid,account.telephone,account.nickname,userimage.name1,userimage.name2
+		from hc_userimage userimage
+		left join hc_account account on userimage.uid=account.id
+		where userimage.status=0 and 1=1
+		<if test="entity.telephone != null">
+			and account.telephone=#{entity.telephone}
+		</if>
+		<if test="entity.nickname != null">
+			and account.nickname=#{entity.nickname}
+		</if>
+		limit #{start},#{row};
+	</select>
+
+	<!-- 查询用户的信息 -->
+	<select id="queryUserInfo" parameterType="java.util.HashMap" resultMap="BaseResultMap2">
+		select
+		hc.id,hc.telephone,hc.nickname,hc.email,hc.name,hc.cardnum,hc.my_p,hc.score,hc.grade_id,hc.card_status,hc.isboong,
+		b.status as status,b.limit_login as limitLogin from hc_account hc left join bm_list b on hc.id = b.uid 
+		where 1=1
+		<if test="userStatus !=null and userStatus == 0">
+			and not exists (SELECT bm.uid FROM bm_list bm WHERE hc.id = bm.uid and bm.limit_login=1)
+		</if>
+		<if test="userStatus !=null and userStatus == 1">
+			and b.limit_login= 1
+		</if>
+		<if test="telephone != null">
+			and hc.telephone=#{telephone}
+		</if>
+		<if test="nickname != null">
+			and hc.nickname=#{nickname}
+		</if>
+		<if test="name != null">
+			and hc.name=#{name}
+		</if>
+		<if test="cdbid != null">
+			and hc.cdbid=#{cdbid}
+		</if>
+	</select>
+
+	<!-- 查询所有的黑名单 -->
+	<select id="queryUserBlack" parameterType="com.bm.fmkj.model.PageModel" resultMap="BaseResultMap">
+		select ha.* from hc_account ha left join bm_list bl on ha.id = bl.uid where
+		bl.limit_login=1 limit #{start},#{row};
+	</select>
+	
+	<!-- 通过电话号码或者竟锤id -->
+	<select id="selectUserByExample" parameterType="com.bm.fmkj.dao.HcAccount" resultMap="BaseResultMap">
+		select * from hc_account  where 1=1 
+		<if test="telephone != null and telephone !=''">
+			and telephone=#{telephone}
+		</if>
+		<if test="cdbid != null and cdbid != ''">
+			and cdbid=#{cdbid}
+		</if>
+	</select>
+</mapper>

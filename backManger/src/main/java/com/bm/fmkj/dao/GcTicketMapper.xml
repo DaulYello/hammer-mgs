@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bm.fmkj.dao.GcTicketMapper">
+  <resultMap id="BaseResultMap" type="com.bm.fmkj.dao.GcTicket">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="Id" jdbcType="INTEGER" property="id" />
+    <result column="type" jdbcType="VARCHAR" property="type" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="price" jdbcType="DOUBLE" property="price" />
+  </resultMap>
+  
+  <select id="selectTicketInfo" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+  	select * from gc_ticket where 1=1
+  	<if test="type != null">
+  		and type=#{type}
+  	</if>
+  	<if test="name != null">
+  		and name=#{name}
+  	</if>
+  </select>
+</mapper>
