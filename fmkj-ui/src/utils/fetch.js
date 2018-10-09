@@ -7,7 +7,7 @@ import {
 // 创建axios实例
 const service = axios.create({
   //baseURL: process.env.BASE_API, // api的base_url
-   baseURL: 'http://127.0.0.1:8080', // nmp run build 正式环境需要注释
+   //baseURL: 'http://127.0.0.1:8080', // nmp run build 正式环境需要注释
    timeout: 5000 // 请求超时时间
 });
 // request拦截器

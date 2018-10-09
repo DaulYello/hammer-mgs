@@ -16,7 +16,7 @@
                     <div class="margin-top-10">
                         <Table :loading="loading"  refs="table2" :data="pageData" :columns="columns"></Table>
                     </div>
-                    <Page  style="text-align:center;margin-top:20px" @on-change="getData" :total="pageInfo.total" :page-size="size" :current="pageInfo.pageNo" size="small" show-elevator show-total></Page>
+                    <Page  style="text-align:center;margin-top:20px" @on-change="getDataPage" :total="pageInfo.total" :page-size="size" :current="pageInfo.pageNo" size="small" show-elevator show-total></Page>
                 </Card>
             </Col>
 
@@ -173,6 +173,9 @@ export default {
         };
     },
     methods: {
+        getDataPage(page){
+            this.getData(page,index)
+        },
         getData (page, index) {
           this.tabIndex = index;
           this.tabStatus = index + 1;

@@ -33,7 +33,7 @@
 <script>
     import {formatDateByLong} from 'utils/time';
     import {getUserRealInfo,identityCardAudit,identityCardRefuse} from "./components/userRealname";
-
+    const url = window.location.origin;
 
     export default {
         name: "user-realname",
@@ -92,7 +92,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.picturePath="image/"+params.row.wechatPhoto;
+                                            this.picturePath=url+params.row.fullPhoto;
                                             this.showDialog = true;
                                         }
                                     }
@@ -116,7 +116,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.picturePath="image/"+params.row.wechatPhoto;
+                                            this.picturePath=url+params.row.reversePhoto;
                                             this.showDialog = true;
                                         }
                                     }
@@ -146,7 +146,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.picturePath="image/"+params.row.wechatPhoto;
+                                            this.picturePath=url+params.row.alipayAccount;
                                             this.showDialog = true;
                                         }
                                     }
@@ -176,7 +176,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.picturePath="image/"+params.row.wechatPhoto;
+                                            this.picturePath=url+params.row.wechatPhoto;
                                             this.showDialog = true;
                                         }
                                     }
@@ -274,9 +274,6 @@
             }
         },
         methods:{
-            /*initColumns(){
-                this.columns=columns;
-            },*/
             getData(page){
                 this.page=page,
                 this.loading=true,

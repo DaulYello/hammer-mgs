@@ -16,7 +16,7 @@
                     <div class="margin-top-10">
                         <Table :loading="loading"  refs="table2" :data="pageData" :columns="columns"></Table>
                     </div>
-                    <Page  style="text-align:center;margin-top:20px" @on-change="getData" :total="pageInfo.total" :page-size="size" :current="pageInfo.pageNo" size="small" show-elevator show-total></Page>
+                    <Page  style="text-align:center;margin-top:20px" @on-change="getDataPage" :total="pageInfo.total" :page-size="size" :current="pageInfo.pageNo" size="small" show-elevator show-total></Page>
                 </Card>
             </Col>
 
@@ -150,6 +150,9 @@ export default {
         };
     },
     methods: {
+        getDataPage(page){
+            this.getData(page,index);
+        },
         getData (page, index) {
           // 根据页签的下标值得出后台查询参数status的值、1白名单  2黑名单
           this.tabIndex = index

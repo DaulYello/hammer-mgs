@@ -20,11 +20,11 @@
                     <div class="margin-top-10">
                         <Table :loading="loading"  @on-selection-change="handleSelectionChange" @on-select-all="handleSelectionChange" @on-select="handleSelectionChange"  refs="multipleTable" :data="pageData" :columns="columns"></Table>
                     </div>
-                    <Page  style="text-align:center;margin-top:20px" @on-change="getData" :total="pageInfo.total" :page-size="size" :current="pageInfo.pageNo" size="small" show-elevator show-total></Page>
+                    <Page  style="text-align:center;margin-top:20px" @on-change="getDataPage" :total="pageInfo.total" :page-size="size" :current="pageInfo.pageNo" size="small" show-elevator show-total></Page>
                 </Card>
             </Col>
         </Row>
-        <Modal v-model="showDialog" title="阅读图片" ok-text="取消" cancel-text="" :loading="loading" @on-cancel="cancel">
+        <Modal v-model="showDialog" title="阅读图片" ok-text="取消" cancel-text="" :loading="loading" @on-cancel="onCancel">
             <Form ref="tiketForm" :label-width="120">
                 <div>
                     <img width="100" :src="picturePath"  />
@@ -66,6 +66,7 @@ export default {
             query:{},
             tabIndex: 0,
             tabStatus: 1,
+            picturePath:'',
             columns: [
                 {
                     title: '序号',
@@ -277,6 +278,9 @@ export default {
         };
     },
     methods: {
+        getDataPage(page){
+            this.getData(page,index)
+        },
         getData (page, index) {
           this.tabIndex = index;
           this.tabStatus = index + 1;
@@ -351,6 +355,9 @@ export default {
         },
         handleSelectionChange(val) {
             this.multipleSelection = val;
+        },
+        onCancel(){
+
         }
     },
     created () {

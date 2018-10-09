@@ -8,7 +8,7 @@
     <id column="Id" jdbcType="INTEGER" property="id" />
     <result column="uid" jdbcType="INTEGER" property="uid" />
     <result column="aid" jdbcType="INTEGER" property="aid" />
-    <result column="ticketid" jdbcType="INTEGER" property="ticketid" />
+    <result column="isChain" jdbcType="INTEGER" property="ischain" />
     <result column="time" jdbcType="TIMESTAMP" property="time" />
   </resultMap>
 </mapper>

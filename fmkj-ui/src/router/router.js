@@ -92,13 +92,13 @@ export const appRouter = [
         name: 'race',
         component: Main,
         children: [
-            {
+            /*{
                 path: 'tiketManage',
                 icon: 'folder',
                 name: 'tiketManage',
                 title: '门票管理',
                 component: () => import('@/views/build-manage/tiket-manager.vue')
-            },
+            },*/
             {
                 path: 'activityManage',
                 icon: 'folder',

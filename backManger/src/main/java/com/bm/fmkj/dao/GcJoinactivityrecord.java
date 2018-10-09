@@ -1,10 +1,7 @@
 package com.bm.fmkj.dao;
 
 import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Table(name = "gc_joinactivityrecord")
 public class GcJoinactivityrecord {
@@ -23,9 +20,10 @@ public class GcJoinactivityrecord {
     private Integer aid;
 
     /**
-     * 对应ticket表中的主键
+     * 是否上链
      */
-    private Integer ticketid;
+    @Column(name = "isChain")
+    private Integer ischain;
 
     /**
      * 参与活动的时间
@@ -83,21 +81,21 @@ public class GcJoinactivityrecord {
     }
 
     /**
-     * 获取对应ticket表中的主键
+     * 获取是否上链
      *
-     * @return ticketid - 对应ticket表中的主键
+     * @return isChain - 是否上链
      */
-    public Integer getTicketid() {
-        return ticketid;
+    public Integer getIschain() {
+        return ischain;
     }
 
     /**
-     * 设置对应ticket表中的主键
+     * 设置是否上链
      *
-     * @param ticketid 对应ticket表中的主键
+     * @param ischain 是否上链
      */
-    public void setTicketid(Integer ticketid) {
-        this.ticketid = ticketid;
+    public void setIschain(Integer ischain) {
+        this.ischain = ischain;
     }
 
     /**

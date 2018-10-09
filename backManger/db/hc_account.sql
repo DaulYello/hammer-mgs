@@ -1,0 +1,1 @@
+/*created by huangshuang on 2018-09-21*/ALTER TABLE `hammerchain`.`hc_account` CHANGE `card_status` `card_status` INT(1) DEFAULT 0 NOT NULL COMMENT '0:身份未验证， 1：后台验证通过 2.验证驳回',ADD COLUMN `realnam_info` VARCHAR(255) NULL COMMENT '驳回原因' AFTER `cdbid`;

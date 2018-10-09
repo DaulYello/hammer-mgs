@@ -48,7 +48,6 @@ public class GcActivityController extends BaseController {
 			return new BaseResult<Pagenation<GcActivity>>(BaseResultEnum.SUCCESS,pageResult);
 		} catch (Exception e) {
 			throw new RuntimeException("查询活动失败：");
-			//e.printStackTrace();
 		}
 	}
 

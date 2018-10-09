@@ -7,8 +7,7 @@
     -->
     <id column="Id" jdbcType="INTEGER" property="id" />
     <result column="uid" jdbcType="INTEGER" property="uid" />
-    <result column="message" jdbcType="VARCHAR" property="message" />
-    <result column="time" jdbcType="TIMESTAMP" property="time" />
+    <result column="mid" jdbcType="INTEGER" property="mid" />
     <result column="flag" jdbcType="INTEGER" property="flag" />
   </resultMap>
 </mapper>

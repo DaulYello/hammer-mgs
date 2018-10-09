@@ -1,10 +1,6 @@
 package com.bm.fmkj.dao;
 
-import java.util.Date;
-
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Table(name = "gc_notice")
 public class GcNotice {
@@ -18,17 +14,12 @@ public class GcNotice {
     private Integer uid;
 
     /**
-     * 通知内容
+     * 消息id
      */
-    private String message;
+    private Integer mid;
 
     /**
-     * 通知时间
-     */
-    private Date time;
-
-    /**
-     * 已读标识 0已读 1未读
+     * 已读标识 1未读 0已读
      */
     private Integer flag;
 
@@ -65,54 +56,36 @@ public class GcNotice {
     }
 
     /**
-     * 获取通知内容
+     * 获取消息id
      *
-     * @return message - 通知内容
+     * @return mid - 消息id
      */
-    public String getMessage() {
-        return message;
+    public Integer getMid() {
+        return mid;
     }
 
     /**
-     * 设置通知内容
+     * 设置消息id
      *
-     * @param message 通知内容
+     * @param mid 消息id
      */
-    public void setMessage(String message) {
-        this.message = message;
+    public void setMid(Integer mid) {
+        this.mid = mid;
     }
 
     /**
-     * 获取通知时间
+     * 获取已读标识 1未读 0已读
      *
-     * @return time - 通知时间
-     */
-    public Date getTime() {
-        return time;
-    }
-
-    /**
-     * 设置通知时间
-     *
-     * @param time 通知时间
-     */
-    public void setTime(Date time) {
-        this.time = time;
-    }
-
-    /**
-     * 获取已读标识 0已读 1未读
-     *
-     * @return flag - 已读标识 0已读 1未读
+     * @return flag - 已读标识 1未读 0已读
      */
     public Integer getFlag() {
         return flag;
     }
 
     /**
-     * 设置已读标识 0已读 1未读
+     * 设置已读标识 1未读 0已读
      *
-     * @param flag 已读标识 0已读 1未读
+     * @param flag 已读标识 1未读 0已读
      */
     public void setFlag(Integer flag) {
         this.flag = flag;

@@ -7,6 +7,13 @@
     -->
     <id column="Id" jdbcType="INTEGER" property="id" />
     <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+    <result column="province" jdbcType="VARCHAR" property="province" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="county" jdbcType="VARCHAR" property="county" />
+    <result column="lock" jdbcType="INTEGER" property="lock" />
+    <result column="status" jdbcType="INTEGER" property="status" />
     <result column="address" jdbcType="VARCHAR" property="address" />
   </resultMap>
 </mapper>

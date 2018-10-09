@@ -1,84 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bm.fmkj.dao.GcActivityMapper">
-  <resultMap id="BaseResultMap" type="com.bm.fmkj.dao.GcActivity">
-    <!--
-      WARNING - @mbg.generated
-    -->
-    <id column="Id" jdbcType="INTEGER" property="id" />
-    <result column="startid" jdbcType="INTEGER" property="startid" />
-    <result column="getid" jdbcType="INTEGER" property="getid" />
-    <result column="ticketid" jdbcType="INTEGER" property="ticketid" />
-    <result column="typeid" jdbcType="INTEGER" property="typeid" />
-    <result column="contract" jdbcType="VARCHAR" property="contract" />
-    <result column="bond" jdbcType="DOUBLE" property="bond" />
-    <result column="place" jdbcType="VARCHAR" property="place" />
-    <result column="pname" jdbcType="VARCHAR" property="pname" />
-    <result column="pnumber" jdbcType="INTEGER" property="pnumber" />
-    <result column="price" jdbcType="DOUBLE" property="price" />
-    <result column="premium" jdbcType="DOUBLE" property="premium" />
-    <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="delivergoodstatus" jdbcType="INTEGER" property="delivergoodstatus" />
-    <result column="collectgoodstatus" jdbcType="INTEGER" property="collectgoodstatus" />
-    <result column="ispass" jdbcType="INTEGER" property="ispass" />
-    <result column="time" jdbcType="TIMESTAMP" property="time" />
-    <result column="begintime" jdbcType="TIMESTAMP" property="begintime" />
-    <result column="endtime" jdbcType="TIMESTAMP" property="endtime" />
-    <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="minnum" jdbcType="INTEGER" property="minnum" />
-    <result column="par" jdbcType="INTEGER" property="par" />
-    <result column="pdescribe" jdbcType="LONGVARCHAR" property="pdescribe" />
-  </resultMap>
-	
-  <resultMap id="oneMap" type="java.util.HashMap"> 
-  	<id column="Id" jdbcType="INTEGER" property="id" />
-  	<result column="nickname1" jdbcType="VARCHAR" property="nickname1" />
-  	<result column="startid" jdbcType="INTEGER" property="startid" />
-  	<result column="name" jdbcType="VARCHAR" property="name" />
-  	<result column="pname" jdbcType="VARCHAR" property="pname" />
-  	<result column="pnumber" jdbcType="INTEGER" property="pnumber" />
-  	<result column="tickettype" jdbcType="VARCHAR" property="tickettype" />
-  	<result column="bond" jdbcType="DOUBLE" property="bond" />
-    <result column="place" jdbcType="VARCHAR" property="place" />
-    <result column="nickname2" jdbcType="VARCHAR" property="nickname2" /> 
-    <result column="status" jdbcType="INTEGER" property="status" />
-    <result column="activitytype" jdbcType="VARCHAR" property="activitytype" />
-    <result column="typeid" jdbcType="INTEGER" property="typeid" />
-    <result column="premium" jdbcType="DOUBLE" property="premium" />
-    <result column="time" jdbcType="TIMESTAMP" property="time" />
-    <result column="ispass" jdbcType="INTEGER" property="ispass" />
-    <result column="begintime" jdbcType="TIMESTAMP" property="begintime" />
-    <result column="endtime" jdbcType="TIMESTAMP" property="endtime" />
-  </resultMap>
-  
-  <select id="queryAllActivityByPage" parameterType="java.util.HashMap" resultMap="oneMap">
-  		select ga.id,ha.nickname as nickname1,ha.id as startid,ha.name as name,ga.pname,ga.pnumber,gt.type as tickettype,
-  			ga.bond,ga.place,hca.nickname as nickname2,ga.status,gat.type as activitytype,gat.id as typeid,
-	       	ga.premium,ga.time,ga.ispass,ga.begintime,ga.endtime,gcp.imageurl as imageurl
-	       	from gc_activity ga
-	       	left join gc_ticket gt on ga.ticketid = gt.id
-	       	left join gc_activitytype gat on ga.typeid= gat.id
-	       	left join hc_account ha on ga.startid=ha.id
-	       	left join hc_account hca on ga.getid=hca.id
-	       	left join gc_pimage gcp on ga.id=gcp.aid
-	    where 1=1
-	    <if test="status != null and status==1">
-  			and status = 0 and ga.ispass = 0
-  		</if>
-  		<if test="status != null and status==2">
-  			and ga.status in(1,4,5,6,7,8) and ga.ispass = 1
-  		</if>
-  		<if test="status != null and status==3">
-  			and ga.status = 2 and ga.ispass = 1
-  		</if>
-  		<if test="status != null and status==4">
-  			and ga.status = 0 and ga.ispass = 2
-  		</if>
-  		<if test="id != null">
-  			and ga.id=#{id}
-  		</if>
-  		<if test="pname != null">
-  			and ga.pname=#{pname}
-  		</if>
-  </select>
+    <resultMap id="BaseResultMap" type="com.bm.fmkj.dao.GcActivity">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="Id" jdbcType="INTEGER" property="id" />
+        <result column="startid" jdbcType="INTEGER" property="startid" />
+        <result column="getid" jdbcType="INTEGER" property="getid" />
+        <result column="typeid" jdbcType="INTEGER" property="typeid" />
+        <result column="contract" jdbcType="VARCHAR" property="contract" />
+        <result column="isbond" jdbcType="INTEGER" property="isbond" />
+        <result column="place" jdbcType="VARCHAR" property="place" />
+        <result column="pname" jdbcType="VARCHAR" property="pname" />
+        <result column="pnumber" jdbcType="INTEGER" property="pnumber" />
+        <result column="price" jdbcType="DOUBLE" property="price" />
+        <result column="premium" jdbcType="DOUBLE" property="premium" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="delivergoodstatus" jdbcType="INTEGER" property="delivergoodstatus" />
+        <result column="collectgoodstatus" jdbcType="INTEGER" property="collectgoodstatus" />
+        <result column="time" jdbcType="TIMESTAMP" property="time" />
+        <result column="begintime" jdbcType="TIMESTAMP" property="begintime" />
+        <result column="endtime" jdbcType="TIMESTAMP" property="endtime" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="num" jdbcType="INTEGER" property="num" />
+        <result column="par" jdbcType="INTEGER" property="par" />
+        <result column="pdescribe" jdbcType="LONGVARCHAR" property="pdescribe" />
+    </resultMap>
+
+    <resultMap id="oneMap" type="java.util.HashMap">
+        <id column="Id" jdbcType="INTEGER" property="id" />
+        <result column="nickname1" jdbcType="VARCHAR" property="nickname1" />
+        <result column="startid" jdbcType="INTEGER" property="startid" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="pname" jdbcType="VARCHAR" property="pname" />
+        <result column="pnumber" jdbcType="INTEGER" property="pnumber" />
+        <result column="isbond" jdbcType="DOUBLE" property="isbond" />
+        <result column="place" jdbcType="VARCHAR" property="place" />
+        <result column="nickname2" jdbcType="VARCHAR" property="nickname2" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="activitytype" jdbcType="VARCHAR" property="activitytype" />
+        <result column="typeid" jdbcType="INTEGER" property="typeid" />
+        <result column="premium" jdbcType="DOUBLE" property="premium" />
+        <result column="time" jdbcType="TIMESTAMP" property="time" />
+        <result column="begintime" jdbcType="TIMESTAMP" property="begintime" />
+        <result column="endtime" jdbcType="TIMESTAMP" property="endtime" />
+    </resultMap>
+
+    <select id="queryAllActivityByPage" parameterType="java.util.HashMap" resultMap="oneMap">
+        select ga.id,ha.nickname as nickname1,ha.id as startid,ha.name as name,ga.pname,ga.pnumber,
+        ga.isbond,ga.place,hca.nickname as nickname2,ga.status,gat.type as activitytype,gat.id as typeid,
+        ga.premium,ga.time,ga.begintime,ga.endtime
+        from gc_activity ga
+        left join gc_activitytype gat on ga.typeid= gat.id
+        left join hc_account ha on ga.startid=ha.id
+        left join hc_account hca on ga.getid=hca.id
+        where 1=1
+        <if test="status != null and status==1">
+            and status = 0
+        </if>
+        <if test="status != null and status==2">
+            and ga.status =2
+        </if>
+        <if test="status != null and status==3">
+            and ga.status = 3
+        </if>
+        <if test="status != null and status==4">
+            and ga.status = 1
+        </if>
+        <if test="id != null">
+            and ga.id=#{id}
+        </if>
+        <if test="pname != null">
+            and ga.pname=#{pname}
+        </if>
+    </select>
 </mapper>

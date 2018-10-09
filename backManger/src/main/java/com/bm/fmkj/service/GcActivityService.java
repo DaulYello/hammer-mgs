@@ -49,11 +49,11 @@ public class GcActivityService {
 	private GcNoticeMapper gcNoticeMapper;
 
 	private Logger log= LoggerFactory.getLogger(GcActivityController.class);
-	
+
 	public GcActivityMapper getGcActivityMapper() {
 		return gcactivityMapper;
 	}
-	
+
 	/**
 	 * 获取合约地址，进入参与状态
 	 * @param ga
@@ -66,7 +66,7 @@ public class GcActivityService {
 			String idStr = (String)params.get("ids");
 			log.info("queryUserInfo-params={}", params.get("ispass"));
 			String ispass = (String)params.get("ispass");
-			
+
 			String ids [] = idStr.split(",");
 
 			int rows = 0;
@@ -76,30 +76,34 @@ public class GcActivityService {
 					log.debug("---------->"+ids[i]);
 					GcActivity activity = gcactivityMapper.selectByPrimaryKey(Integer.parseInt(ids[i]));
 					GcActivitytype gt = gcactivitytypeService.getGcActivitytypeId(activity.getTypeid());
-					activity.setStatus(4);
-					activity.setIspass(1);
+					activity.setStatus(2);
+					log.debug("活动状态设为2，就进入参与状态了"+activity.getStatus());
+					activity.setBegintime(DateUtil.getNowInMillis(0l));
+					activity.setEndtime(DateUtil.plusDay(gt.getDays()));
 					log.debug("通过产品的溢价除以参与活动的人数");
-					double premium = activity.getPnumber();
-					int minnum = gt.getMinnum();
-					activity.setPar((int)Math.ceil(premium/minnum));
-					
+					//double premium = activity.getPremium();
+					//int minnum = gt.getMinnum();
+					activity.setPar(Math.ceil(activity.getPremium()/activity.getNum()));
+
 					Helper helper = new Helper(PropUtil.getString("contractPassword"),
 							PropUtil.getString("keystoryPath"), PropUtil.getString("contractIp"),
 							PropUtil.getString("contractPort"));
 					helper.init();
-					
+
 					// 1.获得合约地址
 					Info info = new Info(BigInteger.valueOf(activity.getId()), BigInteger.valueOf(gt.getId()),
-							BigInteger.valueOf(activity.getPar()), BigInteger.valueOf(gt.getMinnum()));
-					
+							BigInteger.valueOf(Long.parseLong(activity.getPar().toString())), BigInteger.valueOf(activity.getNum()));
+
 					Person origPerson = new Person(activity.getPname(), BigInteger.valueOf(activity.getStartid()));
-					
+
+
 					String contract = helper.deployContract(info, origPerson);
 					log.debug("合约地址：" + contract);
-					
-					if(contract != null) {
+
+					boolean result = helper.changeStage(State.participate);
+					if(contract != null && result) {
 						activity.setContract(contract);
-						activity.setPname(null);//是因为把用户的姓名放在个字段传到后天。
+						activity.setPname(null);//是因为把用户的姓名放在个字段传到后台。
 						int row= gcactivityMapper.updateByPrimaryKeySelective(activity);
 						rows+=row;
 					}
@@ -113,8 +117,8 @@ public class GcActivityService {
 				for (int i = 0; i < ids.length; i++) {
 					GcActivity activity = new GcActivity();
 					activity.setId(Integer.parseInt(ids[i]));
-					activity.setStatus(0);
-					activity.setIspass(2);
+					activity.setStatus(1);
+					//activity.setIspass(2);
 					int row = gcactivityMapper.updateByPrimaryKeySelective(activity);
 					rows+=row;
 				}
@@ -123,17 +127,17 @@ public class GcActivityService {
 				}
 				return false;
 			}
-		} catch (NumberFormatException e) {
+		} catch (Exception e) {
 			throw new RuntimeException("操作失败："+e.getMessage());
 		}
 	}
 	/**
-	 * 更新合约状态
+	 * 更新合约状态  开始竟锤，接着获取优胜者。
 	 * @param ga
 	 * @return
 	 */
 	public boolean updatepuzzleHammerStatus(HashMap<String, Object> params) {
-		
+
 		try {
 			log.debug("前台传过来的字符串====》" + JSON.toJSONString(params));
 			int status = Integer.parseInt((String)params.get("status"));
@@ -150,47 +154,22 @@ public class GcActivityService {
 			log.debug("2.加载合约地址,是否成功：" + flag);
 			boolean result= false;
 			boolean result2 = false;
-			if(flag) {
-				switch(status) {
-					case 4:
-						log.debug("活动刚上线状态,通过此接口进入参与状态");
-						result= helper.changeStage(State.participate);
-						if(result) {
-							GcActivitytype gt = gcactivitytypeService.getGcActivitytypeId(activity.getTypeid());
-							activity.setStatus(1);//参与状态
-							activity.setBegintime(DateUtil.getNowInMillis(0l));
-							activity.setEndtime(DateUtil.plusDay(gt.getDays()));
-							result2=gcactivityMapper.updateByPrimaryKeySelective(activity)>0?true:false;
-						}
-						break;
-					case 5:
-						log.debug("活动进入close，通过此接口进入参与状态noticestatus");
-						result= helper.changeStage(State.notice);
-						if(result) {
-							activity.setStatus(6);//活动进入notice
-							result2=gcactivityMapper.updateByPrimaryKeySelective(activity)>0?true:false;
-						}
-						break;
-					case 6:
-						log.debug("获取活动竟锤优胜者");
-						result= helper.puzzleWinner();
-						if(result) {
-							activity.setStatus(7);
-							int hammerId = helper.getWinner().getID().intValue();
-							activity.setGetid(hammerId);
-							log.debug("优胜者的id:"+hammerId+"---姓名："+helper.getWinner().getName());
-							boolean result3=helper.changeStage(State.end);
-							log.debug("将金锤状态给为end:"+result3);
-							if(result3) {
-								result2=saveNoticeInfo(activity);
-							}
-							if(result2) {
-								log.debug("插入通知消息结果："+result2);
-								result2=gcactivityMapper.updateByPrimaryKeySelective(activity)>0?true:false;
-							}
-						}
-						break;
-					default:
+			if (flag){
+				result= helper.changeStage(State.notice);
+				log.debug("活动进入竟锤状态："+result);
+				result= helper.puzzleWinner();
+				log.debug("获取活动竟锤优胜者");
+				int hammerId = helper.getWinner().getID().intValue();
+				activity.setGetid(hammerId);
+				log.debug("优胜者的id:"+hammerId+"---姓名："+helper.getWinner().getName());
+				boolean result3=helper.changeStage(State.end);
+				if(result3) {
+					result2=saveNoticeInfo(activity);
+				}
+				log.debug("插入通知消息结果："+result2);
+				if(result2) {
+					/*activity.setStatus();*/
+					result2=gcactivityMapper.updateByPrimaryKeySelective(activity)>0?true:false;
 				}
 			}
 			return result2;
@@ -198,16 +177,16 @@ public class GcActivityService {
 			throw new RuntimeException(e.getMessage());
 		}
 	}
-	
-	
+
+
 	public boolean saveNoticeInfo(GcActivity activity) {
-		
+
 		log.debug("保存优胜者的记录！gc_notice");
 		try {
 			GcActivitytype gcActivitytype =gcgctivitytypeMapper.selectByPrimaryKey(activity.getTypeid());
 			GcNotice notice = new GcNotice();
 			notice.setUid(activity.getGetid());
-			notice.setTime(new Date());
+			//notice.setTime(new Date());
 			notice.setFlag(1);
 			StringBuilder sb = new StringBuilder();
 			String head = new String(PropUtil.getString("head").getBytes("ISO-8859-1"),  "UTF-8");
@@ -220,20 +199,20 @@ public class GcActivityService {
 			log.debug("中锤成功后提示信息的头部：-----》"+head);
 			log.debug("中锤成功后提示信息：-----》"+message);
 			log.debug(sb.toString());
-			notice.setMessage(sb.toString());
+			//notice.setMessage(sb.toString());
 			return gcNoticeMapper.insertSelective(notice)>0?true:false;
 		} catch (UnsupportedEncodingException e) {
 			throw new RuntimeException();
 		}
 	}
-	
+
 	public boolean cancelActivity(HashMap<String, Object> params) {
-		
+
 		try {
 			log.debug("cancelActivity进入业务层");
 			log.info("queryUserInfo-params={}", JSON.toJSONString(params));
 			String idStr = (String)params.get("ids");
-			
+
 			String ids [] = idStr.split(",");
 			GcActivity activity = new GcActivity();
 			int rows = 0;
@@ -263,14 +242,14 @@ public class GcActivityService {
 			throw new RuntimeException(e.getMessage());
 		}
 	}
-	
+
 	public boolean endActivity(HashMap<String, Object> params) {
-		
+
 		try {
 			log.debug("endActivity进入业务层");
 			log.info("queryUserInfo-params={}", JSON.toJSONString(params));
 			String idStr = (String)params.get("ids");
-			
+
 			String ids [] = idStr.split(",");
 			GcActivity activity = new GcActivity();
 			int rows = 0;
@@ -289,7 +268,7 @@ public class GcActivityService {
 			throw new RuntimeException(e.getMessage());
 		}
 	}
-	
+
 	/**
 	 * 活动分页查询
 	 */
@@ -302,14 +281,14 @@ public class GcActivityService {
 			throw new RuntimeException();
 		}
 	}
-	
+
 	/**
 	 * 通过id查询活动
 	 */
 	public GcActivity queryOneActivityById(GcActivity ga) {
 		return gcactivityMapper.selectOne(ga);
 	}
-	
+
 	/**
 	 * 通过传入id及参数修改活动信息
 	 */
