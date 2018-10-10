@@ -148,7 +148,7 @@ export const appRouter = [
     {
         path:'/configuration',
         icon:'android-menu',
-        title:'系统配置',
+        title:'公告管理',
         name:'configuration',
         component:Main,
         children:[
@@ -165,14 +165,37 @@ export const appRouter = [
                 name:'noticeSys',
                 title:'公告管理',
                 component:()=>import('@/views/configurationSys/noticeSys.vue')
-            },
+            }/*,
             {
                 path:'dataConfigurate',
                 icon:'folder',
                 name:'dataConfigurate',
                 title:'数据字典配置',
                 component:()=>import('@/views/configurationSys/noticeSys.vue')
+            },*/
+        ]
+    },
+    {
+        path:'/IntegralPool',
+        icon:'android-menu',
+        title:'积分池',
+        name:'IntegralPool',
+        component:Main,
+        children:[
+            {
+                path:'queryIntegral',
+                icon:'folder',
+                name:'queryIntegral',
+                title:'年度积分',
+                component:()=>import('@/views/integration-mange/queryIntegral.vue')
             },
+            {
+                path:'integrationRule',
+                icon:'folder',
+                name:'integrationRule',
+                title:'积分规则',
+                component:()=>import('@/views/integration-mange/integrationRule.vue')
+            }
         ]
     }
 ];

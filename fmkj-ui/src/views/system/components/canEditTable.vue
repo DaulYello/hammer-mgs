@@ -72,6 +72,9 @@ const editButton = (vm, h, currentRow, index) => {
                             vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
                             vm.$emit('input', vm.handleBackdata(vm.thisTableData));
                             vm.$emit('on-change', vm.handleBackdata(vm.thisTableData), index);
+                            /*window.location.reload();*/
+                            //vm.$emit('refresh',vm.handleBackdata(vm.thisTableData),1);
+                            //this.callMethod();
                         } else {
                             let edittingRow = vm.thisTableData[index];
                             edittingRow.editting = false;
@@ -129,6 +132,7 @@ const infoButton = (vm, h, currentRow, index) => {
                 changeStatus(vm.thisTableData[index].jobId, changeValue).then(data => {
                     if (data.status === 200) {
                         vm.$emit('on-start', vm.handleBackdata(vm.thisTableData), index, changeValue);
+                        window.location.reload();
                     } else {
                         vm.$emit('on-error', data.message);
                     }
@@ -379,6 +383,10 @@ export default {
                     }
                 });
             },
+            /*callMethod(){
+                this.$emit('childMethod',1);
+                //第一个参数名为调用的方法名，第二个参数为需要传递的参数
+            },*/
             handleBackdata(data) {
                 let clonedData = JSON.parse(JSON.stringify(data));
                 clonedData.forEach(item => {

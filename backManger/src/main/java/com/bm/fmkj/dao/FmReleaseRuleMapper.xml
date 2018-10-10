@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bm.fmkj.dao.FmReleaseRuleMapper">
+  <resultMap id="BaseResultMap" type="com.bm.fmkj.dao.FmReleaseRule">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="rpool_id" jdbcType="INTEGER" property="rpoolId" />
+    <result column="fy_min" jdbcType="DOUBLE" property="fyMin" />
+    <result column="fy_max" jdbcType="DOUBLE" property="fyMax" />
+    <result column="weight" jdbcType="DOUBLE" property="weight" />
+    <result column="allot_percent" jdbcType="DOUBLE" property="allotPercent" />
+    <result column="dilut_percent" jdbcType="DOUBLE" property="dilutPercent" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="allot_desc" jdbcType="VARCHAR" property="allotDesc" />
+  </resultMap>
+</mapper>

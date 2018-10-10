@@ -16,6 +16,11 @@ public class RaceTask {
 
 	public void runNoParams() {
 		System.out.println("执行无参方法");
+		System.out.println("执行无参方法");
+		System.out.println("执行无参方法");
+		System.out.println("执行无参方法");
+		System.out.println("执行无参方法");
+		System.out.println("执行无参方法");
 	}
 
 }

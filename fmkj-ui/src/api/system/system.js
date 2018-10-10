@@ -67,6 +67,7 @@ export function deleteQuartz (ids) {
 }
 //修改
 export function updateQuartz(obj) {
+    console.debug("方法参数："+obj.methodParams);
     const data = {
         jobId: obj.jobId,
         jobName: obj.jobName,
@@ -74,7 +75,8 @@ export function updateQuartz(obj) {
         methodName: obj.methodName,
         methodParams: obj.methodParams,
         cronExpression: obj.cronExpression,
-        misfirePolicy: obj.misfirePolicy
+        misfirePolicy: obj.misfirePolicy,
+        status: obj.status
     };
     return fetch({
         url: '/backManger/fmkj/job/updateJob' +  getParams(data),

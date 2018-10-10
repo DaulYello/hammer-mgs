@@ -87,7 +87,7 @@ public class ScheduleUtils {
 	/**
 	 * 更新定时任务
 	 */
-	public static void updateScheduleJob(Scheduler scheduler, Job job) {
+	public static Boolean updateScheduleJob(Scheduler scheduler, Job job) {
 		try {
 			TriggerKey triggerKey = getTriggerKey(job.getJobId());
 
@@ -106,14 +106,16 @@ public class ScheduleUtils {
 			scheduler.rescheduleJob(triggerKey, trigger);
 
 			// 暂停任务
-			if (job.getStatus().equals(ScheduleConstants.Status.PAUSE.getValue())) {
+			if (!"".equals(job.getStatus()) && job.getStatus().equals(ScheduleConstants.Status.PAUSE.getValue())) {
 				pauseJob(scheduler, job.getJobId());
 			}
-
+			return true;
 		} catch (SchedulerException e) {
 			log.error("SchedulerException 异常：", e);
+			return false;
 		} catch (Exception e) {
 			log.error("SchedulerException 异常：", e);
+			return false;
 		}
 	}
 

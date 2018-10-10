@@ -55,7 +55,7 @@ public class JobServiceImpl implements IJobService {
 	/**
 	 * 获取quartz调度器的计划任务列表
 	 * 
-	 * @param job
+	 * @param pageQuery
 	 *            调度信息
 	 * @return
 	 */
@@ -188,10 +188,15 @@ public class JobServiceImpl implements IJobService {
 	public int updateJobCron(Job job) {
 		job.setUpdateBy(job.getUpdateBy());
 		int rows = jobMapper.updateJob(job);
+		boolean result = false;
 		if (rows > 0) {
-			ScheduleUtils.updateScheduleJob(scheduler, job);
+			result = ScheduleUtils.updateScheduleJob(scheduler, job);
 		}
-		return rows;
+		if(result){
+			return rows;
+		}else{
+			return -1;
+		}
 	}
 
 }
