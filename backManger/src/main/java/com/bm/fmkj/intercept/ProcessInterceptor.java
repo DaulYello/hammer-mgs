@@ -19,11 +19,11 @@ public class ProcessInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
 
-        httpServletResponse.setHeader("Access-Control-Allow-Origin", "*"); //允许跨域
+        httpServletResponse.addHeader("Access-Control-Allow-Origin", "*"); //允许跨域
 
-        httpServletResponse.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Connection, User-Agent, Cookie, X-Fmkj-token");
+        httpServletResponse.addHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Connection, User-Agent, Cookie, X-Fmkj-token");
 
-        httpServletResponse.setHeader("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+        httpServletResponse.addHeader("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
 
         String method= httpServletRequest.getMethod();
 

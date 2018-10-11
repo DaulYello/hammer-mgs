@@ -196,6 +196,7 @@ export default {
             });
         },
         handleCellChange (val, index, key) {
+            this.getData(this.page);
             this.$Message.success('修改了第 ' + (index + 1) + ' 行列名为 ' + key + ' 的数据');
         },
         handleChange (val, index) {

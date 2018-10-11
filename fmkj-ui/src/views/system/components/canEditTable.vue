@@ -66,15 +66,10 @@ const editButton = (vm, h, currentRow, index) => {
                     }
                     updateQuartz(vm.thisTableData[index]).then(data => {
                         if (data.status === 200) {
-                            let edittingRow = vm.edittingStore[index];
-                           // edittingRow.editting = false;
-                           // edittingRow.saving = false;
+                            vm.edittingStore[index].editting = false;
                             vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
                             vm.$emit('input', vm.handleBackdata(vm.thisTableData));
                             vm.$emit('on-change', vm.handleBackdata(vm.thisTableData), index);
-                            /*window.location.reload();*/
-                            //vm.$emit('refresh',vm.handleBackdata(vm.thisTableData),1);
-                            //this.callMethod();
                         } else {
                             let edittingRow = vm.thisTableData[index];
                             edittingRow.editting = false;
@@ -132,7 +127,6 @@ const infoButton = (vm, h, currentRow, index) => {
                 changeStatus(vm.thisTableData[index].jobId, changeValue).then(data => {
                     if (data.status === 200) {
                         vm.$emit('on-start', vm.handleBackdata(vm.thisTableData), index, changeValue);
-                        window.location.reload();
                     } else {
                         vm.$emit('on-error', data.message);
                     }
