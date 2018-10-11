@@ -5,7 +5,7 @@ import com.bm.fmkj.base.BaseResult;
 import com.bm.fmkj.base.BaseResultEnum;
 import com.bm.fmkj.base.PageQuery;
 import com.bm.fmkj.base.Pagenation;
-import com.bm.fmkj.dao.GcActivity;
+import com.bm.fmkj.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,4 +48,60 @@ public class FmRpoolController extends BaseController {
 			throw new RuntimeException("查询活动失败：");
 		}
 	}
+
+    /**
+     * 新增
+     */
+    @RequestMapping(value="addIntegrate",method=RequestMethod.POST)
+    @ResponseBody
+    public BaseResult<Boolean> addIntegrate(FmRpool fmRpool){
+        log.info("addIntegrate-params={}", JSON.toJSONString(fmRpool));
+        if(StringUtils.isNull(fmRpool)) {
+            return new BaseResult<Boolean>(BaseResultEnum.BLANK,false);
+        }
+        int result = fmrpoolService.insertFmRpool(fmRpool);
+        if(result > 0) {
+            return new BaseResult<Boolean>(BaseResultEnum.SUCCESS,true);
+        }else {
+            return new BaseResult<Boolean>(BaseResultEnum.ERROR,false);
+        }
+    }
+
+
+    /**
+     * 编辑修改
+     */
+    @RequestMapping(value="editIntegral",method=RequestMethod.POST)
+    @ResponseBody
+    public BaseResult<Boolean> editIntegral(FmRpool fmRpool){
+        log.info("editIntegral-params={}", JSON.toJSONString(fmRpool));
+        if(StringUtils.isNull(fmRpool)|| fmRpool.getId() == null) {
+            return new BaseResult<Boolean>(BaseResultEnum.BLANK,false);
+        }
+        int result = fmrpoolService.editIntegral(fmRpool);
+        if(result > 0) {
+            return new BaseResult<Boolean>(BaseResultEnum.SUCCESS,true);
+        }
+        return new BaseResult<Boolean>(BaseResultEnum.ERROR,false);
+
+    }
+
+
+    /**
+     * 删除
+     */
+    @RequestMapping(value="dropIntegration",method=RequestMethod.GET)
+    @ResponseBody
+    public BaseResult<Boolean> dropIntegration(@RequestParam String id){
+        log.info("dropIntegration-params={}", JSON.toJSONString(id));
+        if(id == null) {
+            return new BaseResult<Boolean>(BaseResultEnum.BLANK,false);
+        }
+        try {
+            fmrpoolService.dropIntegration(id);
+            return new BaseResult<Boolean>(BaseResultEnum.SUCCESS,true);
+        } catch (Exception e) {
+            return new BaseResult<Boolean>(BaseResultEnum.ERROR.getStatus(), "删除异常:" + e.getMessage(), false);
+        }
+    }
 }

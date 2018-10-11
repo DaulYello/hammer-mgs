@@ -16,4 +16,23 @@
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
     <result column="allot_desc" jdbcType="VARCHAR" property="allotDesc" />
   </resultMap>
+
+  <resultMap id="BaseResultMap2" type="java.util.HashMap">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="year" jdbcType="VARCHAR" property="year" />
+    <result column="fy_min" jdbcType="DOUBLE" property="fyMin" />
+    <result column="fy_max" jdbcType="DOUBLE" property="fyMax" />
+    <result column="weight" jdbcType="DOUBLE" property="weight" />
+    <result column="allot_percent" jdbcType="DOUBLE" property="allotPercent" />
+    <result column="dilut_percent" jdbcType="DOUBLE" property="dilutPercent" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="allot_desc" jdbcType="VARCHAR" property="allotDesc" />
+  </resultMap>
+
+  <select id="selectIntegralRules" resultMap="BaseResultMap2">
+    SELECT r.`id`,p.year AS YEAR ,r.`fy_min`,r.`fy_max`,r.`weight`,r.`allot_percent`,r.`dilut_percent`,
+    r.`create_date`,r.`update_date`,r.`allot_desc`
+    FROM fm_release_rule AS r LEFT JOIN fm_rpool AS p ON r.rpool_id=p.id WHERE 1=1 ORDER BY r.`create_date` DESC
+  </select>
 </mapper>

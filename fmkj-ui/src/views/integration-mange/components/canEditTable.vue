@@ -15,11 +15,10 @@
 <script>
 
 import {
-    updateQuartz,
-    runQuartz,
-    changeStatus
+    dropIntegration,
+    editIntegral
 }
-from 'api/system/system';
+from 'api/integration/integration';
 //编辑按钮
 const editButton = (vm, h, currentRow, index) => {
     return h('Button', {
@@ -44,29 +43,19 @@ const editButton = (vm, h, currentRow, index) => {
                 } else {
                     vm.edittingStore[index].saving = true;
                     vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
-                    if (vm.edittingStore[index].jobName === '') {
-                        vm.$Message.error('任务名称不能为空！')
+                    if (vm.edittingStore[index].rintegralNum === '') {
+                        vm.$Message.error('年度R积分投放池不能有空！')
                         return;
                     }
-                    if (vm.edittingStore[index].jobGroup === '') {
+                    /*if (vm.edittingStore[index].jobGroup === '') {
                         vm.$Message.error('任务组名不能为空！')
                         return;
-                    }
-                    if (vm.edittingStore[index].methodName === '') {
-                        vm.$Message.error('方法名称不能为空！')
-                        return;
-                    }
-                    if (vm.edittingStore[index].cronExpression === '') {
-                        vm.$Message.error('表达式不能为空！')
-                        return;
-                    }
-                    if (vm.edittingStore[index].misfirePolicy === '') {
-                        vm.$Message.error('执行策略不能为空！')
-                        return;
-                    }
-                    updateQuartz(vm.thisTableData[index]).then(data => {
+                    }*/
+                    editIntegral(vm.thisTableData[index]).then(data => {
                         if (data.status === 200) {
-                            vm.edittingStore[index].editting = false;
+                            let edittingRow = vm.edittingStore[index];
+                           // edittingRow.editting = false;
+                           // edittingRow.saving = false;
                             vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
                             vm.$emit('input', vm.handleBackdata(vm.thisTableData));
                             vm.$emit('on-change', vm.handleBackdata(vm.thisTableData), index);
@@ -109,76 +98,6 @@ const deleteButton = (vm, h, currentRow, index) => {
                 placement: 'top'
             }
         }, '删除')
-    ]);
-};
-//启用
-const infoButton = (vm, h, currentRow, index) => {
-    let text = vm.thisTableData[index].status === '1' ? '启用' : '暂停';
-    return h('Poptip', {
-        props: {
-            type: 'text',
-            size: 'small',
-            confirm: true,
-            title: '您确定要' + text + '?'
-        },
-        on: {
-            'on-ok': () => {
-                let changeValue = vm.thisTableData[index].status === '0' ? 1 : 0;
-                changeStatus(vm.thisTableData[index].jobId, changeValue).then(data => {
-                    if (data.status === 200) {
-                        vm.$emit('on-start', vm.handleBackdata(vm.thisTableData), index, changeValue);
-                    } else {
-                        vm.$emit('on-error', data.message);
-                    }
-                }).catch(error => {
-                    vm.$emit('on-error', '操作异常！');
-                });
-            }
-        }
-    }, [
-        h('Button', {
-            style: {
-                margin: '0 5px'
-            },
-            props: {
-                type: vm.thisTableData[index].status === '1' ? 'info' : 'error',
-                placement: 'top'
-            }
-        }, text)
-    ]);
-};
-//执行按钮
-const runButton = (vm, h, currentRow, index) => {
-    return h('Poptip', {
-        props: {
-            type: 'text',
-            size: 'small',
-            confirm: true,
-            title: '您确定要执行?'
-        },
-        on: {
-            'on-ok': () => {
-                runQuartz(vm.thisTableData[index].jobId).then(data => {
-                    if (data.status === 200) {
-                        vm.$emit('on-run', vm.handleBackdata(vm.thisTableData), index);
-                    } else {
-                        vm.$emit('on-error', data.message);
-                    }
-                }).catch(error => {
-                    vm.$emit('on-error', '操作异常！');
-                });
-            }
-        }
-    }, [
-        h('Button', {
-            style: {
-                margin: '5px'
-            },
-            props: {
-                type: 'info',
-                placement: 'top'
-            }
-        }, '执行')
     ]);
 };
 const incellEditBtn = (vm, h, param) => {
@@ -365,12 +284,7 @@ export default {
                                     children.push(editButton(this, h, currentRowData, param.index));
                                 } else if (item === 'delete') {
                                     children.push(deleteButton(this, h, currentRowData, param.index));
-                                } else if (item === 'info') {
-                                    children.push(infoButton(this, h, currentRowData, param.index));
-                                } else if (item === 'run') {
-                                    children.push(runButton(this, h, currentRowData, param.index));
                                 }
-
                             });
                             return h('div', children);
                         };

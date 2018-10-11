@@ -16,46 +16,20 @@
                         <span @click="addIntegral"><Button type="primary" icon="android-add">新增</Button></span>
                     </Row>
                     <div class="margin-top-10">
-                        <Table :ref="refs" :columns="columns" refs="multipleSelection" :data="thisTableData" border disabled-hover></Table>
-                        <!--<can-edit-table :loading="loading" @on-delete="handleDel"  @on-error="handleError"  refs="multipleSelection" :data="pageData" :columns-list="columns"></can-edit-table>-->
+                        <!--<Table :columns="columns" refs="multipleSelection" :data="pageData" border disabled-hover></Table>-->
+                        <can-edit-table :loading="loading" @on-delete="handleDel"  @on-error="handleError"  refs="multipleSelection" v-model="pageData" :columns-list="columns"></can-edit-table>
                     </div>
                     <Page  style="text-align:center;margin-top:20px" @on-change="getData" :total="pageInfo.total" :page-size="size" :current="pageInfo.pageNo" size="small" show-elevator show-total></Page>
                 </Card>
             </Col>
         </Row>
-        <Modal v-model="modelShow" title="任务" ok-text="保存" :loading="loading" @on-ok="ok" @on-cancel="cancel">
-            <Form ref="quartzForm" :model="quartzData" :rules="quartzRules" :label-width="120">
-                <FormItem label="任务名称：" prop="jobName">
-                    <Input v-model="quartzData.jobName" type="text"></Input>
+        <Modal v-model="modelShow" title="年度积分" ok-text="保存" :loading="loading" @on-ok="ok" @on-cancel="cancel">
+            <Form ref="integrateForm" :model="integtationData" :rules="integtateRules" :label-width="120">
+                <FormItem label="投放年度：" prop="year">
+                    <Input v-model="integtationData.year" type="text"></Input>
                 </FormItem>
-                <FormItem label="任务组名：" prop="jobGroup">
-                    <Input v-model="quartzData.jobGroup" type="text"></Input>
-                </FormItem>
-                <FormItem label="方法名称：" prop="methodName">
-                    <Input v-model="quartzData.methodName"  type="text"></Input>
-                </FormItem>
-                <FormItem label="方法参数：" prop="methodParams">
-                    <Input v-model="quartzData.methodParams"  type="text"></Input>
-                </FormItem>
-                <FormItem label="cron表达式：" prop="cronExpression">
-                    <Input v-model="quartzData.cronExpression" type="text"></Input>
-                </FormItem>
-                <FormItem label="执行策略：" prop="misfirePolicy">
-                    <RadioGroup v-model="quartzData.misfirePolicy"  @on-change="misfirePolicyValChange">
-                        <Radio label="0">默认</Radio>
-                        <Radio label="1">继续执行</Radio>
-                        <Radio label="2">等待执行</Radio>
-                        <Radio label="3">放弃执行</Radio>
-                    </RadioGroup>
-                </FormItem>
-                <FormItem label="状态：" prop="status">
-                    <RadioGroup v-model="quartzData.status"  @on-change="statusValChange">
-                        <Radio label="0">正常</Radio>
-                        <Radio label="1">暂停</Radio>
-                    </RadioGroup>
-                </FormItem>
-                <FormItem label="备注：" prop="remark">
-                    <Input v-model="quartzData.remark"  type="text"></Input>
+                <FormItem label="年度R积分投放：" prop="rintegralNum">
+                    <Input v-model="integtationData.rintegralNum" type="text"></Input>
                 </FormItem>
             </Form>
         </Modal>
@@ -64,14 +38,16 @@
 
 <script>
     import columns from './components/integration_data.js';
+    import canEditTable from './components/canEditTable.vue';
     import formatDate from 'utils/time';
     import {
-        queryIntegral
-    } from './components/integration.js';
+        queryIntegral,addIntegrate,dropIntegration
+    } from 'api/integration/integration.js';
 
     export default {
         name: 'IntegralPool',
         components: {
+            canEditTable
         },
         data () {
             return {
@@ -83,29 +59,19 @@
                 pageData: [],
                 modelShow: false,
                 multipleSelection: [],
-                quartzData: {
+                integtationData: {
                     misfirePolicy: 0,
                     status: 0
                 },
-                quartzRules: {
-                    jobName: [{
+                integtateRules: {
+                    year: [{
                         required: true,
-                        message: '请输入任务名称',
+                        message: '投放年度',
                         trigger: 'blur'
                     }],
-                    jobGroup: [{
+                    rintegralNum: [{
                         required: true,
-                        message: '请输入任务组名',
-                        trigger: 'blur'
-                    }],
-                    methodName: [{
-                        required: true,
-                        message: '请输入方法名称',
-                        trigger: 'blur'
-                    }],
-                    cronExpression: [{
-                        required: true,
-                        message: '请输入表达式',
+                        message: '年度R积分投放',
                         trigger: 'blur'
                     }]
                 }
@@ -134,20 +100,24 @@
                 this.modelShow = true;
             },
             misfirePolicyValChange (val) {
-                this.quartzData.misfirePolicy = val;
+                this.integtationData.misfirePolicy = val;
             },
             statusValChange () {
-                this.quartzData.status = val;
+                this.integtationData.status = val;
             },
             ok() {
-                this.$refs['quartzForm'].validate((valid) => {
+                console.debug("1.come in~");
+                this.$refs['integrateForm'].validate((valid) => {
+                    console.debug("2.come in~");
                     if (valid) {
+                        console.debug("3.come in~");
                         this.loading = true;
-                        addQuartz(this.quartzData).then(data => {
+                        addIntegrate(this.integtationData).then(data => {
+                            console.debug("4.come in~");
                             this.loading = false;
                             if (data.status === 200) {
                                 this.$Message.success(data.message);
-                                this.getData(this.page);
+                                getData(this.page);
                             } else {
                                 this.$Message.error(data.message);
                             }
@@ -175,7 +145,7 @@
                 this.getData(1);
             },
             handleDel (val, index) {
-                deleteQuartz(val.jobId).then(data => {
+                dropIntegration(val.id).then(data => {
                     if (data.status === 200) {
                         this.$Message.success('删除成功');
                         this.getData(this.page);

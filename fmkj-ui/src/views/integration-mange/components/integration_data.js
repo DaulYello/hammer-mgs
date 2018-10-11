@@ -13,7 +13,7 @@ export const columns = [
         title: '投放年度',
         key: 'year',
         align: 'center',
-        editable:true
+        /*editable:true*/
     },
     {
         title: '年度R积分投放池',
@@ -31,20 +31,26 @@ export const columns = [
         title: '创建时间',
         align: 'center',
         key: 'createdate',
-        editable: true
+        render:(h,params) => {
+            return h('div',formatDateByLong(params.row.createdate,"yyyy-MM-dd h:m:s"));
+        }
     },
     {
         title: '修改时间',
         align: 'center',
         key: 'updatedate',
-        editable: true
+        render:(h,params)=>{
+            if(params.row.updatedate != null){
+                return h('div',formatDateByLong(params.row.updatedate,"yyyy-MM-dd h:m:s"));
+            }
+        }
     },
     {
         title: '操作',
         align: 'center',
         width: 350,
         key: 'handle',
-        handle: ['info', 'run', 'edit', 'delete']
+        handle: ['edit', 'delete']
     }
 ];
 
