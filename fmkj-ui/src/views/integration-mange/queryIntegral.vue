@@ -17,7 +17,7 @@
                     </Row>
                     <div class="margin-top-10">
                         <!--<Table :columns="columns" refs="multipleSelection" :data="pageData" border disabled-hover></Table>-->
-                        <can-edit-table :loading="loading" @on-delete="handleDel"  @on-error="handleError"  refs="multipleSelection" v-model="pageData" :columns-list="columns"></can-edit-table>
+                        <can-edit-table :loading="loading" @on-delete="handleDel" @on-change="handleChange"  @on-error="handleError"  refs="multipleSelection" v-model="pageData" :columns-list="columns"></can-edit-table>
                     </div>
                     <Page  style="text-align:center;margin-top:20px" @on-change="getData" :total="pageInfo.total" :page-size="size" :current="pageInfo.pageNo" size="small" show-elevator show-total></Page>
                 </Card>
@@ -160,6 +160,8 @@
                 this.$Message.success('修改了第 ' + (index + 1) + ' 行列名为 ' + key + ' 的数据');
             },
             handleChange (val, index) {
+                console.log("xxxx:"+val);
+                this.getData(this.page);
                 this.$Message.success('修改了第' + (index + 1) + '行数据');
             },
             handleStart (val, index, changeValue) {

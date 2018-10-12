@@ -18,7 +18,7 @@ export function getUserRealInfo(pageNo,pageSize,query){
         }
     }
     return fetch({
-        url:'backManger/fmkj/HcUserImage/getUserRealInfo'+getParams(data),
+        url:'/backManger/fmkj/HcUserImage/getUserRealInfo'+getParams(data),
         method:'get'
     });
 }
@@ -35,7 +35,7 @@ export function identityCardAudit(id,status){
         status
     }
     return fetch({
-        url:'backManger/fmkj/HcUserImage/approveUserRealInfo'+getParams(data),
+        url:'/backManger/fmkj/HcUserImage/approveUserRealInfo'+getParams(data),
         method:'post'
     });
 }
@@ -50,7 +50,7 @@ export function identityCardRefuse(id){
         id
     }
     return fetch({
-        url:'backManger/fmkj/HcUserImage/identityCardRefuse'+getParams(data),
+        url:'/backManger/fmkj/HcUserImage/identityCardRefuse'+getParams(data),
         method:'post'
     });
 }

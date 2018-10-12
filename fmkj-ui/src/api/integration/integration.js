@@ -69,7 +69,7 @@ export function editIntegral(integration) {
         recycleNum: integration.recycleNum
     };
     return fetch({
-        url: '/backManger/fmkj/FmReleaseRule/editIntegral' + getParams(data),
+        url: '/backManger/fmkj/FmRpool/editIntegral' + getParams(data),
         method: 'post'
     });
 }

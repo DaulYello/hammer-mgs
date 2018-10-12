@@ -7,6 +7,7 @@ import com.bm.fmkj.dao.GcActivity;
 import com.bm.fmkj.domain.Job;
 import com.bm.fmkj.job.ScheduleConstants;
 import com.bm.fmkj.job.ScheduleUtils;
+import com.bm.fmkj.utils.StringUtils;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -57,6 +58,9 @@ public class FmRpoolService {
 	public int editIntegral(FmRpool fmRpool) {
 		try{
 			fmRpool.setUpdatedate(new Date());
+			if(StringUtils.isNull(fmRpool.getRecycleNum())){
+				fmRpool.setRecycleNum(0.0);
+			}
 			return fmrpoolMapper.updateByPrimaryKeySelective(fmRpool);
 		}catch (Exception e){
 			e.getMessage();

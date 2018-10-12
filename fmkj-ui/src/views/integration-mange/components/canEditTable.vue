@@ -53,9 +53,8 @@ const editButton = (vm, h, currentRow, index) => {
                     }*/
                     editIntegral(vm.thisTableData[index]).then(data => {
                         if (data.status === 200) {
+                            vm.edittingStore[index].editting = false;
                             let edittingRow = vm.edittingStore[index];
-                           // edittingRow.editting = false;
-                           // edittingRow.saving = false;
                             vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
                             vm.$emit('input', vm.handleBackdata(vm.thisTableData));
                             vm.$emit('on-change', vm.handleBackdata(vm.thisTableData), index);

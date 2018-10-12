@@ -105,14 +105,10 @@
                 this.integtationData.status = val;
             },
             ok() {
-                console.debug("1.come in~");
                 this.$refs['integrateRuleForm'].validate((valid) => {
-                    console.debug("2.come in~");
                     if (valid) {
-                        console.debug("3.come in~");
                         this.loading = true;
                         addIntegrate(this.integtationData).then(data => {
-                            console.debug("4.come in~");
                             this.loading = false;
                             if (data.status === 200) {
                                 this.$Message.success(data.message);
@@ -159,7 +155,7 @@
                 this.$Message.success('修改了第 ' + (index + 1) + ' 行列名为 ' + key + ' 的数据');
             },
             handleChange (val, index) {
-                console.log("xxxxx:"+val);
+                getData(this.page);
                 this.$Message.success('修改了第' + (index + 1) + '行数据');
             },
             handleStart (val, index, changeValue) {
