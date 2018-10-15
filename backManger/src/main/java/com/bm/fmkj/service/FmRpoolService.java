@@ -3,10 +3,6 @@ package com.bm.fmkj.service;
 import com.bm.fmkj.base.PageQuery;
 import com.bm.fmkj.base.PageUtil;
 import com.bm.fmkj.base.Pagenation;
-import com.bm.fmkj.dao.GcActivity;
-import com.bm.fmkj.domain.Job;
-import com.bm.fmkj.job.ScheduleConstants;
-import com.bm.fmkj.job.ScheduleUtils;
 import com.bm.fmkj.utils.StringUtils;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,5 +75,16 @@ public class FmRpoolService {
 		}catch (Exception e){
 			e.getMessage();
 		}
+	}
+
+	public FmRpool queryRpoolByYear(Integer sysYear) {
+		FmRpool fmRpool = new FmRpool();
+		fmRpool.setYear(sysYear);
+		return fmrpoolMapper.selectOne(fmRpool);
+	}
+
+
+	public void updateRecycle(FmRpool fmRpool) {
+		fmrpoolMapper.updateByPrimaryKey(fmRpool);
 	}
 }

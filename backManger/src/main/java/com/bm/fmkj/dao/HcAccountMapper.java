@@ -50,4 +50,10 @@ public interface HcAccountMapper extends Mapper<HcAccount> {
 	 * @return
 	 */
 	public HcAccount selectUserByExample(HcAccount ha);
+
+	/**
+	 * 统计用户的飞羽总数
+	 * @return
+	 */
+    List<T> queryUserPointNum();
 }

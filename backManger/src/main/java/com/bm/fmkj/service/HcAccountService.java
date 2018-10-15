@@ -1,5 +1,6 @@
 package com.bm.fmkj.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.poi.ss.formula.functions.T;
@@ -76,4 +77,7 @@ public class HcAccountService {
 		return hcaccountMapper.queryUserBlack(pm);
 	}
 
+    public List<T> queryUserPointNum() {
+		return hcaccountMapper.queryUserPointNum();
+    }
 }

@@ -74,6 +74,11 @@ public class DateUtil {
 		return dateStr(date, "yyyy-MM-dd");
 	}
 
+	public static Date parseDate(String str) throws ParseException {
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		return sdf.parse(str);
+	}
+
 	/**
 	 * 日期转换为字符串 格式自定义
 	 * 
@@ -224,6 +229,16 @@ public class DateUtil {
 			e.printStackTrace();
 		}
 		return 0;
+	}
+
+	/**
+	 * 获取当前系统年份
+	 * @return
+	 */
+	public static int getSysYear() {
+		Calendar date = Calendar.getInstance();
+		String year = String.valueOf(date.get(Calendar.YEAR));
+		return Integer.parseInt(year);
 	}
 
 	/**

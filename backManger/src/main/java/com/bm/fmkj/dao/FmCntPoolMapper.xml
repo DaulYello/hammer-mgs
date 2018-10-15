@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bm.fmkj.dao.FmCntPoolMapper">
+  <resultMap id="BaseResultMap" type="com.bm.fmkj.dao.FmCntPool">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="cnt_pool" jdbcType="DOUBLE" property="cntPool" />
+    <result column="cnt_recyle" jdbcType="DOUBLE" property="cntRecyle" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="year" jdbcType="INTEGER" property="year" />
+  </resultMap>
+
+
+  <select id="queryCntPool" resultType="com.bm.fmkj.dao.FmCntPool">
+      SELECT * FROM fm_cnt_pool WHERE TO_DAYS(create_date) = TO_DAYS(NOW());
+  </select>
+</mapper>

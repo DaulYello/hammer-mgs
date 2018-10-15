@@ -30,6 +30,6 @@
 		<!-- <table tableName="hc_assets"></table> -->
 		<!-- <table tableName="gc_notice"></table>
 		<table tableName="gc_newcollect"></table> -->
-		<table tableName="fm_release_rule"></table>
+		<table tableName="fm_cnt_info"></table>
 	</context>
 </generatorConfiguration>

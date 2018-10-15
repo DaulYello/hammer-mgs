@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bm.fmkj.dao.FmIntegralInfoMapper">
+  <resultMap id="BaseResultMap" type="com.bm.fmkj.dao.FmIntegralInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="integral_num" jdbcType="DOUBLE" property="integralNum" />
+  </resultMap>
+
+
+  <insert id ="allotRToUser" parameterType="java.util.List">
+      insert into fm_integral_info
+          (uid, integral_num, create_date)
+          values
+           <foreach collection ="list" item="integralInfo" index= "index" separator =",">
+               (
+               #{integralInfo.uid},
+               #{integralInfo.integralNum},
+               #{integralInfo.createDate}
+               )
+           </foreach >
+  </insert>
+
+    <!--查询当前时间48小时前各个阶段的数据-->
+   <select id="queryPhaseIntegral" resultMap="BaseResultMap" parameterType="java.lang.String">
+      SELECT
+          id,
+          uid,
+          integral_num,
+          create_date
+        FROM
+          fm_integral_info
+        WHERE uid = 22
+          AND STATUS = 0
+          AND create_date BETWEEN DATE_ADD(NOW(), INTERVAL - 2 DAY)
+          AND NOW()
+          ORDER BY create_date DESC
+          LIMIT 0, 12
+   </select>
+</mapper>

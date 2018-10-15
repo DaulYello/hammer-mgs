@@ -65,6 +65,11 @@
 		<result column="limitLogin" jdbcType="INTEGER" property="limitLogin" />
 	</resultMap>
 
+	<resultMap id="RpointResultMap" type="java.util.HashMap">
+		<id column="Id" jdbcType="INTEGER" property="id" />
+		<result column="pointNum" jdbcType="DOUBLE" property="pointNum" />
+	</resultMap>
+
 	<!-- 差选用户邀请人数得周榜单(本周至当前得数据) -->
 	<select id="queryUserRank" parameterType="com.bm.fmkj.model.PageModel" resultMap="RankWeekMap">
 		select
@@ -168,5 +173,22 @@
 		<if test="cdbid != null and cdbid != ''">
 			and cdbid=#{cdbid}
 		</if>
+	</select>
+
+
+	<select id="queryUserPointNum" resultMap="RpointResultMap">
+		SELECT
+			t.id,
+			p.pointNum
+		FROM
+			hc_account t
+		LEFT JOIN
+		(SELECT
+		a.uid,
+		SUM(a.points_num) AS pointNum
+		FROM
+		hc_points_record a
+		GROUP BY a.uid) p
+		ON t.id = p.uid
 	</select>
 </mapper>
