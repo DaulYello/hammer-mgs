@@ -33,8 +33,13 @@ public class CntTask {
 	@Autowired
 	private FmCntPoolService fmCntPoolService;
 
-	public void runExcute() {
-
+	//参数为公司账户ID
+	public void runExcute(String param) {
+		if(StringUtils.isEmpty(param)){
+			LOGGER.info("runExcute公司账户ID不能为空");
+			return;
+		}
+		int uid = Integer.parseInt(param);
 		FmCntPool fmCntPool = fmCntPoolService.queryCntPool();
 		if(fmCntPool.getCntPool() == null || fmCntPool.getCntPool() <= 0){
 			LOGGER.info("资金池没有可释放的CNT");
@@ -110,15 +115,15 @@ public class CntTask {
 			}
 		}
 
-		AsyncManager.me().execute(AsyncCntFactory.excuteOnePhase(onePhase, oneAllotN, poolId));
+		AsyncManager.me().execute(AsyncCntFactory.excuteOnePhase(onePhase, oneAllotN, poolId, uid));
 
-		AsyncManager.me().execute(AsyncCntFactory.excuteTwoPhase(twoPhase, twoAllotN, oneDilutN * 0.25, poolId));
+		AsyncManager.me().execute(AsyncCntFactory.excuteTwoPhase(twoPhase, twoAllotN, oneDilutN * 0.25, poolId, uid));
 
-		AsyncManager.me().execute(AsyncCntFactory.excuteThreePhase(threePhase, threeAllotN, oneDilutN * 0.25, twoDilutN * 0.3, poolId));
+		AsyncManager.me().execute(AsyncCntFactory.excuteThreePhase(threePhase, threeAllotN, oneDilutN * 0.25, twoDilutN * 0.3, poolId, uid));
 
-		AsyncManager.me().execute(AsyncCntFactory.excuteFourPhase(fourPhase, fourAllotN, oneDilutN * 0.25, twoDilutN * 0.3, threeDilutN * 0.5, poolId));
+		AsyncManager.me().execute(AsyncCntFactory.excuteFourPhase(fourPhase, fourAllotN, oneDilutN * 0.25, twoDilutN * 0.3, threeDilutN * 0.5, poolId, uid));
 
-		AsyncManager.me().execute(AsyncCntFactory.excuteFivePhase(fivePhase, fiveN, oneDilutN * 0.25, twoDilutN * 0.4, threeDilutN * 0.5, fourDilutN, poolId));
+		AsyncManager.me().execute(AsyncCntFactory.excuteFivePhase(fivePhase, fiveN, oneDilutN * 0.25, twoDilutN * 0.4, threeDilutN * 0.5, fourDilutN, poolId, uid));
 
 
 

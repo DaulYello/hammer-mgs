@@ -23,4 +23,9 @@ public class FmIntegralInfoService {
 
 		fmintegralinfoMapper.allotRToUser(integralInfo);
 	}
+
+    public List<FmIntegralInfo> queryRBefore() {
+		return  fmintegralinfoMapper.queryRBefore();
+    }
+
 }

@@ -29,7 +29,7 @@ public class AsyncCntFactory {
      * @param oneAllotR
      * @param currentYear
      */
-    public static TimerTask excuteOnePhase(List<FmCntInfo> onePhase, Double oneAllotN, int poolId) {
+    public static TimerTask excuteOnePhase(List<FmCntInfo> onePhase, Double oneAllotN, int poolId, int uid) {
         return new TimerTask() {
             @Override
             public void run() {
@@ -37,7 +37,7 @@ public class AsyncCntFactory {
                     //如果onePhase为空、则oneAllotR回收到公司CNT账户
                     if (StringUtils.isEmpty(onePhase) && StringUtils.isNotNull(oneAllotN)){
                         //回收到公司CNT账户
-                        SpringContextUtil.getBean(FmCntInfoService.class).recyleToAccount(oneAllotN, poolId);
+                        SpringContextUtil.getBean(FmCntInfoService.class).recyleToAccount(oneAllotN, poolId, uid);
                     }else{
                         //批量平均分配给用户
                         Double cntNum = oneAllotN / onePhase.size();
@@ -62,7 +62,7 @@ public class AsyncCntFactory {
      * @param fmRpool
      * @return
      */
-    public static TimerTask excuteTwoPhase(List<FmCntInfo> twoPhase, Double twoAllotN, Double oneDilutN, int poolId) {
+    public static TimerTask excuteTwoPhase(List<FmCntInfo> twoPhase, Double twoAllotN, Double oneDilutN, int poolId, int uid) {
         return new TimerTask() {
             @Override
             public void run() {
@@ -71,7 +71,7 @@ public class AsyncCntFactory {
                     //如果onePhase为空、则oneAllotR回收到公司CNT账户
                     if (StringUtils.isEmpty(twoPhase)){
                         //回收到公司CNT账户
-                        SpringContextUtil.getBean(FmCntInfoService.class).recyleToAccount(allotN, poolId);
+                        SpringContextUtil.getBean(FmCntInfoService.class).recyleToAccount(allotN, poolId, uid);
                     }else{
                         //批量平均分配给用户
                         Double cntNum = allotN / twoPhase.size();
@@ -96,7 +96,7 @@ public class AsyncCntFactory {
      * @param fmRpool
      * @return
      */
-    public static TimerTask excuteThreePhase(List<FmCntInfo> threePhase, Double threeAllotN, double oneDilutN, double twoDilutN, int poolId) {
+    public static TimerTask excuteThreePhase(List<FmCntInfo> threePhase, Double threeAllotN, double oneDilutN, double twoDilutN, int poolId, int uid) {
 
         return new TimerTask() {
             @Override
@@ -106,7 +106,7 @@ public class AsyncCntFactory {
                     //如果onePhase为空、则oneAllotR回收到公司CNT账户
                     if (StringUtils.isEmpty(threePhase)){
                         //回收到公司CNT账户
-                        SpringContextUtil.getBean(FmCntInfoService.class).recyleToAccount(allotN, poolId);
+                        SpringContextUtil.getBean(FmCntInfoService.class).recyleToAccount(allotN, poolId, uid);
                     }else{
                         //批量平均分配给用户
                         Double cntNum = allotN / threePhase.size();
@@ -133,7 +133,7 @@ public class AsyncCntFactory {
      * @param fmRpool
      * @return
      */
-    public static TimerTask excuteFourPhase(List<FmCntInfo> fourPhase, Double fourAllotN, double oneDilutN, double twoDilutN, double threeDilutN, int poolId) {
+    public static TimerTask excuteFourPhase(List<FmCntInfo> fourPhase, Double fourAllotN, double oneDilutN, double twoDilutN, double threeDilutN, int poolId, int uid) {
 
         return new TimerTask() {
             @Override
@@ -143,7 +143,7 @@ public class AsyncCntFactory {
                     //如果onePhase为空、则oneAllotR回收到公司CNT账户
                     if (StringUtils.isEmpty(fourPhase)){
                         //回收到公司CNT账户
-                        SpringContextUtil.getBean(FmCntInfoService.class).recyleToAccount(allotN, poolId);
+                        SpringContextUtil.getBean(FmCntInfoService.class).recyleToAccount(allotN, poolId, uid);
                     }else{
                         //批量平均分配给用户
                         Double cntNum = allotN / fourPhase.size();
@@ -170,7 +170,7 @@ public class AsyncCntFactory {
      * @param fmRpool
      * @return
      */
-    public static TimerTask excuteFivePhase(List<FmCntInfo> fivePhase, Double fiveN, double oneDilutN, double twoDilutN, double threeDilutN, Double fourDilutN, int poolId) {
+    public static TimerTask excuteFivePhase(List<FmCntInfo> fivePhase, Double fiveN, double oneDilutN, double twoDilutN, double threeDilutN, Double fourDilutN, int poolId, int uid) {
         return new TimerTask() {
             @Override
             public void run() {
@@ -179,7 +179,7 @@ public class AsyncCntFactory {
                     //如果onePhase为空、则oneAllotR回收到公司CNT账户
                     if (StringUtils.isEmpty(fivePhase)){
                         //回收到公司CNT账户
-                        SpringContextUtil.getBean(FmCntInfoService.class).recyleToAccount(allotN, poolId);
+                        SpringContextUtil.getBean(FmCntInfoService.class).recyleToAccount(allotN, poolId, uid);
                     }else{
                         //批量平均分配给用户
                         Double cntNum = allotN / fivePhase.size();

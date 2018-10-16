@@ -9,9 +9,6 @@ package com.bm.fmkj.constant;
  **/
 public enum TakeEnum {
 
-
-    TYPE_USER(0,"用户收取"),
-
     TYPE_TASK(1,"定时任务回收"),
 
     TYPE_ALLOT(2, "释放时没有用户的情况回收");

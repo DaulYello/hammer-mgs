@@ -32,13 +32,13 @@ public class FmRecyleLog {
      * 收取类型:0、用户收取;1、定时任务回收;2、释放CNT时没有用户回收
      */
     @Column(name = "take_type")
-    private Byte takeType;
+    private Integer takeType;
 
     /**
      * 所属类型1、CNT; 2、R积分
      */
     @Column(name = "recyle_type")
-    private Byte recyleType;
+    private Integer recyleType;
 
     /**
      * 获取主键
@@ -117,16 +117,11 @@ public class FmRecyleLog {
      *
      * @return take_type - 收取类型:0、用户收取;1、定时任务回收;2、释放CNT时没有用户回收
      */
-    public Byte getTakeType() {
+    public Integer getTakeType() {
         return takeType;
     }
 
-    /**
-     * 设置收取类型:0、用户收取;1、定时任务回收;2、释放CNT时没有用户回收
-     *
-     * @param takeType 收取类型:0、用户收取;1、定时任务回收;2、释放CNT时没有用户回收
-     */
-    public void setTakeType(Byte takeType) {
+    public void setTakeType(Integer takeType) {
         this.takeType = takeType;
     }
 
@@ -135,16 +130,11 @@ public class FmRecyleLog {
      *
      * @return recyle_type - 所属类型1、CNT; 2、R积分
      */
-    public Byte getRecyleType() {
+    public Integer getRecyleType() {
         return recyleType;
     }
 
-    /**
-     * 设置所属类型1、CNT; 2、R积分
-     *
-     * @param recyleType 所属类型1、CNT; 2、R积分
-     */
-    public void setRecyleType(Byte recyleType) {
+    public void setRecyleType(Integer recyleType) {
         this.recyleType = recyleType;
     }
 }

@@ -23,7 +23,7 @@ public class FmIntegralInfo {
     private Double integralNum;
 
     /**
-     * R积分状态:-1被偷; 0未收取状态; 1已收取; 2系统回收
+     * R积分状态:0未收取状态; 1已收取; 2系统回收
      */
     private Integer status;
 

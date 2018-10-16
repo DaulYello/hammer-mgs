@@ -20,6 +20,9 @@ public class FmCntInfoService {
 	@Autowired
 	private FmRecyleLogMapper fmRecyleLogMapper;
 
+	@Autowired
+	private FmCntPoolMapper fmCntPoolMapper;
+
 	public FmCntInfoMapper getFmCntInfoMapper() {
 		return fmcntinfoMapper;
 	}
@@ -28,15 +31,32 @@ public class FmCntInfoService {
 		fmcntinfoMapper.allotCNToUser(onePhase);
     }
 
-	public void recyleToAccount(Double recyleNum, int poolId) {
+	public void recyleToAccount(Double recyleNum, int poolId, int uid) {
 		HashMap<String, Object> param = new HashMap<>();
 		param.put("poolId", poolId);
 		param.put("recyleNum", recyleNum);
 		param.put("recyleType", RecyleEnum.TYPE_CNT.status);
 		param.put("takeType", TakeEnum.TYPE_ALLOT.status);
 		param.put("dateTime", new Date());
+		param.put("uid", uid);
 		fmcntinfoMapper.updateFmCnt(param);
-		fmcntinfoMapper.recyleToAccount(recyleNum);
-		fmRecyleLogMapper.addCntLog(param);
+		fmcntinfoMapper.recyleToAccount(param);
+		fmRecyleLogMapper.addRecyletLog(param);
+	}
+
+	public List<FmCntInfo> queryRecyleCNT() {
+		return fmcntinfoMapper.queryRecyleCNT();
+	}
+
+	public void recyleCNT(int uid, Double totalNum, List<FmRecyleLog> recyleLogs) {
+		FmCntPool fmCntPool = fmCntPoolMapper.queryYesterdayCNT();
+		HashMap<String, Object> param = new HashMap<>();
+		param.put("poolId", fmCntPool.getId());
+		param.put("recyleNum", totalNum);
+		param.put("dateTime", new Date());
+		param.put("uid", uid);
+		fmcntinfoMapper.updateFmCnt(param);
+		fmcntinfoMapper.recyleToAccount(param);
+		fmRecyleLogMapper.batchAddRecyleLog(recyleLogs);
 	}
 }

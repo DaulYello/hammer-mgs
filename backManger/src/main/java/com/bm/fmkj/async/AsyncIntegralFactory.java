@@ -29,7 +29,7 @@ public class AsyncIntegralFactory {
      * @param oneAllotR
      * @param currentYear
      */
-    public static TimerTask excuteOnePhase(List<FmIntegralInfo> onePhase, Double oneAllotR, FmRpool fmRpool) {
+    public static TimerTask excuteOnePhase(List<FmIntegralInfo> onePhase, Double oneAllotR, FmRpool fmRpool, int uid) {
         return new TimerTask() {
             @Override
             public void run() {
@@ -39,7 +39,7 @@ public class AsyncIntegralFactory {
                         //回收到R积分回收池
                         fmRpool.setRecycleNum(fmRpool.getRecycleNum() + oneAllotR);
                         fmRpool.setUpdatedate(new Date());
-                        SpringContextUtil.getBean(FmRpoolService.class).updateRecycle(fmRpool, oneAllotR);
+                        SpringContextUtil.getBean(FmRpoolService.class).updateRecycle(fmRpool, oneAllotR, uid);
                     }else{
                         //批量平均分配给用户
                         Double integralNum = oneAllotR / onePhase.size();
@@ -64,7 +64,7 @@ public class AsyncIntegralFactory {
      * @param fmRpool
      * @return
      */
-    public static TimerTask excuteTwoPhase(List<FmIntegralInfo> twoPhase, Double twoAllotR, Double oneDilutR, FmRpool fmRpool) {
+    public static TimerTask excuteTwoPhase(List<FmIntegralInfo> twoPhase, Double twoAllotR, Double oneDilutR, FmRpool fmRpool, int uid) {
         return new TimerTask() {
             @Override
             public void run() {
@@ -75,7 +75,7 @@ public class AsyncIntegralFactory {
                         //回收到R积分回收池
                         fmRpool.setRecycleNum(fmRpool.getRecycleNum() + allotR);
                         fmRpool.setUpdatedate(new Date());
-                        SpringContextUtil.getBean(FmRpoolService.class).updateRecycle(fmRpool, allotR);
+                        SpringContextUtil.getBean(FmRpoolService.class).updateRecycle(fmRpool, allotR, uid);
                     }else{
                         //批量平均分配给用户
                         Double integralNum = allotR / twoPhase.size();
@@ -100,8 +100,7 @@ public class AsyncIntegralFactory {
      * @param fmRpool
      * @return
      */
-    public static TimerTask excuteThreePhase(List<FmIntegralInfo> threePhase, Double threeAllotR, double oneDilutR, double twoDilutR, FmRpool fmRpool) {
-
+    public static TimerTask excuteThreePhase(List<FmIntegralInfo> threePhase, Double threeAllotR, double oneDilutR, double twoDilutR, FmRpool fmRpool, int uid) {
         return new TimerTask() {
             @Override
             public void run() {
@@ -112,7 +111,7 @@ public class AsyncIntegralFactory {
                         //回收到R积分回收池
                         fmRpool.setRecycleNum(fmRpool.getRecycleNum() + allotR);
                         fmRpool.setUpdatedate(new Date());
-                        SpringContextUtil.getBean(FmRpoolService.class).updateRecycle(fmRpool, allotR);
+                        SpringContextUtil.getBean(FmRpoolService.class).updateRecycle(fmRpool, allotR, uid);
                     }else{
                         //批量平均分配给用户
                         Double integralNum = allotR / threePhase.size();
@@ -139,7 +138,7 @@ public class AsyncIntegralFactory {
      * @param fmRpool
      * @return
      */
-    public static TimerTask excuteFourPhase(List<FmIntegralInfo> fourPhase, Double fourAllotR, double oneDilutR, double twoDilutR, double threeDilutR, FmRpool fmRpool) {
+    public static TimerTask excuteFourPhase(List<FmIntegralInfo> fourPhase, Double fourAllotR, double oneDilutR, double twoDilutR, double threeDilutR, FmRpool fmRpool, int uid) {
 
         return new TimerTask() {
             @Override
@@ -151,7 +150,7 @@ public class AsyncIntegralFactory {
                         //回收到R积分回收池
                         fmRpool.setRecycleNum(fmRpool.getRecycleNum() + allotR);
                         fmRpool.setUpdatedate(new Date());
-                        SpringContextUtil.getBean(FmRpoolService.class).updateRecycle(fmRpool, allotR);
+                        SpringContextUtil.getBean(FmRpoolService.class).updateRecycle(fmRpool, allotR, uid);
                     }else{
                         //批量平均分配给用户
                         Double integralNum = allotR / fourPhase.size();
@@ -178,7 +177,7 @@ public class AsyncIntegralFactory {
      * @param fmRpool
      * @return
      */
-    public static TimerTask excuteFivePhase(List<FmIntegralInfo> fivePhase, Double fiveR, double oneDilutR, double twoDilutR, double threeDilutR, Double fourDilutR, FmRpool fmRpool) {
+    public static TimerTask excuteFivePhase(List<FmIntegralInfo> fivePhase, Double fiveR, double oneDilutR, double twoDilutR, double threeDilutR, Double fourDilutR, FmRpool fmRpool, int uid) {
         return new TimerTask() {
             @Override
             public void run() {
@@ -189,7 +188,7 @@ public class AsyncIntegralFactory {
                         //回收到R积分回收池
                         fmRpool.setRecycleNum(fmRpool.getRecycleNum() + allotR);
                         fmRpool.setUpdatedate(new Date());
-                        SpringContextUtil.getBean(FmRpoolService.class).updateRecycle(fmRpool, allotR);
+                        SpringContextUtil.getBean(FmRpoolService.class).updateRecycle(fmRpool, allotR, uid);
                     }else{
                         //批量平均分配给用户
                         Double integralNum = allotR / fivePhase.size();

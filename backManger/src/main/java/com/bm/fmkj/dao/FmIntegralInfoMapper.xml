@@ -21,20 +21,21 @@
            </foreach >
   </insert>
 
-    <!--查询当前时间48小时前各个阶段的数据-->
-   <select id="queryPhaseIntegral" resultMap="BaseResultMap" parameterType="java.lang.String">
-      SELECT
-          id,
+    <select id="queryRBefore" resultMap="BaseResultMap">
+
+        SELECT
           uid,
-          integral_num,
-          create_date
+          SUM(integral_num) AS integral_num
         FROM
           fm_integral_info
-        WHERE uid = 22
+        WHERE create_date BETWEEN
+          (SELECT
+            DATE_SUB(NOW(), INTERVAL 120 HOUR))
+          AND
+          (SELECT
+            DATE_SUB(NOW(), INTERVAL 48 HOUR))
           AND STATUS = 0
-          AND create_date BETWEEN DATE_ADD(NOW(), INTERVAL - 2 DAY)
-          AND NOW()
-          ORDER BY create_date DESC
-          LIMIT 0, 12
-   </select>
+        GROUP BY uid
+
+    </select>
 </mapper>

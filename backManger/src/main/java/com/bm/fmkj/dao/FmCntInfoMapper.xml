@@ -26,12 +26,12 @@
     </foreach >
   </insert>
 
-  <update id="recyleToAccount" parameterType="java.lang.Double">
+  <update id="recyleToAccount" parameterType="java.util.HashMap">
       UPDATE
         hc_account h
       SET
         h.cnt = h.cnt + #{recyleNum}
-      WHERE h.id = 14
+      WHERE h.id = #{uid}
   </update>
 
   <update id="updateFmCnt" parameterType="java.util.HashMap">
@@ -41,6 +41,20 @@
         f.cnt_recyle = f.cnt_recyle + #{recyleNum}, f.update_date = #{dateTime}
       WHERE f.id = #{poolId}
   </update>
+
+  <select id="queryRecyleCNT" resultMap="BaseResultMap">
+
+    SELECT
+      UID, SUM(CNT_NUM) AS CNT_NUM, STATUS
+    FROM
+      FM_CNT_INFO
+    WHERE (
+        TO_DAYS(NOW()) - TO_DAYS(CREATE_DATE) = 1
+      )
+      AND STATUS = 0
+      GROUP BY UID
+
+  </select>
 
 </mapper>
 

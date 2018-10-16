@@ -9,7 +9,9 @@ public interface FmCntInfoMapper extends Mapper<FmCntInfo> {
 
     void allotCNToUser(List<FmCntInfo> fmCntInfo);
 
-    void recyleToAccount(Double recyleCnt);
+    void recyleToAccount(HashMap<String, Object> param);
 
     void updateFmCnt(HashMap<String, Object> param);
+
+    List<FmCntInfo> queryRecyleCNT();
 }

@@ -5,6 +5,7 @@ import com.bm.fmkj.base.PageUtil;
 import com.bm.fmkj.base.Pagenation;
 import com.bm.fmkj.constant.RecyleEnum;
 import com.bm.fmkj.constant.TakeEnum;
+import com.bm.fmkj.dao.FmRecyleLog;
 import com.bm.fmkj.dao.FmRecyleLogMapper;
 import com.bm.fmkj.utils.StringUtils;
 import com.github.pagehelper.PageHelper;
@@ -91,13 +92,19 @@ public class FmRpoolService {
 	}
 
 
-	public void updateRecycle(FmRpool fmRpool, Double allotR) {
+	public void updateRecycle(FmRpool fmRpool, Double allotR, int uid) {
 		HashMap<String, Object> param = new HashMap<>();
 		param.put("recyleNum", allotR);
 		param.put("recyleType", RecyleEnum.TYPE_R.status);
 		param.put("takeType", TakeEnum.TYPE_ALLOT.status);
 		param.put("dateTime", new Date());
+		param.put("uid", uid);
 		fmrpoolMapper.updateByPrimaryKey(fmRpool);
-		fmRecyleLogMapper.addCntLog(param);
+		fmRecyleLogMapper.addRecyletLog(param);
+	}
+
+	public void recyleR(FmRpool fmRpool, List<FmRecyleLog> recyleLogs) {
+		fmrpoolMapper.updateByPrimaryKey(fmRpool);
+		fmRecyleLogMapper.batchAddRecyleLog(recyleLogs);
 	}
 }

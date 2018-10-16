@@ -9,4 +9,6 @@ public interface FmIntegralInfoMapper extends Mapper<FmIntegralInfo> {
 
     void allotRToUser(List<FmIntegralInfo> integralInfo);
 
+    List<FmIntegralInfo> queryRBefore();
+
 }

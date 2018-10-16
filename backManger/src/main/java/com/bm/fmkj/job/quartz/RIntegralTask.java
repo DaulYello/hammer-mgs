@@ -34,8 +34,12 @@ public class RIntegralTask {
 	@Autowired
 	private FmRpoolService fmRpoolService;
 
-	public void runNoParams() {
-
+	public void runRIntegral(String param) {
+		if(StringUtils.isEmpty(param)){
+			LOGGER.info("runRIntegral公司账户ID不能为空");
+			return;
+		}
+		int uid = Integer.parseInt(param);
 		int currentYear = DateUtil.getSysYear();
 		FmRpool fmRpool  = fmRpoolService.queryRpoolByYear(currentYear);
 		if (StringUtils.isNull(fmRpool.getRintegralNum()) || fmRpool.getRintegralNum() <= 0)
@@ -115,15 +119,15 @@ public class RIntegralTask {
 			}
 		}
 
-		AsyncManager.me().execute(AsyncIntegralFactory.excuteOnePhase(onePhase, oneAllotR, fmRpool));
+		AsyncManager.me().execute(AsyncIntegralFactory.excuteOnePhase(onePhase, oneAllotR, fmRpool, uid));
 
-		AsyncManager.me().execute(AsyncIntegralFactory.excuteTwoPhase(twoPhase, twoAllotR, oneDilutR * 0.25, fmRpool));
+		AsyncManager.me().execute(AsyncIntegralFactory.excuteTwoPhase(twoPhase, twoAllotR, oneDilutR * 0.25, fmRpool, uid));
 
-		AsyncManager.me().execute(AsyncIntegralFactory.excuteThreePhase(threePhase, threeAllotR, oneDilutR * 0.25, twoDilutR * 0.3, fmRpool));
+		AsyncManager.me().execute(AsyncIntegralFactory.excuteThreePhase(threePhase, threeAllotR, oneDilutR * 0.25, twoDilutR * 0.3, fmRpool, uid));
 
-		AsyncManager.me().execute(AsyncIntegralFactory.excuteFourPhase(fourPhase, fourAllotR, oneDilutR * 0.25, twoDilutR * 0.3, threeDilutR * 0.5, fmRpool));
+		AsyncManager.me().execute(AsyncIntegralFactory.excuteFourPhase(fourPhase, fourAllotR, oneDilutR * 0.25, twoDilutR * 0.3, threeDilutR * 0.5, fmRpool, uid));
 
-		AsyncManager.me().execute(AsyncIntegralFactory.excuteFivePhase(fivePhase, fiveR, oneDilutR * 0.25, twoDilutR * 0.4, threeDilutR * 0.5, fourDilutR, fmRpool));
+		AsyncManager.me().execute(AsyncIntegralFactory.excuteFivePhase(fivePhase, fiveR, oneDilutR * 0.25, twoDilutR * 0.4, threeDilutR * 0.5, fourDilutR, fmRpool, uid));
 
 	}
 
