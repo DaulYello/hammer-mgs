@@ -44,30 +44,31 @@ public class CntTask {
 		Date nowTime = new Date();
 
 		Double cntPool = fmCntPool.getCntPool() / 2;
+		int poolId = fmCntPool.getId();
 
 		//0~1000 用户一共得到当天20%, 分配60%R积分、40%向下稀释给飞羽更高高阶段的用户
-		Double oneR = cntPool * 0.2;
-		Double oneAllotR = oneR * 0.6;
-		Double oneDilutR = oneR * 0.4;
+		Double oneN = cntPool * 0.2;
+		Double oneAllotN = oneN * 0.6;
+		Double oneDilutN = oneN * 0.4;
 
 		//1000~3000 用户一共得到当天10%, 分配70%R积分、30%向下稀释给飞羽更高高阶段的用户
-		Double twoR = cntPool * 0.1;
-		Double twoAllotR = twoR * 0.7;
-		Double twoDilutR = twoR * 0.3;
+		Double twoN = cntPool * 0.1;
+		Double twoAllotN = twoN * 0.7;
+		Double twoDilutN = twoN * 0.3;
 
 		//3000~6000 用户一共得到当天20%, 分配80%R积分、20%向下稀释给飞羽更高高阶段的用户
-		Double threeR = cntPool * 0.2;
-		Double threeAllotR = threeR * 0.8;
-		Double threeDilutR = threeR * 0.2;
+		Double threeN = cntPool * 0.2;
+		Double threeAllotN = threeN * 0.8;
+		Double threeDilutN = threeN * 0.2;
 
 		//6000~10000 用户一共得到当天20%, 分配90%R积分、10%向下稀释给飞羽更高高阶段的用户
-		Double fourR = cntPool * 0.3;
-		Double fourAllotR = fourR * 0.9;
-		Double fourDilutR = fourR * 0.1;
+		Double fourN = cntPool * 0.3;
+		Double fourAllotN = fourN * 0.9;
+		Double fourDilutN = fourN * 0.1;
 
 
 		//10000以上用户一共得到当天20%
-		Double fiveR = cntPool * 0.2;
+		Double fiveN = cntPool * 0.2;
 
 
 		//第二步：按用户飞羽区间统计用户
@@ -109,7 +110,16 @@ public class CntTask {
 			}
 		}
 
-		AsyncManager.me().execute(AsyncCntFactory.excuteOnePhase(onePhase, oneAllotR));
+		AsyncManager.me().execute(AsyncCntFactory.excuteOnePhase(onePhase, oneAllotN, poolId));
+
+		AsyncManager.me().execute(AsyncCntFactory.excuteTwoPhase(twoPhase, twoAllotN, oneDilutN * 0.25, poolId));
+
+		AsyncManager.me().execute(AsyncCntFactory.excuteThreePhase(threePhase, threeAllotN, oneDilutN * 0.25, twoDilutN * 0.3, poolId));
+
+		AsyncManager.me().execute(AsyncCntFactory.excuteFourPhase(fourPhase, fourAllotN, oneDilutN * 0.25, twoDilutN * 0.3, threeDilutN * 0.5, poolId));
+
+		AsyncManager.me().execute(AsyncCntFactory.excuteFivePhase(fivePhase, fiveN, oneDilutN * 0.25, twoDilutN * 0.4, threeDilutN * 0.5, fourDilutN, poolId));
+
 
 
 	}

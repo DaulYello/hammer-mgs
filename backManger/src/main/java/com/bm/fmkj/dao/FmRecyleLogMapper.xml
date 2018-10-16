@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bm.fmkj.dao.FmRecyleLogMapper">
+  <resultMap id="BaseResultMap" type="com.bm.fmkj.dao.FmRecyleLog">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="uid" jdbcType="INTEGER" property="uid" />
+    <result column="take_num" jdbcType="DOUBLE" property="takeNum" />
+    <result column="take_date" jdbcType="TIMESTAMP" property="takeDate" />
+    <result column="take_type" jdbcType="TINYINT" property="takeType" />
+    <result column="recyle_type" jdbcType="TINYINT" property="recyleType" />
+  </resultMap>
+
+  <insert id="addCntLog" parameterType="java.util.HashMap">
+    INSERT INTO fm_recyle_log(uid, take_num, take_date, take_type, recyle_type) VALUES(14, #{recyleNum}, #{dateTime}, #{takeType}, #{recyleType})
+  </insert>
+
+</mapper>

@@ -3,6 +3,9 @@ package com.bm.fmkj.service;
 import com.bm.fmkj.base.PageQuery;
 import com.bm.fmkj.base.PageUtil;
 import com.bm.fmkj.base.Pagenation;
+import com.bm.fmkj.constant.RecyleEnum;
+import com.bm.fmkj.constant.TakeEnum;
+import com.bm.fmkj.dao.FmRecyleLogMapper;
 import com.bm.fmkj.utils.StringUtils;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +15,7 @@ import com.bm.fmkj.dao.FmRpool;
 import com.bm.fmkj.dao.FmRpoolMapper;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @Transactional
@@ -19,6 +23,9 @@ import java.util.List;
 public class FmRpoolService {
 	@Autowired
 	private FmRpoolMapper fmrpoolMapper;
+
+	@Autowired
+	private FmRecyleLogMapper fmRecyleLogMapper;
 
 	public FmRpoolMapper getFmRpoolMapper() {
 		return fmrpoolMapper;
@@ -84,7 +91,13 @@ public class FmRpoolService {
 	}
 
 
-	public void updateRecycle(FmRpool fmRpool) {
+	public void updateRecycle(FmRpool fmRpool, Double allotR) {
+		HashMap<String, Object> param = new HashMap<>();
+		param.put("recyleNum", allotR);
+		param.put("recyleType", RecyleEnum.TYPE_R.status);
+		param.put("takeType", TakeEnum.TYPE_ALLOT.status);
+		param.put("dateTime", new Date());
 		fmrpoolMapper.updateByPrimaryKey(fmRpool);
+		fmRecyleLogMapper.addCntLog(param);
 	}
 }

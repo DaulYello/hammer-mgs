@@ -1,6 +1,5 @@
 package com.bm.fmkj.job.quartz;
 
-import com.bm.fmkj.service.FmRpoolService;
 import com.bm.fmkj.service.HcAccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,11 +19,12 @@ public class RecycleTask {
 	@Autowired
 	private HcAccountService hcaccountService;
 
-	@Autowired
-	private FmRpoolService fmRpoolService;
+	public void runRecyle() {
 
-	public void runRecycle() {
+		//回收未收取的CNT到公司账户
 
+
+		//回收48小时未收取的R积分
 
 	}
 

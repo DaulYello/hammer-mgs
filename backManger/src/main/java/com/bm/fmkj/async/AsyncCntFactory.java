@@ -29,18 +29,18 @@ public class AsyncCntFactory {
      * @param oneAllotR
      * @param currentYear
      */
-    public static TimerTask excuteOnePhase(List<FmCntInfo> onePhase, Double oneAllotR) {
+    public static TimerTask excuteOnePhase(List<FmCntInfo> onePhase, Double oneAllotN, int poolId) {
         return new TimerTask() {
             @Override
             public void run() {
                 try {
                     //如果onePhase为空、则oneAllotR回收到公司CNT账户
-                    if (StringUtils.isEmpty(onePhase) && StringUtils.isNotNull(oneAllotR)){
+                    if (StringUtils.isEmpty(onePhase) && StringUtils.isNotNull(oneAllotN)){
                         //回收到公司CNT账户
-
+                        SpringContextUtil.getBean(FmCntInfoService.class).recyleToAccount(oneAllotN, poolId);
                     }else{
                         //批量平均分配给用户
-                        Double cntNum = oneAllotR / onePhase.size();
+                        Double cntNum = oneAllotN / onePhase.size();
                         for(FmCntInfo info : onePhase){
                             info.setCntNum(cntNum);
                         }
@@ -62,25 +62,23 @@ public class AsyncCntFactory {
      * @param fmRpool
      * @return
      */
-    public static TimerTask excuteTwoPhase(List<FmIntegralInfo> twoPhase, Double twoAllotR, Double oneDilutR, FmRpool fmRpool) {
+    public static TimerTask excuteTwoPhase(List<FmCntInfo> twoPhase, Double twoAllotN, Double oneDilutN, int poolId) {
         return new TimerTask() {
             @Override
             public void run() {
                 try {
+                    Double allotN = twoAllotN + oneDilutN;
                     //如果onePhase为空、则oneAllotR回收到公司CNT账户
                     if (StringUtils.isEmpty(twoPhase)){
-                        //回收到R积分回收池
-                        fmRpool.setRecycleNum(fmRpool.getRecycleNum() + twoAllotR + oneDilutR);
-                        fmRpool.setUpdatedate(new Date());
-                        SpringContextUtil.getBean(FmRpoolService.class).updateRecycle(fmRpool);
+                        //回收到公司CNT账户
+                        SpringContextUtil.getBean(FmCntInfoService.class).recyleToAccount(allotN, poolId);
                     }else{
                         //批量平均分配给用户
-                        Double allotR = twoAllotR + oneDilutR;
-                        Double integralNum = allotR / twoPhase.size();
-                        for(FmIntegralInfo info : twoPhase){
-                            info.setIntegralNum(integralNum);
+                        Double cntNum = allotN / twoPhase.size();
+                        for(FmCntInfo info : twoPhase){
+                            info.setCntNum(cntNum);
                         }
-                        SpringContextUtil.getBean(FmIntegralInfoService.class).allotRToUser(twoPhase);
+                        SpringContextUtil.getBean(FmCntInfoService.class).allotCNToUser(twoPhase);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -98,27 +96,24 @@ public class AsyncCntFactory {
      * @param fmRpool
      * @return
      */
-    public static TimerTask excuteThreePhase(List<FmIntegralInfo> threePhase, Double threeAllotR, double oneDilutR, double twoDilutR, FmRpool fmRpool) {
+    public static TimerTask excuteThreePhase(List<FmCntInfo> threePhase, Double threeAllotN, double oneDilutN, double twoDilutN, int poolId) {
 
         return new TimerTask() {
             @Override
             public void run() {
                 try {
-
+                    Double allotN = threeAllotN + oneDilutN + twoDilutN;
                     //如果onePhase为空、则oneAllotR回收到公司CNT账户
                     if (StringUtils.isEmpty(threePhase)){
-                        //回收到R积分回收池
-                        fmRpool.setRecycleNum(fmRpool.getRecycleNum() + threeAllotR + oneDilutR + twoDilutR);
-                        fmRpool.setUpdatedate(new Date());
-                        SpringContextUtil.getBean(FmRpoolService.class).updateRecycle(fmRpool);
+                        //回收到公司CNT账户
+                        SpringContextUtil.getBean(FmCntInfoService.class).recyleToAccount(allotN, poolId);
                     }else{
                         //批量平均分配给用户
-                        Double allotR = threeAllotR + oneDilutR + twoDilutR;
-                        Double integralNum = allotR / threePhase.size();
-                        for(FmIntegralInfo info : threePhase){
-                            info.setIntegralNum(integralNum);
+                        Double cntNum = allotN / threePhase.size();
+                        for(FmCntInfo info : threePhase){
+                            info.setCntNum(cntNum);
                         }
-                        SpringContextUtil.getBean(FmIntegralInfoService.class).allotRToUser(threePhase);
+                        SpringContextUtil.getBean(FmCntInfoService.class).allotCNToUser(threePhase);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -138,27 +133,24 @@ public class AsyncCntFactory {
      * @param fmRpool
      * @return
      */
-    public static TimerTask excuteFourPhase(List<FmIntegralInfo> fourPhase, Double fourAllotR, double oneDilutR, double twoDilutR, double threeDilutR, FmRpool fmRpool) {
+    public static TimerTask excuteFourPhase(List<FmCntInfo> fourPhase, Double fourAllotN, double oneDilutN, double twoDilutN, double threeDilutN, int poolId) {
 
         return new TimerTask() {
             @Override
             public void run() {
                 try {
-
+                    Double allotN = fourAllotN + oneDilutN + twoDilutN + threeDilutN;
                     //如果onePhase为空、则oneAllotR回收到公司CNT账户
                     if (StringUtils.isEmpty(fourPhase)){
-                        //回收到R积分回收池
-                        fmRpool.setRecycleNum(fmRpool.getRecycleNum() + fourAllotR + oneDilutR + twoDilutR + threeDilutR);
-                        fmRpool.setUpdatedate(new Date());
-                        SpringContextUtil.getBean(FmRpoolService.class).updateRecycle(fmRpool);
+                        //回收到公司CNT账户
+                        SpringContextUtil.getBean(FmCntInfoService.class).recyleToAccount(allotN, poolId);
                     }else{
                         //批量平均分配给用户
-                        Double allotR = fourAllotR + oneDilutR + twoDilutR + threeDilutR;
-                        Double integralNum = allotR / fourPhase.size();
-                        for(FmIntegralInfo info : fourPhase){
-                            info.setIntegralNum(integralNum);
+                        Double cntNum = allotN / fourPhase.size();
+                        for(FmCntInfo info : fourPhase){
+                            info.setCntNum(cntNum);
                         }
-                        SpringContextUtil.getBean(FmIntegralInfoService.class).allotRToUser(fourPhase);
+                        SpringContextUtil.getBean(FmCntInfoService.class).allotCNToUser(fourPhase);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -178,25 +170,23 @@ public class AsyncCntFactory {
      * @param fmRpool
      * @return
      */
-    public static TimerTask excuteFivePhase(List<FmIntegralInfo> fivePhase, Double fiveR, double oneDilutR, double twoDilutR, double threeDilutR, Double fourDilutR, FmRpool fmRpool) {
+    public static TimerTask excuteFivePhase(List<FmCntInfo> fivePhase, Double fiveN, double oneDilutN, double twoDilutN, double threeDilutN, Double fourDilutN, int poolId) {
         return new TimerTask() {
             @Override
             public void run() {
                 try {
+                    Double allotN = fiveN + oneDilutN + twoDilutN + threeDilutN + fourDilutN;
                     //如果onePhase为空、则oneAllotR回收到公司CNT账户
                     if (StringUtils.isEmpty(fivePhase)){
-                        //回收到R积分回收池
-                        fmRpool.setRecycleNum(fmRpool.getRecycleNum() + fiveR + oneDilutR + twoDilutR + threeDilutR + fourDilutR);
-                        fmRpool.setUpdatedate(new Date());
-                        SpringContextUtil.getBean(FmRpoolService.class).updateRecycle(fmRpool);
+                        //回收到公司CNT账户
+                        SpringContextUtil.getBean(FmCntInfoService.class).recyleToAccount(allotN, poolId);
                     }else{
                         //批量平均分配给用户
-                        Double allotR = fiveR + oneDilutR + twoDilutR + threeDilutR;
-                        Double integralNum = allotR / fivePhase.size();
-                        for(FmIntegralInfo info : fivePhase){
-                            info.setIntegralNum(integralNum);
+                        Double cntNum = allotN / fivePhase.size();
+                        for(FmCntInfo info : fivePhase){
+                            info.setCntNum(cntNum);
                         }
-                        SpringContextUtil.getBean(FmIntegralInfoService.class).allotRToUser(fivePhase);
+                        SpringContextUtil.getBean(FmCntInfoService.class).allotCNToUser(fivePhase);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();

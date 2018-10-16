@@ -15,6 +15,6 @@
 
 
   <select id="queryCntPool" resultType="com.bm.fmkj.dao.FmCntPool">
-      SELECT * FROM fm_cnt_pool WHERE TO_DAYS(create_date) = TO_DAYS(NOW());
+      SELECT id, cnt_pool as cntPool, create_date as createDate FROM fm_cnt_pool WHERE TO_DAYS(create_date) = TO_DAYS(NOW());
   </select>
 </mapper>

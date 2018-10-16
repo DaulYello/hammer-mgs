@@ -26,6 +26,21 @@
     </foreach >
   </insert>
 
+  <update id="recyleToAccount" parameterType="java.lang.Double">
+      UPDATE
+        hc_account h
+      SET
+        h.cnt = h.cnt + #{recyleNum}
+      WHERE h.id = 14
+  </update>
+
+  <update id="updateFmCnt" parameterType="java.util.HashMap">
+      UPDATE
+        fm_cnt_pool f
+      SET
+        f.cnt_recyle = f.cnt_recyle + #{recyleNum}, f.update_date = #{dateTime}
+      WHERE f.id = #{poolId}
+  </update>
 
 </mapper>
 
