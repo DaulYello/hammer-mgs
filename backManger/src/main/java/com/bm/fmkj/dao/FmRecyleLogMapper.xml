@@ -11,21 +11,25 @@
     <result column="take_date" jdbcType="TIMESTAMP" property="takeDate" />
     <result column="take_type" jdbcType="TINYINT" property="takeType" />
     <result column="recyle_type" jdbcType="TINYINT" property="recyleType" />
+    <result column="take_msg" jdbcType="VARCHAR" property="takeMsg" />
+    <result column="friend_id" jdbcType="VARCHAR" property="friendId" />
   </resultMap>
 
   <insert id="addRecyletLog" parameterType="java.util.HashMap">
-    INSERT INTO fm_recyle_log(uid, take_num, take_date, take_type, recyle_type) VALUES(#{uid}, #{recyleNum}, #{dateTime}, #{takeType}, #{recyleType})
+    INSERT INTO fm_recyle_log(uid, take_num, take_date, take_type, recyle_type, take_msg, friend_id) VALUES(#{uid}, #{recyleNum}, #{dateTime}, #{takeType}, #{recyleType}, #{takeMsg}, #{friendId})
   </insert>
 
   <insert id="batchAddRecyleLog" parameterType="java.util.List">
-        INSERT INTO fm_recyle_log(uid, take_num, take_date, take_type, recyle_type) VALUES
+        INSERT INTO fm_recyle_log(uid, take_num, take_date, take_type, recyle_type, take_msg, friend_id) VALUES
         <foreach collection ="list" item="fmRecyleLog" index= "index" separator =",">
           (
             #{fmRecyleLog.uid},
             #{fmRecyleLog.takeNum},
             #{fmRecyleLog.takeDate},
             #{fmRecyleLog.takeType},
-            #{fmRecyleLog.recyleType}
+            #{fmRecyleLog.recyleType},
+            #{fmRecyleLog.takeMsg},
+            #{fmRecyleLog.friendId}
           )
         </foreach >
   </insert>

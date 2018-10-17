@@ -22,6 +22,12 @@ public class FmRecyleLog {
     @Column(name = "take_num")
     private Double takeNum;
 
+    @Column(name = "friend_id")
+    private Integer friendId;
+
+    @Column(name = "take_msg")
+    private String takeMsg;
+
     /**
      * 收取\回收时间
      */
@@ -39,6 +45,22 @@ public class FmRecyleLog {
      */
     @Column(name = "recyle_type")
     private Integer recyleType;
+
+    public Integer getFriendId() {
+        return friendId;
+    }
+
+    public void setFriendId(Integer friendId) {
+        this.friendId = friendId;
+    }
+
+    public String getTakeMsg() {
+        return takeMsg;
+    }
+
+    public void setTakeMsg(String takeMsg) {
+        this.takeMsg = takeMsg;
+    }
 
     /**
      * 获取主键

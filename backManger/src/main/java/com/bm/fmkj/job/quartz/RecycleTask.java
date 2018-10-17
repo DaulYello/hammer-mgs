@@ -34,7 +34,7 @@ public class RecycleTask {
 		AsyncManager.me().execute(AsyncRecyleFactory.recyleCNT(uid));
 
 		//2、回收48小时未收取的R积分
-		AsyncManager.me().execute(AsyncRecyleFactory.recyleR());
+		AsyncManager.me().execute(AsyncRecyleFactory.recyleR(uid));
 
 
 	}

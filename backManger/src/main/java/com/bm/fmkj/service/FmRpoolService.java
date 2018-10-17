@@ -99,6 +99,8 @@ public class FmRpoolService {
 		param.put("takeType", TakeEnum.TYPE_ALLOT.status);
 		param.put("dateTime", new Date());
 		param.put("uid", uid);
+		param.put("friendId", uid);
+		param.put("takeMsg", "系统回收了" + allotR + "R积分到积分池");
 		fmrpoolMapper.updateByPrimaryKey(fmRpool);
 		fmRecyleLogMapper.addRecyletLog(param);
 	}

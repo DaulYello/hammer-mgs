@@ -39,6 +39,8 @@ public class FmCntInfoService {
 		param.put("takeType", TakeEnum.TYPE_ALLOT.status);
 		param.put("dateTime", new Date());
 		param.put("uid", uid);
+		param.put("friendId", uid);
+		param.put("takeMsg", "回收了" + recyleNum + "CNT到公司账户");
 		fmcntinfoMapper.updateFmCnt(param);
 		fmcntinfoMapper.recyleToAccount(param);
 		fmRecyleLogMapper.addRecyletLog(param);

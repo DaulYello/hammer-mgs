@@ -41,11 +41,13 @@ public class AsyncRecyleFactory {
                     List<FmRecyleLog> recyleLogs = new ArrayList<>();
                     for(FmCntInfo info : fmCntInfoList){
                         FmRecyleLog recyleLog = new FmRecyleLog();
-                        recyleLog.setUid(info.getUid());
+                        recyleLog.setUid(uid);
+                        recyleLog.setFriendId(info.getUid());
                         recyleLog.setTakeNum(info.getCntNum());
                         recyleLog.setTakeDate(new Date());
                         recyleLog.setTakeType(TakeEnum.TYPE_TASK.status);
                         recyleLog.setRecyleType(RecyleEnum.TYPE_CNT.status);
+                        recyleLog.setTakeMsg("回收了" + info.getCntNum() + "CNT到公司账户");
                         recyleLogs.add(recyleLog);
                         totalNum = totalNum + info.getCntNum();
                     }
@@ -57,7 +59,7 @@ public class AsyncRecyleFactory {
         };
     }
 
-    public static TimerTask recyleR() {
+    public static TimerTask recyleR(int uid) {
         return new TimerTask() {
             @Override
             public void run() {
@@ -72,11 +74,13 @@ public class AsyncRecyleFactory {
                     List<FmRecyleLog> recyleLogs = new ArrayList<>();
                     for(FmIntegralInfo info : integralInfoList){
                         FmRecyleLog recyleLog = new FmRecyleLog();
-                        recyleLog.setUid(info.getUid());
+                        recyleLog.setUid(uid);
+                        recyleLog.setFriendId(info.getUid());
                         recyleLog.setTakeNum(info.getIntegralNum());
                         recyleLog.setTakeDate(new Date());
                         recyleLog.setTakeType(TakeEnum.TYPE_TASK.status);
                         recyleLog.setRecyleType(RecyleEnum.TYPE_R.status);
+                        recyleLog.setTakeMsg("系统回收了" + totalNum + "R积分到积分池");
                         recyleLogs.add(recyleLog);
                         totalNum = totalNum + info.getIntegralNum();
                     }
