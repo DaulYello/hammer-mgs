@@ -41,7 +41,7 @@ public class CntTask {
 		}
 		int uid = Integer.parseInt(param);
 		FmCntPool fmCntPool = fmCntPoolService.queryCntPool();
-		if(fmCntPool.getCntPool() == null || fmCntPool.getCntPool() <= 0){
+		if(fmCntPool == null || fmCntPool.getCntPool() <= 0){
 			LOGGER.info("资金池没有可释放的CNT");
             return;
 		}

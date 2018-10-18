@@ -42,7 +42,7 @@ public class RIntegralTask {
 		int uid = Integer.parseInt(param);
 		int currentYear = DateUtil.getSysYear();
 		FmRpool fmRpool  = fmRpoolService.queryRpoolByYear(currentYear);
-		if (StringUtils.isNull(fmRpool.getRintegralNum()) || fmRpool.getRintegralNum() <= 0)
+		if (fmRpool == null || fmRpool.getRintegralNum() <= 0)
 			return;
 		//得到每天释放多少R积分
 		Double dayRinteg = fmRpool.getRintegralNum() / 365;
