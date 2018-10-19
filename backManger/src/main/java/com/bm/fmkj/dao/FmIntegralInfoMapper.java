@@ -11,4 +11,5 @@ public interface FmIntegralInfoMapper extends Mapper<FmIntegralInfo> {
 
     List<FmIntegralInfo> queryRBefore();
 
+    List queryLastInvitRank();
 }
