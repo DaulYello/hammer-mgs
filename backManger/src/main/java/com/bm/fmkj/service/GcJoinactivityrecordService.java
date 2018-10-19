@@ -1,6 +1,7 @@
 package com.bm.fmkj.service;
 
 import com.bm.fmkj.base.BaseResult;
+import com.bm.fmkj.constant.TakeEnum;
 import com.bm.fmkj.controller.GcActivityController;
 import com.bm.fmkj.dao.*;
 import org.slf4j.Logger;
@@ -62,26 +63,28 @@ public class GcJoinactivityrecordService {
 		LOGGER.debug("给参与互动的用户发放R积分");
 		List<FmRecyleLog> recyleLogs = new ArrayList<>();
 		for(GcJoinactivityrecord joinactivityrecord : joinactivityrecords){
-			HcAccount hcAccount = accountMapper.selectByPrimaryKey(joinactivityrecord.getUid());
-			LOGGER.debug("发积分之前用户的R积分R="+hcAccount.getMyP());
-			hcAccount.setId(joinactivityrecord.getUid());
-			hcAccount.setMyP(hcAccount.getMyP()+activity.getPar());
-			LOGGER.debug("应发积分R="+activity.getPar());
-			LOGGER.debug("发完积分后用户的总积分R="+hcAccount.getPassword());
-			boolean result = result = accountMapper.updateByPrimaryKeySelective(hcAccount) > 0 ? true : false;
-			if(result){
-				map.put("status",false);
-				map.put("message","更新用户的积分时报错,用户的id="+joinactivityrecord.getUid());
-				return map;
+			if(joinactivityrecord.getUid() != activity.getGetid()){
+				HcAccount hcAccount = accountMapper.selectByPrimaryKey(joinactivityrecord.getUid());
+				LOGGER.debug("发积分之前用户的R积分R="+hcAccount.getMyP());
+				hcAccount.setId(joinactivityrecord.getUid());
+				hcAccount.setMyP(hcAccount.getMyP()+activity.getPar());
+				LOGGER.debug("应发积分R="+activity.getPar());
+				LOGGER.debug("发完积分后用户的总积分R="+hcAccount.getPassword());
+				boolean result = result = accountMapper.updateByPrimaryKeySelective(hcAccount) > 0 ? true : false;
+				if(result){
+					map.put("status",false);
+					map.put("message","更新用户的积分时报错,用户的id="+joinactivityrecord.getUid());
+					return map;
+				}
+				LOGGER.debug("记录用户反回的R积分，用户id="+hcAccount.getId());
+				FmRecyleLog recyleLog = new FmRecyleLog();
+				recyleLog.setUid(hcAccount.getId());
+				recyleLog.setRecyleType(2);
+				recyleLog.setTakeDate(new Date());
+				recyleLog.setTakeNum(activity.getPar());
+				recyleLog.setTakeType(TakeEnum.USER_GET.status);
+				recyleLogs.add(recyleLog);
 			}
-			LOGGER.debug("记录用户反回的R积分，用户id="+hcAccount.getId());
-			FmRecyleLog recyleLog = new FmRecyleLog();
-			recyleLog.setUid(hcAccount.getId());
-			recyleLog.setRecyleType(2);
-			recyleLog.setTakeDate(new Date());
-			recyleLog.setTakeNum(activity.getPar());
-			recyleLog.setTakeType(0);
-			recyleLogs.add(recyleLog);
 		}
 		fmRecyleLogMapper.batchAddRecyleLog(recyleLogs);
 		map.put("status",true);

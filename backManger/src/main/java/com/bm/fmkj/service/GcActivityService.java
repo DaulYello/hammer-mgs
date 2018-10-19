@@ -3,6 +3,7 @@ package com.bm.fmkj.service;
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
 import javax.naming.NamingException;
 import javax.net.ssl.ExtendedSSLSession;
 
+import com.bm.fmkj.constant.TakeEnum;
 import com.bm.fmkj.dao.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +48,8 @@ public class GcActivityService {
 	private GcJoinactivityrecordMapper joinactivityrecordMapper;
 	@Autowired
 	private HcAccountMapper hcAccountMapper;
+	@Autowired
+	private FmRecyleLogMapper fmRecyleLogMapper;
 
 	private Logger log= LoggerFactory.getLogger(GcActivityController.class);
 
@@ -293,10 +297,11 @@ public class GcActivityService {
 				List<GcJoinactivityrecord> joinactivityrecords = joinactivityrecordMapper.select(joinactivityrecord);
 				if(joinactivityrecords.size()==0){
 					map.put("status",false);
-					map.put("message","查询活动参与记录为0,该活动还没有人参见,活动aid="+Integer.parseInt(ids[i]));
+					map.put("message","查询活动参与记录为0,该活动还没有人参与,活动aid="+Integer.parseInt(ids[i]));
 					return map;
 				}
 				log.debug("给参与活动的用户发放R积分");
+				List<FmRecyleLog> recyleLogs = new ArrayList<>();
 				for(GcJoinactivityrecord gcJoinactivityrecord : joinactivityrecords){
 					HcAccount account = hcAccountMapper.selectByPrimaryKey(gcJoinactivityrecord.getUid());
 					double cnt = 0.0;
@@ -311,7 +316,16 @@ public class GcActivityService {
 						map.put("message","更新参与活动的用户R积分报错，用户id="+gcJoinactivityrecord.getUid());
 						return map;
 					}
+					log.debug("记录用户反回的R积分，用户id="+account.getId());
+					FmRecyleLog recyleLog = new FmRecyleLog();
+					recyleLog.setUid(account.getId());
+					recyleLog.setRecyleType(2);
+					recyleLog.setTakeDate(new Date());
+					recyleLog.setTakeNum(activity.getPar());
+					recyleLog.setTakeType(TakeEnum.USER_GET.status);
+					recyleLogs.add(recyleLog);
 				}
+				fmRecyleLogMapper.batchAddRecyleLog(recyleLogs);
 				activity.setId(Integer.parseInt(ids[i]));
 				log.debug("将活动设为失败状态5");
 				activity.setStatus(5);
