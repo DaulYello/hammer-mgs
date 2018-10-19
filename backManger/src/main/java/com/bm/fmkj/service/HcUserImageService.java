@@ -77,7 +77,7 @@ public class HcUserImageService {
                 map.put("message","用户实认证审核通过！");
                 return map;
 			}else{
-                userImage.setStatus(2);
+                userImage.setStatus(-1);
                 boolean resutl = hcUserImageMapper.updateByPrimaryKeySelective(userImage)>0?true:false;
                 if(!resutl){
                     map.put("status",false);
