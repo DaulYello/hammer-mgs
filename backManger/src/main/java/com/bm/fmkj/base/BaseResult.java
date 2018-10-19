@@ -31,6 +31,8 @@ public class BaseResult<T> implements Serializable {
 	 */
 	public T data;
 
+
+
 	@Override
 	public String toString() {
 		return "BaseResult{" + "status=" + status + ", message='" + message + '\'' + ", data=" + data + '}';
@@ -64,7 +66,6 @@ public class BaseResult<T> implements Serializable {
 		this(baseResultEnum.getStatus(), baseResultEnum.getMsg(), data);
 
 	}
-
 	// 反序列化
 	@JsonCreator
 	public BaseResult(@JsonProperty(value = "status", required = true) int status,
@@ -73,9 +74,7 @@ public class BaseResult<T> implements Serializable {
 
 		this.status = status;
 		this.message = message;
-		if (status == BaseResultEnum.SUCCESS.status) {
-			this.data = data;
-		}
+		this.data = data;
 	}
 
 }

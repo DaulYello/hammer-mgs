@@ -35,7 +35,7 @@ public class FmRecyleLog {
     private Date takeDate;
 
     /**
-     * 收取类型:0、用户收取;1、定时任务回收;2、释放CNT时没有用户回收
+     * 收取类型:-1、参加活动扣掉的CNT ;0、用户收取;1、定时任务回收;2、释放CNT时没有用户回收 3、
      */
     @Column(name = "take_type")
     private Integer takeType;

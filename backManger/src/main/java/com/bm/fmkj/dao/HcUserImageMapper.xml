@@ -37,6 +37,7 @@
         <result column="alipay_photo" jdbcType="VARCHAR" property="alipayPhoto" />
         <result column="wechat_account" jdbcType="VARCHAR" property="wechatAccount" />
         <result column="wechat_photo" jdbcType="VARCHAR" property="wechatPhoto" />
+        <result column="status" jdbcType="INTEGER" property="status" />
         <result column="cardStatus" jdbcType="INTEGER" property="cardStatus" />
         <result column="time" jdbcType="TIMESTAMP" property="time" />
     </resultMap>
@@ -45,10 +46,9 @@
   	select hu.id,hu.uid,ha.name as name,ha.nickname as nickname,ha.cardnum as cardnum,ha.telephone as telephone,hu.url,
   	concat('/',substring_index(hu.url,'\\',-1),'/',hu.full_photo) as full_photo,
   	concat('/',substring_index(hu.url,'\\',-1),'/',hu.reverse_photo) as reverse_photo,
-  	hu.alipay_account,
-  	concat('/',substring_index(hu.url,'\\',-1),'/',hu.alipay_photo) as alipay_photo,
-  	hu.wechat_account,
-  	concat('/',substring_index(hu.url,'\\',-1),'/',hu.wechat_photo) as wechat_photo,
+  	hu.alipay_account,hu.alipay_photo,
+  	hu.wechat_account,hu.wechat_photo,
+  	hu.status,
   	ha.card_status as cardStatus,hu.time from hc_userimage as hu left join hc_account as ha on hu.uid = ha.id
   </sql>
     <select id="getUserRealInfo" parameterType="java.util.HashMap" resultMap="ResultMapInfo">

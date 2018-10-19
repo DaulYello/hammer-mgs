@@ -86,7 +86,9 @@
                     publishNotice(this.content,this.title).then(data=>{
                         if (data.status==200){
                             this.$Message.success("发布成功！");
+                            console.log("xxxxxxxx:"+name);
                             this.$router.push({name: 'noticeSys'});
+                            console.log("xxxxxxxx:"+{name: 'noticeSys'});
                             this.closePage('addNotice');
                         }else {
                             this.$Message.error(data.message);

@@ -3,7 +3,7 @@ import {
   getParams
 } from 'utils/params';
 
-//获取门票信息分页
+//分页查询活动
 export function queryActivityPage(pageNo,pageSize,status, query) {
   const data = {
     pageNo,

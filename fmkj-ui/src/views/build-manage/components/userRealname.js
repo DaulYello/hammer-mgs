@@ -29,10 +29,10 @@ export function getUserRealInfo(pageNo,pageSize,query){
  @author  huangshuang
  @created 2018-09-26
 */
-export function identityCardAudit(id,status){
+export function identityCardAudit(id,flag){
     const data = {
         id,
-        status
+        flag
     }
     return fetch({
         url:'/backManger/fmkj/HcUserImage/approveUserRealInfo'+getParams(data),

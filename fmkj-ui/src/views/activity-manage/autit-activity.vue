@@ -102,48 +102,10 @@ export default {
                     editable: true
                 },
                 {
-                    title: '门票类型',
-                    align: 'center',
-                    key: 'typeid',
-                    render: (h, params) => {
-                        const row = params.row;
-                        const text = row.typeid === 1 ? 'A类型' : row.typeid === 2 ? 'B类型' : 'C类型';
-                        return h('span',text);
-                    }
-                },
-                {
                     title: '保证金',
                     align: 'center',
                     key: 'bond',
                     editable: true
-                },
-                {
-                    title: '活动状态',
-                    align: 'center',
-                    key: 'status',
-                    render: (h, params) => {
-                        let text = '';
-                        if (params.row.status === 0) {
-                            text = '未开始'
-                        } else if (params.row.status === 1) {
-                            text = '已上线'
-                        } else if (params.row.status === 2) {
-                            text = '已下线'
-                        } else if (params.row.status === 3) {
-                            text = '审核不通过'
-                        } else if (params.row.status === 4) {
-                            text = '待参与'
-                        } else if (params.row.status === 5) {
-                            text = '待竞锤'
-                        } else if (params.row.status === 6) {
-                            text = '待公布'
-                        } else if (params.row.status === 7) {
-                            text = '竞锤成功'
-                        } else {
-                            text = 'No Identify !'
-                        }
-                        return h('span',text);
-                    }
                 },
                 {
                     title: '活动类型',
@@ -172,7 +134,7 @@ export default {
                 {
                     title: '图片查看',
                     align: 'center',
-                    key: 'picture',
+                    key: 'imageurl',
                     render:(h,params)=>{
                         return h('div',[
                             h('Button',{
@@ -185,7 +147,7 @@ export default {
                                 },
                                 on: {
                                     click: () => {
-                                        this.picturePath=params.row.picture;
+                                        this.picturePath=params.row.imageurl;
                                         this.showDialog = true;
                                     }
                                 }
@@ -193,13 +155,27 @@ export default {
                         ])
                     }
                 },
-                {
-                    title: '审核状态',
+                {//活动(竟锤)的状态 0:待审核  1:驳回 2:活动中 3：已结束 4：活动异常 5：活动失败
+                    title: '活动状态',
                     align: 'center',
-                    key: 'ispass',
+                    key: 'status',
                     render: (h, params) => {
-                        const row = params.row;
-                        const text = row.ispass === 1 ? '已通过' : row.ispass === 2 ? '未通过' : '未审核';
+                        let text = '';
+                        if (params.row.status === 0) {
+                            text = '未审核'
+                        } else if (params.row.status === 1) {
+                            text = '驳回审核'
+                        } else if (params.row.status === 2) {
+                            text = '正在进行'
+                        } else if (params.row.status === 3) {
+                            text = '活动结束'
+                        } else if (params.row.status === 4) {
+                            text = '活动下线'
+                        } else if (params.row.status === 5) {
+                            text = '活动失败'
+                        } else {
+                            text = 'No Identify !'
+                        }
                         return h('span',text);
                     }
                 },

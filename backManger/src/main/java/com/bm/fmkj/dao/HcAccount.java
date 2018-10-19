@@ -57,13 +57,10 @@ public class HcAccount {
     private Double myP;
 
     /**
-     * 用户的积分，积分越高等级就越高
+     * 用户的积分，积分越高等级（rid）就越高
      */
     private Integer score;
 
-    /**
-     * 等级
-     */
     @Column(name = "grade_id")
     private Integer gradeId;
 
@@ -74,20 +71,19 @@ public class HcAccount {
     private Integer cardStatus;
 
     /**
-     * 是否是原住民(1:是   0:不是)
+     * 是否原住民(0:不是  1:是)
      */
     private Integer isboong;
 
     /**
-     * 锤多宝id号
+     * 锤多宝id
      */
     private Long cdbid;
 
-    /**
-     * 实名认证的审核消息
-     */
     @Column(name = "realnam_info")
     private String realnamInfo;
+
+    private Double cnt;
 
     /**
      * @return id
@@ -324,36 +320,32 @@ public class HcAccount {
     }
 
     /**
-     * 获取用户的积分，积分越高等级就越高
+     * 获取用户的积分，积分越高等级（rid）就越高
      *
-     * @return score - 用户的积分，积分越高等级就越高
+     * @return score - 用户的积分，积分越高等级（rid）就越高
      */
     public Integer getScore() {
         return score;
     }
 
     /**
-     * 设置用户的积分，积分越高等级就越高
+     * 设置用户的积分，积分越高等级（rid）就越高
      *
-     * @param score 用户的积分，积分越高等级就越高
+     * @param score 用户的积分，积分越高等级（rid）就越高
      */
     public void setScore(Integer score) {
         this.score = score;
     }
 
     /**
-     * 获取等级
-     *
-     * @return grade_id - 等级
+     * @return grade_id
      */
     public Integer getGradeId() {
         return gradeId;
     }
 
     /**
-     * 设置等级
-     *
-     * @param gradeId 等级
+     * @param gradeId
      */
     public void setGradeId(Integer gradeId) {
         this.gradeId = gradeId;
@@ -378,56 +370,66 @@ public class HcAccount {
     }
 
     /**
-     * 获取是否是原住民(1:是   0:不是)
+     * 获取是否原住民(0:不是  1:是)
      *
-     * @return isboong - 是否是原住民(1:是   0:不是)
+     * @return isboong - 是否原住民(0:不是  1:是)
      */
     public Integer getIsboong() {
         return isboong;
     }
 
     /**
-     * 设置是否是原住民(1:是   0:不是)
+     * 设置是否原住民(0:不是  1:是)
      *
-     * @param isboong 是否是原住民(1:是   0:不是)
+     * @param isboong 是否原住民(0:不是  1:是)
      */
     public void setIsboong(Integer isboong) {
         this.isboong = isboong;
     }
 
     /**
-     * 获取锤多宝id号
+     * 获取锤多宝id
      *
-     * @return cdbid - 锤多宝id号
+     * @return cdbid - 锤多宝id
      */
     public Long getCdbid() {
         return cdbid;
     }
 
     /**
-     * 设置锤多宝id号
+     * 设置锤多宝id
      *
-     * @param cdbid 锤多宝id号
+     * @param cdbid 锤多宝id
      */
     public void setCdbid(Long cdbid) {
         this.cdbid = cdbid;
     }
 
     /**
-     * 获取实名认证的审核消息
-     *
-     * @return realnam_info - 实名认证的审核消息
+     * @return realnam_info
      */
     public String getRealnamInfo() {
         return realnamInfo;
     }
 
     /**
-     * 设置实名认证的审核消息
-     *
-     * @param realnamInfo 实名认证的审核消息
+     * @param realnamInfo
      */
     public void setRealnamInfo(String realnamInfo) {
         this.realnamInfo = realnamInfo;
+    }
+
+    /**
+     * @return cnt
+     */
+    public Double getCnt() {
+        return cnt;
+    }
+
+    /**
+     * @param cnt
+     */
+    public void setCnt(Double cnt) {
+        this.cnt = cnt;
     }
 }

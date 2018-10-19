@@ -34,6 +34,7 @@
     import {formatDateByLong} from 'utils/time';
     import {getUserRealInfo,identityCardAudit,identityCardRefuse} from "./components/userRealname";
     const url = window.location.origin;
+    const payImages = "/payImages/";
 
     export default {
         name: "user-realname",
@@ -146,7 +147,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.picturePath=url+params.row.alipayAccount;
+                                            this.picturePath=url+payImages+params.row.alipayPhoto;
                                             this.showDialog = true;
                                         }
                                     }
@@ -176,7 +177,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.picturePath=url+params.row.wechatPhoto;
+                                            this.picturePath=url+payImages+params.row.wechatPhoto;
                                             this.showDialog = true;
                                         }
                                     }
@@ -197,7 +198,11 @@
                         title: '审核状态',
                         align: 'center',
                         key: 'status',
-                        editable: true
+                        render:(h,params)=>{
+                            const status = params.row.status;
+                            const text = status === 1 ? '审核通过' : '未审核';
+                            return h('span',text);
+                        }
                     },
                     {
                         title: '操作',
@@ -221,16 +226,23 @@
                                                 content: '确定执行审核操作吗?',
                                                 width: 400,
                                                 onOk: () => {
-                                                    identityCardAudit (params.row.id,1).then(data => {
-                                                        if (data.status === 200) {
-                                                            this.$Message.success('审核成功');
-                                                            this.getData(this.page, this.tabIndex);
-                                                        } else {
-                                                            this.$Message.error(data.message);
-                                                        }
-                                                    }).catch(error => {
-                                                        this.$Message.error('审核出现异常：' + error);
-                                                    });
+                                                    if(params.row.status == 0){
+                                                        identityCardAudit (params.row.id,1).then(data => {
+                                                            if (data.status === 200) {
+                                                                this.$Message.success(data.data.message);
+                                                                this.getData(this.page, this.tabIndex);
+                                                            } else {
+                                                                this.$Message.error(data.data.message);
+                                                            }
+                                                        }).catch(error => {
+                                                            this.$Message.error('审核出现异常：' + error);
+                                                        });
+                                                    }else if(params.row.status == 1){
+                                                        return this.$Message.success('已经通过审核了，无需再审核！');
+                                                    }else{
+                                                        return this.$Message.success('已经被驳回，不能再审核了！');
+                                                    }
+
                                                 },
                                                 onCancel: () => {
                                                 }
@@ -250,16 +262,22 @@
                                                 content: '确定执行驳回操作吗?',
                                                 width: 400,
                                                 onOk: () => {
-                                                    identityCardAudit(params.row.id,2).then(data => {
-                                                        if (data.status === 200) {
-                                                            this.$Message.success('驳回成功');
-                                                            this.getData(this.page, this.tabIndex);
-                                                        } else {
-                                                            this.$Message.error(data.message);
-                                                        }
-                                                    }).catch(error => {
-                                                        this.$Message.error('驳回出现异常：' + error);
-                                                    });
+                                                    if(params.row.status == 0){
+                                                        identityCardAudit(params.row.id,2).then(data => {
+                                                            if (data.status === 200) {
+                                                                this.$Message.success(data.data.message);
+                                                                this.getData(this.page, this.tabIndex);
+                                                            } else {
+                                                                this.$Message.error(data.data.message);
+                                                            }
+                                                        }).catch(error => {
+                                                            this.$Message.error('驳回出现异常：' + error);
+                                                        });
+                                                    }else if(params.row.status == 2){
+                                                        return this.$Message.success('已驳回，无需再驳回！');
+                                                    }else{
+                                                        return this.$Message.success('已经审核，不能再驳回！');
+                                                    }
                                                 },
                                                 onCancel: () => {
                                                 }

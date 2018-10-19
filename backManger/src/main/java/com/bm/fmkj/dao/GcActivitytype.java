@@ -20,10 +20,6 @@ public class GcActivitytype {
      */
     private Integer days;
 
-    /**
-     * 参与用户最小数(阀值)
-     */
-    private Integer minnum;
 
     /**
      * @return Id
@@ -73,23 +69,5 @@ public class GcActivitytype {
      */
     public void setDays(Integer days) {
         this.days = days;
-    }
-
-    /**
-     * 获取参与用户最小数(阀值)
-     *
-     * @return minnum - 参与用户最小数(阀值)
-     */
-    public Integer getMinnum() {
-        return minnum;
-    }
-
-    /**
-     * 设置参与用户最小数(阀值)
-     *
-     * @param minnum 参与用户最小数(阀值)
-     */
-    public void setMinnum(Integer minnum) {
-        this.minnum = minnum;
     }
 }

@@ -15,7 +15,7 @@
                     </Row>
                     <Row class="margin-top-10">
                         <span @click="cancelActivity"><Button type="primary" icon="android-compass">取消活动</Button></span>
-                        <span @click="endActivity"><Button type="error" icon="android-exit">结束活动</Button></span>
+                        <!--<span @click="endActivity"><Button type="error" icon="android-exit">结束活动</Button></span>-->
                     </Row>
                     <div class="margin-top-10">
                         <Table :loading="loading"  @on-selection-change="handleSelectionChange" @on-select-all="handleSelectionChange" @on-select="handleSelectionChange"  refs="multipleTable" :data="pageData" :columns="columns"></Table>
@@ -23,7 +23,13 @@
                     <Page  style="text-align:center;margin-top:20px" @on-change="getDataPage" :total="pageInfo.total" :page-size="size" :current="pageInfo.pageNo" size="small" show-elevator show-total></Page>
                 </Card>
             </Col>
-
+            <Modal v-model="showDialog" title="阅读图片" ok-text="取消" cancel-text="" :loading="loading" @on-cancel="onCancel">
+                <Form ref="tiketForm" :label-width="120">
+                    <div>
+                        <img width="100" :src="picturePath"  />
+                    </div>
+                </Form>
+            </Modal>
         </Row>
     </div>
 </template>
@@ -51,6 +57,7 @@ export default {
     },
     data () {
         return {
+            showDialog:false,
             loading:true,
             page: 1,
             size: 20,
@@ -60,6 +67,7 @@ export default {
             query:{},
             tabIndex: 0,
             tabStatus: 1,
+            picturePath:'',
             columns: [
                 {
                     title: '序号',
@@ -94,48 +102,10 @@ export default {
                     editable: true
                 },
                 {
-                    title: '门票类型',
-                    align: 'center',
-                    key: 'typeid',
-                    render: (h, params) => {
-                        const row = params.row;
-                        const text = row.typeid === 1 ? 'A类型' : row.typeid === 2 ? 'B类型' : 'C类型';
-                        return h('span',text);
-                    }
-                },
-                {
                     title: '保证金',
                     align: 'center',
                     key: 'bond',
                     editable: true
-                },
-                {
-                    title: '活动状态',
-                    align: 'center',
-                    key: 'status',
-                    render: (h, params) => {
-                        let text = '';
-                        if (params.row.status === 0) {
-                            text = '未开始'
-                        } else if (params.row.status === 1) {
-                            text = '已上线'
-                        } else if (params.row.status === 2) {
-                            text = '已下线'
-                        } else if (params.row.status === 3) {
-                            text = '审核不通过'
-                        } else if (params.row.status === 4) {
-                            text = '待参与'
-                        } else if (params.row.status === 5) {
-                            text = '待竞锤'
-                        } else if (params.row.status === 6) {
-                            text = '待公布'
-                        } else if (params.row.status === 7) {
-                            text = '竞锤成功'
-                        } else {
-                            text = 'No Identify !'
-                        }
-                        return h('span',text);
-                    }
                 },
                 {
                     title: '活动类型',
@@ -164,16 +134,48 @@ export default {
                 {
                     title: '图片查看',
                     align: 'center',
-                    key: 'picture',
-                    editable: true
+                    key: 'imageurl',
+                    render:(h,params)=>{
+                        return h('div',[
+                            h('Button',{
+                                props:{
+                                    type: 'primary',
+                                    size:'small'
+                                },
+                                style: {
+                                    marginRight: '5px'
+                                },
+                                on: {
+                                    click: () => {
+                                        this.picturePath=params.row.imageurl;
+                                        this.showDialog = true;
+                                    }
+                                }
+                            },"阅览")
+                        ])
+                    }
                 },
-                {
-                    title: '审核状态',
+                {//活动(竟锤)的状态 0:待审核  1:驳回 2:活动中 3：已结束 4：活动异常 5：活动失败
+                    title: '活动状态',
                     align: 'center',
-                    key: 'ispass',
+                    key: 'status',
                     render: (h, params) => {
-                        const row = params.row;
-                        const text = row.ispass === 1 ? '已通过' : row.ispass === 2 ? '未通过' : '未审核';
+                        let text = '';
+                        if (params.row.status === 0) {
+                            text = '未审核'
+                        } else if (params.row.status === 1) {
+                            text = '驳回审核'
+                        } else if (params.row.status === 2) {
+                            text = '正在进行'
+                        } else if (params.row.status === 3) {
+                            text = '活动结束'
+                        } else if (params.row.status === 4) {
+                            text = '活动下线'
+                        } else if (params.row.status === 5) {
+                            text = '活动失败'
+                        } else {
+                            text = 'No Identify !'
+                        }
                         return h('span',text);
                     }
                 },
@@ -184,8 +186,8 @@ export default {
                     key: 'handle',
                     render: (h, params) => {
                         let text = '';
-                        if (params.row.status === 4 || params.row.status === 5 || params.row.status === 6){
-                            text = params.row.status === 4 ? '进入参与状态' : params.row.status === 5 ? '进入竞锤状态' : '获取优胜者'
+                        if (params.row.status === 3){
+                            text = '竟锤'
                         } else {
                             return
                         }
@@ -199,15 +201,15 @@ export default {
                                     click: () => {
                                         this.$Modal.confirm({
                                             title: '提示',
-                                            content: params.row.status === 4 ? '确定进入参与状态吗?' : params.row.status === 5 ? '确定进入竞锤状态吗?' : '确定获取优胜者吗?',
+                                            content: '确定要竟锤操作吗?',
                                             width: 400,
                                             onOk: () => {
                                                 excuteActivity(params.row.id, params.row.status).then(data => {
                                                     if (data.status === 200) {
-                                                        this.$Message.success('执行成功');
+                                                        this.$Message.success(data.data.message);
                                                         this.getData(this.page, this.tabIndex);
                                                     } else {
-                                                        this.$Message.error(data.message);
+                                                        this.$Message.error(data.data.message);
                                                     }
                                                 }).catch(error => {
                                                     this.$Message.error('执行过程出现异常：' + error);
@@ -264,10 +266,10 @@ export default {
                 onOk: () => {
                     batchCancel(ids).then(data => {
                         if (data.status === 200) {
-                            this.$Message.success('取消成功');
+                            this.$Message.success(data.data.message);
                             this.getData(this.page, this.tabIndex);
                         } else {
-                            this.$Message.error(data.message);
+                            this.$Message.error(data.data.message);
                         }
                     }).catch(error => {
                         this.$Message.error('取消活动出现异常：' + error);
@@ -303,6 +305,7 @@ export default {
                 }
             })
         },
+        onCancel(){},
         handleSelectionChange(val) {
             this.multipleSelection = val;
         }

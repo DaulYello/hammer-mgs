@@ -19,7 +19,13 @@
                     <Page  style="text-align:center;margin-top:20px" @on-change="getDataPage" :total="pageInfo.total" :page-size="size" :current="pageInfo.pageNo" size="small" show-elevator show-total></Page>
                 </Card>
             </Col>
-
+            <Modal v-model="showDialog" title="阅读图片" ok-text="取消" cancel-text="" :loading="loading" @on-cancel="onCancel">
+                <Form ref="tiketForm" :label-width="120">
+                    <div>
+                        <img width="100" :src="picturePath"  />
+                    </div>
+                </Form>
+            </Modal>
         </Row>
     </div>
 </template>
@@ -44,6 +50,7 @@ export default {
     },
     data () {
         return {
+            showDialog:false,
             loading:true,
             page: 1,
             size: 20,
@@ -51,6 +58,7 @@ export default {
             pageData: [],
             query:{},
             tabIndex: 0,
+            picturePath:'',
             tabStatus: 1,
             columns: [
                 {
@@ -86,48 +94,10 @@ export default {
                     editable: true
                 },
                 {
-                    title: '门票类型',
-                    align: 'center',
-                    key: 'typeid',
-                    render: (h, params) => {
-                        const row = params.row;
-                        const text = row.typeid === 1 ? 'A类型' : row.typeid === 2 ? 'B类型' : 'C类型';
-                        return h('span',text);
-                    }
-                },
-                {
                     title: '保证金',
                     align: 'center',
                     key: 'bond',
                     editable: true
-                },
-                {
-                    title: '活动状态',
-                    align: 'center',
-                    key: 'status',
-                    render: (h, params) => {
-                        let text = '';
-                        if (params.row.status === 0) {
-                            text = '未开始'
-                        } else if (params.row.status === 1) {
-                            text = '已上线'
-                        } else if (params.row.status === 2) {
-                            text = '已下线'
-                        } else if (params.row.status === 3) {
-                            text = '审核不通过'
-                        } else if (params.row.status === 4) {
-                            text = '待参与'
-                        } else if (params.row.status === 5) {
-                            text = '待竞锤'
-                        } else if (params.row.status === 6) {
-                            text = '待公布'
-                        } else if (params.row.status === 7) {
-                            text = '竞锤成功'
-                        } else {
-                            text = 'No Identify !'
-                        }
-                        return h('span',text);
-                    }
                 },
                 {
                     title: '活动类型',
@@ -156,16 +126,48 @@ export default {
                 {
                     title: '图片查看',
                     align: 'center',
-                    key: 'picture',
-                    editable: true
+                    key: 'imageurl',
+                    render:(h,params)=>{
+                        return h('div',[
+                            h('Button',{
+                                props:{
+                                    type: 'primary',
+                                    size:'small'
+                                },
+                                style: {
+                                    marginRight: '5px'
+                                },
+                                on: {
+                                    click: () => {
+                                        this.picturePath=params.row.imageurl;
+                                        this.showDialog = true;
+                                    }
+                                }
+                            },"阅览")
+                        ])
+                    }
                 },
-                {
-                    title: '审核状态',
+                {//活动(竟锤)的状态 0:待审核  1:驳回 2:活动中 3：已结束 4：活动异常 5：活动失败
+                    title: '活动状态',
                     align: 'center',
-                    key: 'ispass',
+                    key: 'status',
                     render: (h, params) => {
-                        const row = params.row;
-                        const text = row.ispass === 1 ? '已通过' : row.ispass === 2 ? '未通过' : '未审核';
+                        let text = '';
+                        if (params.row.status === 0) {
+                            text = '未审核'
+                        } else if (params.row.status === 1) {
+                            text = '驳回审核'
+                        } else if (params.row.status === 2) {
+                            text = '正在进行'
+                        } else if (params.row.status === 3) {
+                            text = '活动结束'
+                        } else if (params.row.status === 4) {
+                            text = '活动下线'
+                        } else if (params.row.status === 5) {
+                            text = '活动失败'
+                        } else {
+                            text = 'No Identify !'
+                        }
                         return h('span',text);
                     }
                 }
@@ -195,6 +197,9 @@ export default {
           }).catch(error => {
               this.$Message.error('服务器异常' + error);
           });
+        },
+        onCancel(){
+
         },
         handleSearch () {
             this.getData(1, this.tabIndex);

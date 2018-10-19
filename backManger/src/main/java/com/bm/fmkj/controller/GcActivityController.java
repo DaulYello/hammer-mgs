@@ -2,6 +2,8 @@ package com.bm.fmkj.controller;
 
 import java.util.HashMap;
 
+import com.bm.fmkj.dao.GcJoinactivityrecord;
+import com.bm.fmkj.service.GcJoinactivityrecordService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +20,9 @@ import com.bm.fmkj.base.PageQuery;
 import com.bm.fmkj.base.Pagenation;
 import com.bm.fmkj.dao.GcActivity;
 import com.bm.fmkj.service.GcActivityService;
-import com.bm.fmkj.service.GcTicketService;
 import com.xl.utils.BaseController;
+import org.web3j.crypto.Hash;
+
 
 @Controller
 @RequestMapping("/fmkj/GcActivity")
@@ -28,7 +31,9 @@ public class GcActivityController extends BaseController {
 	private GcActivityService gcactivityService;
 
 	private Logger log= LoggerFactory.getLogger(GcActivityController.class);
-	
+
+	@Autowired
+	private GcJoinactivityrecordService joinactivityrecordService;
 	/**
 	 * 活动分页查询 status
 	 */
@@ -66,14 +71,14 @@ public class GcActivityController extends BaseController {
 	 */
 	@RequestMapping(value = "auditActivity", method = RequestMethod.POST)
 	@ResponseBody
-	public BaseResult<Boolean> auditActivity(@RequestParam HashMap<String,Object> params) {
+	public BaseResult<HashMap<String,Object>> auditActivity(@RequestParam HashMap<String,Object> params) {
 		try {
 			log.debug("进入接口auditActivity");
-			boolean result=gcactivityService.updateActivityAndContract(params);
-			if(result) {
-				return new BaseResult<Boolean>(BaseResultEnum.SUCCESS, result);
+			HashMap<String,Object> map=gcactivityService.updateActivityAndContract(params);
+			if(map.get("status").equals(false)) {
+				return new BaseResult<HashMap<String, Object>>(BaseResultEnum.ERROR, map);
 			}
-			return new BaseResult<Boolean>(BaseResultEnum.ERROR, result);
+			return new BaseResult<HashMap<String, Object>>(BaseResultEnum.SUCCESS, map);
 		} catch (Exception e) {
 			throw new RuntimeException("审核失败！");
 		}
@@ -85,17 +90,20 @@ public class GcActivityController extends BaseController {
 	 */
 	@RequestMapping(value = "updatepuzzleHammerState", method = RequestMethod.POST)
 	@ResponseBody
-	public BaseResult<Boolean> updatepuzzleHammerState(@RequestParam HashMap<String, Object> params) {
-		try {
-			log.debug("进入接口修改合约状态的-》updatepuzzleHammerState");
-			boolean result = gcactivityService.updatepuzzleHammerStatus(params);
-			if(result) {
-				return new BaseResult<Boolean>(BaseResultEnum.SUCCESS, result);
-			}
-			return new BaseResult<Boolean>(BaseResultEnum.SUCCESS, result);
-		}catch (Exception e) {
-			throw new RuntimeException(e.getMessage());
+	public BaseResult<HashMap<String,Object>> updatepuzzleHammerState(@RequestParam HashMap<String, Object> params) {
+
+		log.debug("进入接口修改合约状态的-》updatepuzzleHammerState");
+		int aid=Integer.parseInt((String) params.get("id"));
+		HashMap<String,Object> hashMap= gcactivityService.updatepuzzleHammerStatus(params);
+		if (hashMap.get("status").equals(false)){
+			return new BaseResult<HashMap<String, Object>>(BaseResultEnum.ERROR, hashMap);
 		}
+		log.debug("活动正常结束，给参加活动没有重锤的人发放R积分作为奖励。");
+		HashMap<String,Object> map= joinactivityrecordService.grantCredits(aid);
+		if (map.get("status").equals(false)){
+			return new BaseResult<HashMap<String, Object>>(BaseResultEnum.ERROR, map);
+		}
+		return new BaseResult<HashMap<String, Object>>(BaseResultEnum.SUCCESS, map);
 	}
 	
 	/**
@@ -105,14 +113,14 @@ public class GcActivityController extends BaseController {
 	 */
 	@RequestMapping(value = "cancelActivity", method = RequestMethod.POST)
 	@ResponseBody
-	public BaseResult<Boolean> cancelActivity(@RequestParam HashMap<String, Object> params) {
+	public BaseResult<HashMap<String,Object>> cancelActivity(@RequestParam HashMap<String, Object> params) {
 		try {
 			log.debug("进入--》cancelActivity");
-			boolean result = gcactivityService.cancelActivity(params);
-			if(result) {
-				return new BaseResult<Boolean>(BaseResultEnum.SUCCESS, result);
+			HashMap<String,Object> map = gcactivityService.cancelActivity(params);
+			if(map.get("status").equals(false)) {
+				return new BaseResult<HashMap<String,Object>>(BaseResultEnum.SUCCESS, map);
 			}
-			return new BaseResult<Boolean>(BaseResultEnum.SUCCESS, result);
+			return new BaseResult<HashMap<String,Object>>(BaseResultEnum.SUCCESS, map);
 		}catch (Exception e) {
 			throw new RuntimeException(e.getMessage());
 		}

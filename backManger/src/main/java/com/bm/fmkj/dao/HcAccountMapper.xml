@@ -26,6 +26,7 @@
     <result column="isboong" jdbcType="INTEGER" property="isboong" />
     <result column="cdbid" jdbcType="BIGINT" property="cdbid" />
     <result column="realnam_info" jdbcType="VARCHAR" property="realnamInfo" />
+    <result column="cnt" jdbcType="DOUBLE" property="cnt" />
   </resultMap>
 
 	<resultMap id="RankWeekMap" type="java.util.HashMap">

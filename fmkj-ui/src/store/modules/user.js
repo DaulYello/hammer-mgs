@@ -11,13 +11,16 @@ import {
 import {
   getToken,
   setToken,
-  removeToken
+  removeToken,
+  getUid,
+  setUid
 } from 'utils/auth';
 
 const user = {
     state: {
       //menus:undefined,
-      token: getToken()
+      token: getToken(),
+      uid: getUid()
     },
     actions: {
       // 登录
@@ -31,8 +34,10 @@ const user = {
             const data = response;
             if (data.status === 200) {
               setToken(data.data.token);
+              setUid(data.data.uid);
               Cookies.set('token', data.data.token);
               Cookies.set('user', data.data);
+              Cookies.set("uid", data.data.uid);
               commit('SET_TOKEN', data.data.token);
               resolve();
             } else {

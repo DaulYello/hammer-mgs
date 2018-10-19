@@ -44,13 +44,13 @@ private static final Logger log = LoggerFactory.getLogger(HcUserImage.class);
 	
 	@RequestMapping(value="approveUserRealInfo",method=RequestMethod.POST)
 	@ResponseBody
-	public BaseResult<Boolean> approveUserRealInfo(@RequestParam HashMap<String,Object> param){
-		log.debug("实名认证审核通过，id："+JSON.toJSONString(param));
-		boolean result = hcuserimageService.approveUserRealInfo(param);
-		if(result) {
-			return new BaseResult<Boolean>(BaseResultEnum.SUCCESS, result);
+	public BaseResult<HashMap<String,Object>> approveUserRealInfo(@RequestParam HashMap<String,Object> param){
+		log.debug("实名认证审核通过，flag=1表示审核通过，id："+JSON.toJSONString(param));
+                      		HashMap<String,Object> map = hcuserimageService.approveUserRealInfo(param);
+		if(map.get("status").equals(false)) {
+			return new BaseResult<HashMap<String,Object>>(BaseResultEnum.ERROR, map);
 		}
-		return new BaseResult<Boolean>(BaseResultEnum.SUCCESS, result);
+		return new BaseResult<HashMap<String,Object>>(BaseResultEnum.SUCCESS, map);
 	}
 	
 	/**
