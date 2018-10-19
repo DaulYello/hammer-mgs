@@ -79,6 +79,7 @@ public class GcJoinactivityrecordService {
 				LOGGER.debug("记录用户反回的R积分，用户id="+hcAccount.getId());
 				FmRecyleLog recyleLog = new FmRecyleLog();
 				recyleLog.setUid(hcAccount.getId());
+				recyleLog.setFriendId(hcAccount.getId());
 				recyleLog.setRecyleType(2);
 				recyleLog.setTakeDate(new Date());
 				recyleLog.setTakeNum(activity.getPar());

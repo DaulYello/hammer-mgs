@@ -319,6 +319,7 @@ public class GcActivityService {
 					log.debug("记录用户反回的R积分，用户id="+account.getId());
 					FmRecyleLog recyleLog = new FmRecyleLog();
 					recyleLog.setUid(account.getId());
+					recyleLog.setFriendId(account.getId());
 					recyleLog.setRecyleType(2);
 					recyleLog.setTakeDate(new Date());
 					recyleLog.setTakeNum(activity.getPar());
