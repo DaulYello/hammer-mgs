@@ -48,8 +48,6 @@ public class HcUserImageService {
             userImage.setId(id);
             userImage.setTime(new Date());
 			if(flag==1){
-			    System.out.println("审核通过，且初次审核！");
-				System.out.println("实名认证的ID："+id);
 				userImage.setStatus(1);
                 int row = hcUserImageMapper.updateByPrimaryKeySelective(userImage);
                 if(row<=0){
@@ -57,7 +55,6 @@ public class HcUserImageService {
                     map.put("message","更新用户实名信息失败！");
                     return map;
                 }
-                System.out.println("增加飞羽！");
                 HcPointsRecord pointsRecord = new HcPointsRecord();
                 pointsRecord.setUid(hcUserImage.getUid());
                 pointsRecord.setTime(new Date());
@@ -69,11 +66,17 @@ public class HcUserImageService {
                     map.put("message","用户实认证，添加积分失败！");
                     return map;
                 }
+				HcAccount hc = hcAccountMapper.selectByPrimaryKey(hcUserImage.getUid());
+				hc.setCardStatus(2);
+				if(hcAccountMapper.updateByPrimaryKeySelective(hc) <=0){
+					map.put("status",false);
+					map.put("message","用户实认证，更新认证状态失败！");
+					return map;
+				}
                 map.put("status",true);
                 map.put("message","用户实认证审核通过！");
                 return map;
 			}else{
-                System.out.println("实名认证审核驳回！");
                 userImage.setStatus(2);
                 boolean resutl = hcUserImageMapper.updateByPrimaryKeySelective(userImage)>0?true:false;
                 if(!resutl){
