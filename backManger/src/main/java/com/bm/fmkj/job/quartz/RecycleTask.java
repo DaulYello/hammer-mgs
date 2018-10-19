@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * R积分回收定时任务
+ * CNT-R积分回收定时任务
  * 
  * @author youxun
  */

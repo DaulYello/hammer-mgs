@@ -28,4 +28,8 @@ public class FmIntegralInfoService {
 		return  fmintegralinfoMapper.queryRBefore();
     }
 
+    public List queryLastInvitRank() {
+
+		return fmintegralinfoMapper.queryLastInvitRank();
+    }
 }

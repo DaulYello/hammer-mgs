@@ -1,8 +1,9 @@
 package com.bm.fmkj.service;
 
-import java.util.HashMap;
 import java.util.List;
 
+import com.bm.fmkj.dao.FmRecyleLog;
+import com.bm.fmkj.dao.FmRecyleLogMapper;
 import org.apache.poi.ss.formula.functions.T;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,9 @@ public class HcAccountService {
 
 	@Autowired
 	private HcAccountMapper hcaccountMapper;
+
+	@Autowired
+	private FmRecyleLogMapper fmRecyleLogMapper;
 
 	public HcAccountMapper getHcAccountMapper() {
 		return hcaccountMapper;
@@ -80,4 +84,11 @@ public class HcAccountService {
     public List<T> queryUserPointNum() {
 		return hcaccountMapper.queryUserPointNum();
     }
+
+	public void updateCntById(Integer uid, FmRecyleLog recyleLog) {
+		HcAccount hc = hcaccountMapper.selectByPrimaryKey(uid);
+		hc.setCnt(hc.getCnt() + recyleLog.getTakeNum());
+		hcaccountMapper.updateByPrimaryKey(hc);
+		fmRecyleLogMapper.insert(recyleLog);
+	}
 }

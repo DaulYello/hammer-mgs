@@ -38,4 +38,33 @@
         GROUP BY uid
 
     </select>
+
+    <select id="queryLastInvitRank" resultType="java.util.HashMap">
+        SELECT
+          uid,
+          COUNT(uid) AS invitingNum
+        FROM
+          hc_points_record
+        WHERE TIME BETWEEN
+          (SELECT
+            DATE_FORMAT(
+              DATE_SUB(
+                DATE_SUB(
+                  CURDATE(),
+                  INTERVAL WEEKDAY(CURDATE()) DAY
+                ),
+                INTERVAL 1 WEEK
+              ),
+              '%Y-%m-%d 00:00:00'
+            ))
+          AND
+          (SELECT
+            DATE_FORMAT(
+              SUBDATE(CURDATE(), WEEKDAY(CURDATE()) + 1),
+              '%Y-%m-%d 23:59:59'
+            ))
+        GROUP BY uid
+        ORDER BY invitingNum DESC
+        LIMIT 0, 3
+    </select>
 </mapper>
