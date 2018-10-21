@@ -57,16 +57,6 @@ public class GcActivityController extends BaseController {
 	}
 
 	/**
-	 * 通过id查询活动
-	 *//*
-	@RequestMapping(value = "queryOneActivityById", method = RequestMethod.POST)
-	@ResponseBody
-	public GcActivity queryOneActivityById(GcActivity ga) {
-		log.debug("查看图片");
-		return gcactivityService.queryOneActivityById(ga);
-	}*/
-
-	/**
 	 * 通过id及传入参数修改活动数据 status状态-- 1.通过上线 2.強制下线 3.不通过
 	 */
 	@RequestMapping(value = "auditActivity", method = RequestMethod.POST)

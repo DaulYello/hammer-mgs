@@ -203,10 +203,10 @@ export default {
                                             onOk: () => {
                                                 batchAuditAcitity(params.row.id,1).then(data => {
                                                     if (data.status === 200) {
-                                                        this.$Message.success('审核成功');
+                                                        this.$Message.success(data.data.message);
                                                         this.getData(this.page, this.tabIndex);
                                                     } else {
-                                                        this.$Message.error(data.message);
+                                                        this.$Message.error(data.data.message);
                                                     }
                                                 }).catch(error => {
                                                     this.$Message.error('审核出现异常：' + error);
@@ -230,12 +230,12 @@ export default {
                                             content: '确定执行驳回操作吗?',
                                             width: 400,
                                             onOk: () => {
-                                                batchRefuseAcitity(params.row.id,2).then(data => {
+                                                batchAuditAcitity(params.row.id,2).then(data => {
                                                     if (data.status === 200) {
-                                                        this.$Message.success('驳回成功');
+                                                        this.$Message.success(data.data.message);
                                                         this.getData(this.page, this.tabIndex);
                                                     } else {
-                                                        this.$Message.error(data.message);
+                                                        this.$Message.error(data.data.message);
                                                     }
                                                 }).catch(error => {
                                                     this.$Message.error('驳回出现异常：' + error);

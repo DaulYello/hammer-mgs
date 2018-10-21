@@ -136,9 +136,9 @@ public class Helper {
                     info.getcId(), info.getcType(), info.gettType(), info.getcLimit(),
                     origPerson.getName(), origPerson.getID()).send();
             puzzleHammerAddress = this.puzzleHammer.getContractAddress();
-            log.info("Smart contract deployed to address " + puzzleHammerAddress);
+            log.info("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH:Smart contract deployed to address " + puzzleHammerAddress);
         } catch (Exception e) {
-            log.error("Failed to deploy smart contract. ");
+            log.error("LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL:Failed to deploy smart contract. ");
         } finally {
             return puzzleHammerAddress;
         }

@@ -29,11 +29,16 @@ export function getUserRealInfo(pageNo,pageSize,query){
  @author  huangshuang
  @created 2018-09-26
 */
-export function identityCardAudit(id,flag){
+export function identityCardAudit(id,flag,query){
     const data = {
         id,
         flag
-    }
+    };
+    for(var k in query){
+        if(query[k] !=""){
+            data[k] = query[k];
+        }
+    };
     return fetch({
         url:'/backManger/fmkj/HcUserImage/approveUserRealInfo'+getParams(data),
         method:'post'

@@ -267,11 +267,14 @@
                                         click: () => {
                                             this.$Modal.confirm({
                                                 title: '提示',
-                                                content: '确定执行驳回操作吗?',
+                                                content: '确定执行驳回操作吗?' +
+                                                        '<div style="width: 300px;height: 20px;">' +
+                                                        '<input v-model="query.reason" type="text" style="margin-top: 20px;width: 300px;border: none;border-bottom: #9E9E9E 1px solid;placeholder="请输入驳回原因。。。" />'+
+                                                    '</div>',
                                                 width: 400,
                                                 onOk: () => {
-                                                    if(params.row.status == 0){
-                                                        identityCardAudit(params.row.id,2).then(data => {
+                                                    if(params.row.status == 0 || params.row.status == 1){
+                                                        identityCardAudit(params.row.id,2,this.query).then(data => {
                                                             if (data.status === 200) {
                                                                 this.$Message.success(data.data.message);
                                                                 this.getData(this.page, this.tabIndex);

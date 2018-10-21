@@ -13,6 +13,7 @@ import javax.net.ssl.ExtendedSSLSession;
 
 import com.bm.fmkj.constant.TakeEnum;
 import com.bm.fmkj.dao.*;
+import com.bm.fmkj.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,15 +79,25 @@ public class GcActivityService {
 				for (int i = 0; i < ids.length; i++) {
 					log.debug("---------->"+ids[i]);
 					GcActivity activity = gcactivityMapper.selectByPrimaryKey(Integer.parseInt(ids[i]));
+					if(StringUtils.isNull(activity.getTypeid())){
+						map.put("status",false);
+						map.put("message","活动类型为NUll！活动id="+activity.getId());
+						return map;
+					}
 					GcActivitytype gt = gcactivitytypeService.getGcActivitytypeId(activity.getTypeid());
+					if(StringUtils.isNull(gt)){
+						map.put("status",false);
+						map.put("message","活动类型为Null！活动id="+activity.getId());
+						return map;
+					}
 					activity.setStatus(2);
 					log.debug("活动状态设为2，就进入参与状态了"+activity.getStatus());
 					activity.setBegintime(DateUtil.getNowInMillis(0l));
 					activity.setEndtime(DateUtil.plusDay(gt.getDays()));
 					log.debug("通过产品的溢价除以参与活动的人数");
 
-					activity.setPar(Math.ceil(activity.getPremium()/activity.getNum()));
-
+					//activity.setPar(Math.ceil(activity.getPremium()/activity.getNum()));
+					log.debug("Info3:"+Integer.parseInt(new java.text.DecimalFormat("0").format(Math.ceil(activity.getPar()))));
 					Helper helper = new Helper(PropUtil.getString("contractPassword"),
 							PropUtil.getString("keystoryPath"), PropUtil.getString("contractIp"),
 							PropUtil.getString("contractPort"));
@@ -97,13 +108,35 @@ public class GcActivityService {
 						return map;
 					}
 					// 1.获得合约地址
+
+					if(StringUtils.isNull(activity.getPar())){
+						map.put("status",false);
+						map.put("message","参与活动的面值为NULL！活动id="+activity.getId());
+						return map;
+					}
+					if(StringUtils.isNull(activity.getNum())){
+						map.put("status",false);
+						map.put("message","设定参与活动的人数为Null！活动id="+activity.getId());
+						return map;
+					}
 					Info info = new Info(BigInteger.valueOf(activity.getId()), BigInteger.valueOf(gt.getId()),
-							BigInteger.valueOf(Long.parseLong(activity.getPar().toString())), BigInteger.valueOf(activity.getNum()));
+							BigInteger.valueOf(Integer.parseInt(new java.text.DecimalFormat("0").format(Math.ceil(activity.getPar())))), BigInteger.valueOf(activity.getNum()));
+
+					if(StringUtils.isNull(activity.getName())){
+						map.put("status",false);
+						map.put("message","活动的名称NULL！活动id="+activity.getId());
+						return map;
+					}
+					if(StringUtils.isNull(activity.getStartid())){
+						map.put("status",false);
+						map.put("message","设定参与活动的人数为Null！活动id="+activity.getId());
+						return map;
+					}
 
 					Person origPerson = new Person(activity.getName(), BigInteger.valueOf(activity.getStartid()));
 
 					String contract = helper.deployContract(info, origPerson);
-					if(contract == null){
+					if(StringUtils.isNull(contract)){
 						map.put("status",false);
 						map.put("message","合约地址获取失败！活动id="+activity.getId());
 						return map;
@@ -160,7 +193,7 @@ public class GcActivityService {
 			boolean flag = false;
 			Helper helper = null;
 			GcActivity activity = gcactivityMapper.selectByPrimaryKey(id);
-			if(activity == null){
+			if(StringUtils.isNull(activity)){
 				map.put("status",false);
 				map.put("message","查询活动失败，活动id="+id);
 				return map;
@@ -171,6 +204,11 @@ public class GcActivityService {
 					PropUtil.getString("contractPort"));
 			boolean initR=helper.init();
 			if(!initR){
+				map.put("status",false);
+				map.put("message","初始化活动失败！");
+				return map;
+			}
+			if(StringUtils.isNull(activity.getContract())){
 				map.put("status",false);
 				map.put("message","初始化活动失败！");
 				return map;
@@ -282,11 +320,11 @@ public class GcActivityService {
 				//activity = gcactivityMapper.selectByPrimaryKey(Integer.parseInt(ids[i]));
 				//log.debug("1.获取地址" + activity.getContract());
 				GcActivity ay = gcactivityMapper.selectByPrimaryKey(Integer.parseInt(ids[i]));
-				if(ay == null){
+				if(StringUtils.isNull(ay)){
 					map.put("status",false);
 					map.put("message","查询活动失败，活动id="+Integer.parseInt(ids[i]));
 					return map;
-				}else if(null == ay.getPar()){
+				}else if(StringUtils.isNull(ay.getPar())){
 					map.put("status",false);
 					map.put("message","参见活动的CNT为NULL，活动id="+Integer.parseInt(ids[i]));
 					return map;
@@ -296,8 +334,12 @@ public class GcActivityService {
 				joinactivityrecord.setAid(Integer.parseInt(ids[i]));
 				List<GcJoinactivityrecord> joinactivityrecords = joinactivityrecordMapper.select(joinactivityrecord);
 				if(joinactivityrecords.size()==0){
+					activity.setId(Integer.parseInt(ids[i]));
+					activity.setStatus(5);
+					activity.setEndtime(new Date());
+					boolean result = gcactivityMapper.updateByPrimaryKeySelective(activity)>0 ? true : false;
 					map.put("status",false);
-					map.put("message","查询活动参与记录为0,该活动还没有人参与,活动aid="+Integer.parseInt(ids[i]));
+					map.put("message","查询活动参与记录为0,该活动还没有人参与,取消成功！");
 					return map;
 				}
 				log.debug("给参与活动的用户发放R积分");

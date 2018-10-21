@@ -77,13 +77,21 @@ public class HcUserImageService {
                 map.put("message","用户实认证审核通过！");
                 return map;
 			}else{
-                userImage.setStatus(-1);
+                userImage.setStatus(2);
                 boolean resutl = hcUserImageMapper.updateByPrimaryKeySelective(userImage)>0?true:false;
                 if(!resutl){
                     map.put("status",false);
                     map.put("message","用户实认证驳回失败！");
                     return map;
                 }
+				HcAccount hc = hcAccountMapper.selectByPrimaryKey(hcUserImage.getUid());
+				hc.setCardStatus(-1);
+				hc.setRealnamInfo("身份证照片模糊！");
+				if(hcAccountMapper.updateByPrimaryKeySelective(hc) <=0){
+					map.put("status",false);
+					map.put("message","驳回时更新失败！");
+					return map;
+				}
                 map.put("status",true);
                 map.put("message","用户实认证驳回成功！");
                 return map;

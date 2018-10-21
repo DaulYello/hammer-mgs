@@ -125,7 +125,10 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils
      */
     public static boolean isNull(Object object)
     {
-        return object == null;
+        if(null == object || object.equals("")){
+            return true;
+        }
+        return false;
     }
 
     /**
