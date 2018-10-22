@@ -1,37 +1,32 @@
 package com.bm.fmkj.service;
 
-import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-
-import javax.naming.NamingException;
-import javax.net.ssl.ExtendedSSLSession;
-
-import com.bm.fmkj.constant.TakeEnum;
-import com.bm.fmkj.dao.*;
-import com.bm.fmkj.utils.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.alibaba.fastjson.JSON;
 import com.bm.fmkj.base.PageQuery;
 import com.bm.fmkj.base.PageUtil;
 import com.bm.fmkj.base.Pagenation;
+import com.bm.fmkj.constant.TakeEnum;
 import com.bm.fmkj.controller.GcActivityController;
+import com.bm.fmkj.dao.*;
 import com.bm.fmkj.utils.PropUtil;
+import com.bm.fmkj.utils.StringUtils;
 import com.fmkj.hammer.puzzle.Helper;
 import com.fmkj.hammer.puzzle.Info;
 import com.fmkj.hammer.puzzle.Person;
 import com.fmkj.hammer.puzzle.State;
 import com.github.pagehelper.PageHelper;
 import com.xl.utils.DateUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 
 
 @Transactional
@@ -97,11 +92,13 @@ public class GcActivityService {
 					log.debug("通过产品的溢价除以参与活动的人数");
 
 					//activity.setPar(Math.ceil(activity.getPremium()/activity.getNum()));
-					log.debug("Info3:"+Integer.parseInt(new java.text.DecimalFormat("0").format(Math.ceil(activity.getPar()))));
+					long startTime1 = System.currentTimeMillis();
 					Helper helper = new Helper(PropUtil.getString("contractPassword"),
 							PropUtil.getString("keystoryPath"), PropUtil.getString("contractIp"),
 							PropUtil.getString("contractPort"));
 					boolean initR=helper.init();
+					long times1 = System.currentTimeMillis() - startTime1;
+					log.debug("合约地址加载================》》》》》：" + times1);
 					if(!initR){
 						map.put("status",false);
 						map.put("message","初始化活动失败！活动id="+activity.getId());
@@ -154,6 +151,7 @@ public class GcActivityService {
 						map.put("message","更改活动失败！活动id="+activity.getId());
 						return map;
 					}
+					helper.release();
 				}
 				map.put("status",true);
 				map.put("message","审核成功！");
