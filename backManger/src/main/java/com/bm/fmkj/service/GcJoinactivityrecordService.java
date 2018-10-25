@@ -61,7 +61,7 @@ public class GcJoinactivityrecordService {
 			map.put("message","查询活动参与记录为0,活动aid="+aid);
 			return map;
 		}
-		LOGGER.debug("给参与互动的用户发放R积分");
+		LOGGER.debug("给参与活动的用户发放R积分");
 		List<FmRecyleLog> recyleLogs = new ArrayList<>();
 		for(GcJoinactivityrecord joinactivityrecord : joinactivityrecords){
 			if(joinactivityrecord.getUid() != activity.getGetid()){
@@ -71,7 +71,7 @@ public class GcJoinactivityrecordService {
 				hcAccount.setMyP(hcAccount.getMyP()+activity.getPar());
 				LOGGER.debug("应发积分R="+activity.getPar());
 				LOGGER.debug("发完积分后用户的总积分R="+hcAccount.getPassword());
-				boolean result = result = accountMapper.updateByPrimaryKeySelective(hcAccount) > 0 ? true : false;
+				boolean result = accountMapper.updateByPrimaryKeySelective(hcAccount) > 0 ? true : false;
 				if(result){
 					map.put("status",false);
 					map.put("message","更新用户的积分时报错,用户的id="+joinactivityrecord.getUid());

@@ -237,17 +237,17 @@ public class GcActivityService {
 				}
 
 				int hammerId = helper.getWinner().getID().intValue();
-				activity.setGetid(hammerId);
-				log.debug("优胜者的id:"+hammerId+"---姓名："+helper.getWinner().getName());
-				if(hammerId>0){
+				if(hammerId<=0){
 					map.put("status",false);
 					map.put("message","获取优胜者的id失败！");
 					return map;
 				}
+				activity.setGetid(hammerId);
+				log.debug("优胜者的id:"+hammerId+"---姓名："+helper.getWinner().getName());
 				boolean result3=helper.changeStage(State.end);
-				if(hammerId<=0){
+				if(result3){
 					map.put("status",false);
-					map.put("message","获取优胜者的id失败！");
+					map.put("message","改变合约状态问end失败！");
 					return map;
 				}else{
 					result2=saveNoticeInfo(activity);

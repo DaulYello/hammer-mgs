@@ -44,8 +44,8 @@
 
     <sql id="selectUserImageInfoVo">
   	select hu.id,hu.uid,ha.name as name,ha.nickname as nickname,ha.cardnum as cardnum,ha.telephone as telephone,hu.url,
-  	concat('/',substring_index(hu.url,'\\',-1),'/',hu.full_photo) as full_photo,
-  	concat('/',substring_index(hu.url,'\\',-1),'/',hu.reverse_photo) as reverse_photo,
+  	hu.full_photo,
+  	hu.reverse_photo,
   	hu.alipay_account,hu.alipay_photo,
   	hu.wechat_account,hu.wechat_photo,
   	hu.status,

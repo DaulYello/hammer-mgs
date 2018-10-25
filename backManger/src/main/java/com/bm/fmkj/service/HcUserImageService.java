@@ -86,7 +86,7 @@ public class HcUserImageService {
                 }
 				HcAccount hc = hcAccountMapper.selectByPrimaryKey(hcUserImage.getUid());
 				hc.setCardStatus(-1);
-				hc.setRealnamInfo("身份证照片模糊！");
+				hc.setRealnamInfo(param.get("rejectReason").toString());
 				if(hcAccountMapper.updateByPrimaryKeySelective(hc) <=0){
 					map.put("status",false);
 					map.put("message","驳回时更新失败！");

@@ -23,6 +23,18 @@
         <Modal title="预览图片" v-model="showDialog">
             <img :src="picturePath"  style="width: 100%">
         </Modal>
+        <Modal title="提示" v-model="showAduitDialog" @on-ok="ok">
+            <div class="ivu-modal-confirm-body">
+                <div class="ivu-modal-confirm-body-icon ivu-modal-confirm-body-icon-confirm" style="">
+                    <span><i class="ivu-icon ivu-icon-help-circled"></i></span>
+                </div>
+                <span>确定执行审核操作吗?</span>
+                <div>
+                    <input v-model="query.rejectReason" type="text"
+                           style="margin-top: 20px;width: 300px;border: none;border-bottom: #9E9E9E 1px solid;" placeholder="请输入驳回原因..." />
+                </div>
+            </div>
+        </Modal>
     </div>
 </template>
 
@@ -39,6 +51,7 @@
         data(){
             return{
                 showDialog:false,
+                showAduitDialog:false,
                 loading:true,
                 page:1,
                 size:20,
@@ -46,6 +59,7 @@
                 pageData:[],
                 query:{},
                 picturePath:'',
+                rowID:'',
                 columns:[
                     {
                         title: '序号',
@@ -89,7 +103,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.picturePath=url+params.row.fullPhoto;
+                                            this.picturePath=params.row.fullPhoto;
                                             this.showDialog = true;
                                         }
                                     }
@@ -113,7 +127,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.picturePath=url+params.row.reversePhoto;
+                                            this.picturePath=params.row.reversePhoto;
                                             this.showDialog = true;
                                         }
                                     }
@@ -143,7 +157,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.picturePath=url+payImages+params.row.alipayPhoto;
+                                            this.picturePath=params.row.alipayPhoto;
                                             this.showDialog = true;
                                         }
                                     }
@@ -173,7 +187,7 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.picturePath=url+payImages+params.row.wechatPhoto;
+                                            this.picturePath=params.row.wechatPhoto;
                                             this.showDialog = true;
                                         }
                                     }
@@ -265,34 +279,8 @@
                                     },
                                     on: {
                                         click: () => {
-                                            this.$Modal.confirm({
-                                                title: '提示',
-                                                content: '确定执行驳回操作吗?' +
-                                                        '<div style="width: 300px;height: 20px;">' +
-                                                        '<input v-model="query.reason" type="text" style="margin-top: 20px;width: 300px;border: none;border-bottom: #9E9E9E 1px solid;placeholder="请输入驳回原因。。。" />'+
-                                                    '</div>',
-                                                width: 400,
-                                                onOk: () => {
-                                                    if(params.row.status == 0 || params.row.status == 1){
-                                                        identityCardAudit(params.row.id,2,this.query).then(data => {
-                                                            if (data.status === 200) {
-                                                                this.$Message.success(data.data.message);
-                                                                this.getData(this.page, this.tabIndex);
-                                                            } else {
-                                                                this.$Message.error(data.data.message);
-                                                            }
-                                                        }).catch(error => {
-                                                            this.$Message.error('驳回出现异常：' + error);
-                                                        });
-                                                    }else if(params.row.status == 2){
-                                                        return this.$Message.success('已驳回，无需再驳回！');
-                                                    }else{
-                                                        return this.$Message.success('已经审核，不能再驳回！');
-                                                    }
-                                                },
-                                                onCancel: () => {
-                                                }
-                                            })
+                                            this.showAduitDialog=true;
+                                            this.rowID = params.row.id;
                                         }
                                     }
                                 }, '驳回')
@@ -325,6 +313,25 @@
             /*clickCancel(){
                 this.showDialog=false;
             },*/
+            ok(){
+                identityCardAudit(this.rowID,2,this.query).then(data => {
+                    if (data.status === 200) {
+                        this.$Message.success(data.data.message);
+                        this.getData(this.page, this.tabIndex);
+                    } else {
+                        this.$Message.error(data.data.message);
+                    }
+                }).catch(error => {
+                    this.$Message.error('驳回出现异常：' + error);
+                });
+                /*if(params.row.status == 0 || params.row.status == 1){
+
+                }else if(params.row.status == 2){
+                    return this.$Message.success('已驳回，无需再驳回！');
+                }else{
+                    return this.$Message.success('已经审核，不能再驳回！');
+                }*/
+            },
             cancel() {
                 this.showDialog=false;
                 this.title="";

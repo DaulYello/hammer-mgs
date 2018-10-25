@@ -1,4 +1,4 @@
-import fetch from 'utils/fetch';
+import  from 'utils/fetch';
 import {appRouter} from 'router/router';
 import {
     getParams
