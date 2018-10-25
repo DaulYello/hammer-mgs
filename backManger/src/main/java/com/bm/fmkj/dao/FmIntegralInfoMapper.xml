@@ -41,29 +41,56 @@
 
     <select id="queryLastInvitRank" resultType="java.util.HashMap">
         SELECT
-          uid,
-          COUNT(uid) AS invitingNum
-        FROM
-          hc_points_record
-        WHERE TIME BETWEEN
+          h.id AS uid,
           (SELECT
-            DATE_FORMAT(
-              DATE_SUB(
+            COUNT(1)
+          FROM
+            hc_account
+          WHERE rid = h.id
+            AND create_date BETWEEN
+            (SELECT
+              DATE_FORMAT(
                 DATE_SUB(
-                  CURDATE(),
-                  INTERVAL WEEKDAY(CURDATE()) DAY
+                  DATE_SUB(
+                    CURDATE(),
+                    INTERVAL WEEKDAY(CURDATE()) DAY
+                  ),
+                  INTERVAL 1 WEEK
                 ),
-                INTERVAL 1 WEEK
-              ),
-              '%Y-%m-%d 00:00:00'
-            ))
-          AND
+                '%Y-%m-%d 00:00:00'
+              ))
+            AND
+            (SELECT
+              DATE_FORMAT(
+                SUBDATE(CURDATE(), WEEKDAY(CURDATE()) + 1),
+                '%Y-%m-%d 23:59:59'
+              ))) AS invitingNum
+        FROM
+          hc_account h
+        WHERE
           (SELECT
-            DATE_FORMAT(
-              SUBDATE(CURDATE(), WEEKDAY(CURDATE()) + 1),
-              '%Y-%m-%d 23:59:59'
-            ))
-        GROUP BY uid
+            COUNT(1)
+          FROM
+            hc_account
+          WHERE rid = h.id
+            AND create_date BETWEEN
+            (SELECT
+              DATE_FORMAT(
+                DATE_SUB(
+                  DATE_SUB(
+                    CURDATE(),
+                    INTERVAL WEEKDAY(CURDATE()) DAY
+                  ),
+                  INTERVAL 1 WEEK
+                ),
+                '%Y-%m-%d 00:00:00'
+              ))
+            AND
+            (SELECT
+              DATE_FORMAT(
+                SUBDATE(CURDATE(), WEEKDAY(CURDATE()) + 1),
+                '%Y-%m-%d 23:59:59'
+              ))) > 0
         ORDER BY invitingNum DESC
         LIMIT 0, 3
     </select>
