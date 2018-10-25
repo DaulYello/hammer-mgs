@@ -1,6 +1,7 @@
 package com.bm.fmkj.service;
 
 import com.bm.fmkj.base.BaseResult;
+import com.bm.fmkj.constant.RecyleEnum;
 import com.bm.fmkj.constant.TakeEnum;
 import com.bm.fmkj.controller.GcActivityController;
 import com.bm.fmkj.dao.*;
@@ -80,7 +81,7 @@ public class GcJoinactivityrecordService {
 				FmRecyleLog recyleLog = new FmRecyleLog();
 				recyleLog.setUid(hcAccount.getId());
 				recyleLog.setFriendId(hcAccount.getId());
-				recyleLog.setRecyleType(2);
+				recyleLog.setRecyleType(RecyleEnum.TYPE_R.status);
 				recyleLog.setTakeDate(new Date());
 				recyleLog.setTakeNum(activity.getPar());
 				recyleLog.setTakeType(TakeEnum.USER_GET.status);

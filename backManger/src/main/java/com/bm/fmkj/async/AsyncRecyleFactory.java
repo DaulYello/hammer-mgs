@@ -47,7 +47,7 @@ public class AsyncRecyleFactory {
                         recyleLog.setTakeDate(new Date());
                         recyleLog.setTakeType(TakeEnum.TYPE_TASK.status);
                         recyleLog.setRecyleType(RecyleEnum.TYPE_CNT.status);
-                        recyleLog.setTakeMsg("回收了" + info.getCntNum() + "CNT到公司账户");
+                        recyleLog.setTakeMsg("公司回收了" + info.getCntNum() + "CNT到公司账户");
                         recyleLogs.add(recyleLog);
                         totalNum = totalNum + info.getCntNum();
                     }

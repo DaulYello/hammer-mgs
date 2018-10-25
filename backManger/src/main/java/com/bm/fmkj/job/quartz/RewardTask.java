@@ -52,7 +52,7 @@ public class RewardTask {
 							recyleLog.setFriendId(uid);
 							recyleLog.setTakeNum(20D);
 							recyleLog.setTakeDate(new Date());
-							recyleLog.setTakeType(TakeEnum.USER_GET.status);
+							recyleLog.setTakeType(TakeEnum.RANKING_ALLOT.status);
 							recyleLog.setRecyleType(RecyleEnum.TYPE_CNT.status);
 							recyleLog.setTakeMsg("上周邀请排行第一获得20CNT奖励");
 							hcAccountService.updateCntById(uid, recyleLog);
@@ -66,7 +66,7 @@ public class RewardTask {
 							recyleLog.setFriendId(uid);
 							recyleLog.setTakeNum(15D);
 							recyleLog.setTakeDate(new Date());
-							recyleLog.setTakeType(TakeEnum.USER_GET.status);
+							recyleLog.setTakeType(TakeEnum.RANKING_ALLOT.status);
 							recyleLog.setRecyleType(RecyleEnum.TYPE_CNT.status);
 							recyleLog.setTakeMsg("上周邀请排行第一获得15CNT奖励");
 							hcAccountService.updateCntById(uid, recyleLog);
@@ -80,7 +80,7 @@ public class RewardTask {
 							recyleLog.setFriendId(uid);
 							recyleLog.setTakeNum(10D);
 							recyleLog.setTakeDate(new Date());
-							recyleLog.setTakeType(TakeEnum.USER_GET.status);
+							recyleLog.setTakeType(TakeEnum.RANKING_ALLOT.status);
 							recyleLog.setRecyleType(RecyleEnum.TYPE_CNT.status);
 							recyleLog.setTakeMsg("上周邀请排行第一获得10CNT奖励");
 							hcAccountService.updateCntById(uid,recyleLog);

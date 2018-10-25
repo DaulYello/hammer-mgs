@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.bm.fmkj.base.PageQuery;
 import com.bm.fmkj.base.PageUtil;
 import com.bm.fmkj.base.Pagenation;
+import com.bm.fmkj.constant.RecyleEnum;
 import com.bm.fmkj.constant.TakeEnum;
 import com.bm.fmkj.controller.GcActivityController;
 import com.bm.fmkj.dao.*;
@@ -360,7 +361,7 @@ public class GcActivityService {
 					FmRecyleLog recyleLog = new FmRecyleLog();
 					recyleLog.setUid(account.getId());
 					recyleLog.setFriendId(account.getId());
-					recyleLog.setRecyleType(2);
+					recyleLog.setRecyleType(RecyleEnum.TYPE_R.status);
 					recyleLog.setTakeDate(new Date());
 					recyleLog.setTakeNum(activity.getPar());
 					recyleLog.setTakeType(TakeEnum.USER_GET.status);
