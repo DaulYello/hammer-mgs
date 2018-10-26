@@ -8,14 +8,14 @@ import {
 const service = axios.create({
   //baseURL: process.env.BASE_API, // api的base_url
    baseURL: 'http://127.0.0.1:8080', // nmp run build 正式环境需要注释
-   timeout: 5000 // 请求超时时间
+   timeout: 30 * 1000 // 请求超时时间
 });
 // request拦截器
 service.interceptors.request.use(config => {
     console.log('request is start =>')
   // Do something before request is sent
     console.log('store.getters.token =>'+store.getters.token)
-    console.log('store.getters.token =>'+store.getters.uid)
+    console.log('store.gewebpack.prod.config.jstters.token =>'+store.getters.uid)
   if (store.getters.token) {
     config.headers['X-Fmkj-token'] = getToken(); // 让每个请求携带token--['X-Token']为自定义key 请根据实际情况自行修改
     config.headers['uid'] = getUid();

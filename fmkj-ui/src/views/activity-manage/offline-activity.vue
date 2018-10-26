@@ -19,12 +19,8 @@
                     <Page  style="text-align:center;margin-top:20px" @on-change="getDataPage" :total="pageInfo.total" :page-size="size" :current="pageInfo.pageNo" size="small" show-elevator show-total></Page>
                 </Card>
             </Col>
-            <Modal v-model="showDialog" title="阅读图片" ok-text="取消" cancel-text="" :loading="loading" @on-cancel="onCancel">
-                <Form ref="tiketForm" :label-width="120">
-                    <div>
-                        <img width="100" :src="picturePath"  />
-                    </div>
-                </Form>
+            <Modal title="阅览图片" v-model="showDialog">
+                <img :src="picturePath" style="width:100%"/>
             </Modal>
         </Row>
     </div>

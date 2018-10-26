@@ -6,4 +6,5 @@ public interface FmCntPoolMapper extends Mapper<FmCntPool> {
     FmCntPool queryCntPool();
 
     FmCntPool queryYesterdayCNT();
+
 }
