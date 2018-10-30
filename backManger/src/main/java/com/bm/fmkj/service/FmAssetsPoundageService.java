@@ -70,7 +70,7 @@ public class FmAssetsPoundageService {
 		LOGGER.info("fm_cnt_pool保存要释放的cnt："+ saveCnt);
 
 		int rate= Integer.parseInt(rateStr);
-		boolean result = fmassetspoundageMapper.updateYesterDayPDate(rate) >0 ? true : false;
+		boolean result = fmassetspoundageMapper.updateYesterDayPDate(rate,Integer.parseInt(cp_account)) >0 ? true : false;
 		if(!result){
 			LOGGER.info("批量更新fm_assets_poundage：的释放比率和更新时间失败！");
 			throw new RuntimeException();
