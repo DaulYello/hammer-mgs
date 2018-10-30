@@ -86,6 +86,7 @@ public class FmAssetsPoundageService {
 		HcAccount account = new HcAccount();
 		account.setId(Integer.parseInt(cp_account));
 		account.setCnt(hcAccount.getCnt()+subside);
+		account.setUpdateDate(new Date());
 		LOGGER.info("保存沉淀的cnt到公司账户");
 		boolean cntAccount = accountMapper.updateByPrimaryKeySelective(account) > 0 ? true : false;
 		if(cntAccount){
@@ -96,7 +97,7 @@ public class FmAssetsPoundageService {
 			recyleLog.setFriendId(Integer.parseInt(cp_account));
 			recyleLog.setRecyleType(RecyleEnum.TYPE_CNT.status);
 			recyleLog.setTakeType(TakeEnum.TAKE_GOODS.status);
-			recyleLog.setTakeMsg("确认收货公司账户获得" + subside + "CNT");
+			recyleLog.setTakeMsg("确认收货【"+account.getNickname()+"】获得" + subside + "CNT");
 			recyleLogMapper.insert(recyleLog);
 
 			map.put("status",cntAccount);

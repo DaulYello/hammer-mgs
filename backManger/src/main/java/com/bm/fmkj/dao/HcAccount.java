@@ -85,6 +85,18 @@ public class HcAccount {
 
     private Double cnt;
 
+    @Column(name = "update_date")
+    private Date updateDate;
+
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
     /**
      * @return id
      */

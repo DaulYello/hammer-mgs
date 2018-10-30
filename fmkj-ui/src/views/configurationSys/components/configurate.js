@@ -1,9 +1,6 @@
-import  from 'utils/fetch';
-import {appRouter} from 'router/router';
 import {
     getParams
 } from 'utils/params';
-//import VueRouter from "vue-router";
 
 //获取公告信息分页
 export function getNoticePage(pageNo,pageSize,query) {
