@@ -13,7 +13,7 @@ import java.util.HashMap;
 /**
  * @author:shuaghuang
  * @createtime 2018-10-25
- * @explanation 每天凌晨1点跑定时任务，统计前一天活动产生的手续费，将其x%释放，其余的保存到公司账户
+ * @explanation 每天凌晨12:30点跑定时任务，统计前一天活动产生的手续费，将其x%释放，其余的保存到公司账户
  */
 @Component("poundageTact")
 public class PoundageTact {
