@@ -22,15 +22,13 @@ public class PoundageTact {
 
     @Autowired
     private FmAssetsPoundageService assetsPoundageService;
+
+
+
     //poundage statistics and distribution
     public void poundageSAD(String param){
         LOGGER.info("定时任务的参数"+ JSON.toJSONString(param));
-        HashMap<String,Object> resultMap = assetsPoundageService.getCountPoundage(param);
-        if(resultMap.get("status").equals(true)){
-            LOGGER.info(resultMap.get("message").toString());
-        }else{
-            LOGGER.info(resultMap.get("message").toString());
-        }
+        assetsPoundageService.allotYesterdayActivityProCnt(param);
     }
 
 
