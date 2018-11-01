@@ -41,56 +41,12 @@
 
     <select id="queryLastInvitRank" resultType="java.util.HashMap">
         SELECT
-          h.id AS uid,
-          (SELECT
-            COUNT(1)
-          FROM
-            hc_account
-          WHERE rid = h.id
-            AND create_date BETWEEN
-            (SELECT
-              DATE_FORMAT(
-                DATE_SUB(
-                  DATE_SUB(
-                    CURDATE(),
-                    INTERVAL WEEKDAY(CURDATE()) DAY
-                  ),
-                  INTERVAL 1 WEEK
-                ),
-                '%Y-%m-%d 00:00:00'
-              ))
-            AND
-            (SELECT
-              DATE_FORMAT(
-                SUBDATE(CURDATE(), WEEKDAY(CURDATE()) + 1),
-                '%Y-%m-%d 23:59:59'
-              ))) AS invitingNum
+          t.rid AS uid,
+          COUNT(t.rid) AS invitingNum
         FROM
-          hc_account h
-        WHERE
-          (SELECT
-            COUNT(1)
-          FROM
-            hc_account
-          WHERE rid = h.id
-            AND create_date BETWEEN
-            (SELECT
-              DATE_FORMAT(
-                DATE_SUB(
-                  DATE_SUB(
-                    CURDATE(),
-                    INTERVAL WEEKDAY(CURDATE()) DAY
-                  ),
-                  INTERVAL 1 WEEK
-                ),
-                '%Y-%m-%d 00:00:00'
-              ))
-            AND
-            (SELECT
-              DATE_FORMAT(
-                SUBDATE(CURDATE(), WEEKDAY(CURDATE()) + 1),
-                '%Y-%m-%d 23:59:59'
-              ))) > 0
+          hc_account t
+        WHERE YEARWEEK(create_date, 1) = YEARWEEK(DATE_SUB(CURDATE(), INTERVAL 7 DAY), 1)
+        GROUP BY t.rid
         ORDER BY invitingNum DESC
         LIMIT 0, 3
     </select>
