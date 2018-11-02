@@ -19,7 +19,7 @@ public interface HcAccountMapper extends Mapper<HcAccount> {
 	
 	/**
 	 * 条件查询好友
-	 * @param pm
+	 * @param param
 	 * @return
 	 */
 	public List<HcAccount> queryUserByExample(HashMap<String, Object> param);
@@ -32,7 +32,7 @@ public interface HcAccountMapper extends Mapper<HcAccount> {
 	
 	/**
 	 * 分页查询用户的信息
-	 * @param pageQuery
+	 * @param hashMap
 	 * @return
 	 */
 	public List<HcAccount> queryUserInfo(HashMap<String, Object> hashMap);

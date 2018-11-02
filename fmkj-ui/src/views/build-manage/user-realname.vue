@@ -207,20 +207,20 @@
                     {
                         title: '审核状态',
                         align: 'center',
-                        key: 'status',
+                        key: 'cardStatus',
                         render:(h,params)=>{
                             let text = "";
-                            const status = params.row.status;
+                            const cardStatus = params.row.cardStatus;
                             if (status === 0) {
                                 text = "身份未认证";
                             }
-                            if (status === 1) {
-                                text = "已认证未审核";
+                            if (cardStatus === 1) {
+                                text = "未审核";
                             }
-                            if (status === 2) {
+                            if (cardStatus === 2) {
                                 text = "审核通过";
                             }
-                            if (status === -1) {
+                            if (cardStatus === -1) {
                                 text = "已驳回";
                             }
                             return h('span',text);

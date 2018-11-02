@@ -80,7 +80,7 @@ public class HcAccountController extends BaseController {
 	
 	/**
 	 * 查询用户的详细信息
-	 * @param pm
+	 * @param params
 	 * @return
 	 */
 	@RequestMapping(value="queryUserInfo", method=RequestMethod.GET)

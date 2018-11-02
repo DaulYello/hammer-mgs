@@ -118,7 +118,7 @@ export default {
                 {
                     title: '产品数量',
                     align: 'center',
-                    key: 'price',
+                    key: 'pnumber',
                     editable: true
                 },
                 {

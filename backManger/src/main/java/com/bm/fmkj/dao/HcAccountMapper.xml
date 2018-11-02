@@ -109,7 +109,7 @@
 		  WHERE
 		  EXISTS (SELECT 1 FROM bm_list bm WHERE hc.id = bm.uid AND bm.status = #{status}) and 1 = 1 
 		<if test="telephone != null">
-			and hc.telephone = #{telephone}
+			and hc.telephone like concat('%',#{telephone},'%')
 		</if>
 		<if test="cdbid != null">
 			and hc.cdbid = #{cdbid}
@@ -125,10 +125,10 @@
 		left join hc_account account on userimage.uid=account.id
 		where userimage.status=0 and 1=1
 		<if test="entity.telephone != null">
-			and account.telephone=#{entity.telephone}
+			and account.telephone like concat('%',#{entity.telephone},'%')
 		</if>
 		<if test="entity.nickname != null">
-			and account.nickname=#{entity.nickname}
+			and account.nickname like concat('%',#{entity.nickname},'%')
 		</if>
 		limit #{start},#{row};
 	</select>

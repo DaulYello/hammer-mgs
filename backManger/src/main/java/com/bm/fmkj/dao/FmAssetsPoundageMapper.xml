@@ -25,7 +25,7 @@
         fm_assets_poundage fm
       SET
         fm.release_rate = #{rate},
-        fm.uid = #{uid}
+        fm.uid = #{uid},
         fm.update_date = now()
       WHERE create_date BETWEEN
         (SELECT

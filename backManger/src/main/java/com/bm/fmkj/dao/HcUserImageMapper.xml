@@ -61,10 +61,10 @@
                 AND ha.nickname like concat('%', #{nickname}, '%')
             </if>
             <if test="telephone != null and telephone != ''">
-                AND ha.telephone=#{telephone}
+                AND ha.telephone like concat('%',#{telephone},'%')
             </if>
         </where>
-        order by hu.time
+        order by hu.time desc
     </select>
 
 </mapper>

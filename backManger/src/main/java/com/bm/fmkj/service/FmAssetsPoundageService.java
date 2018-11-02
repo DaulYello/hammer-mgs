@@ -59,7 +59,10 @@ public class FmAssetsPoundageService {
 		if(saveCnt<=0){
 			throw new RuntimeException("cntPool表中插入CNT时报错!");
 		}
-		LOGGER.info("fm_cnt_pool保存要释放的cnt："+ saveCnt);
+		if(totalCnt==0){
+			return;
+		}
+		LOGGER.info("fm_cnt_pool保存要释放的cnt返回影响的行数："+ saveCnt);
 		int rate= Integer.parseInt(rateStr);
 		boolean result = fmassetspoundageMapper.updateYesterDayPDate(rate,Integer.parseInt(cp_account)) >0 ? true : false;
 		if(!result){

@@ -45,8 +45,12 @@ public class RIntegralTask {
 		if (fmRpool == null || fmRpool.getRintegralNum() <= 0)
 			return;
 		//得到每天释放多少R积分
-		Double dayRinteg = fmRpool.getRintegralNum() / 365;
-
+		Double dayRinteg = 0D;
+		if(currentYear == 2018){
+			dayRinteg = fmRpool.getRintegralNum() / 60;
+		}else{
+			dayRinteg = fmRpool.getRintegralNum() / 365;
+		}
 		Date nowTime = new Date();
 
 		//每天分成6个阶段

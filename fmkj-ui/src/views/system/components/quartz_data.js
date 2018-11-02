@@ -88,6 +88,13 @@ export const columns = [
         }
     },
     {
+        title: '备注',
+        align: 'center',
+        width: 150,
+        key: 'remark',
+        editable: true
+    },
+    {
         title: '操作',
         align: 'center',
         width: 350,
