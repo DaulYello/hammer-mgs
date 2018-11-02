@@ -54,7 +54,8 @@
 			<if test="params != null and params.endTime != ''"><!-- 结束时间检索 -->
 				and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
 			</if>
-  	</where> 
+  	</where>
+      order by create_time desc
   </select>
   
   <delete id="deleteOperaLog" parameterType="int">

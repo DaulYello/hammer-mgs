@@ -82,18 +82,24 @@
                     {
                         title: '操作时间',
                         align: 'center',
-                        key: 'createTime'
+                        key: 'createTime',
+                        render: (h, params) => {
+                            return h('div',formatDateByLong(params.row.createTime,'yyyy-MM-dd h:s:m'));
+                        }
                     },
                     {
                         title: '操作类型',
                         align: 'center',
-                        key: 'operateType'
+                        key: 'operateStatus',
+                        render: (h,params)=>{
+                            return h('div',params.row.operateStatus==1 ? '成功' : '失败')
+                        }
                     },
                     {
                         title: '操作内容',
                         align: 'center',
                         width: 200,
-                        key: 'content'
+                        key: 'operateDesc'
                     },
                     {
                         title: '操作',
