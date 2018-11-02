@@ -15,6 +15,19 @@
     <result column="friend_id" jdbcType="VARCHAR" property="friendId" />
   </resultMap>
 
+  <resultMap id="BaseResultMap2" type="java.util.HashMap">
+
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="nickname" jdbcType="INTEGER" property="nickname" />
+    <result column="take_num" jdbcType="DOUBLE" property="takeNum" />
+    <result column="take_date" jdbcType="TIMESTAMP" property="takeDate" />
+    <result column="take_type" jdbcType="TINYINT" property="takeType" />
+    <result column="recyle_type" jdbcType="TINYINT" property="recyleType" />
+    <result column="take_msg" jdbcType="VARCHAR" property="takeMsg" />
+    <result column="nicknamef" jdbcType="VARCHAR" property="nicknamef" />
+  </resultMap>
+
+
   <insert id="addRecyletLog" parameterType="java.util.HashMap">
     INSERT INTO fm_recyle_log(uid, take_num, take_date, take_type, recyle_type, take_msg, friend_id) VALUES(#{uid}, #{recyleNum}, #{dateTime}, #{takeType}, #{recyleType}, #{takeMsg}, #{friendId})
   </insert>
@@ -33,4 +46,29 @@
           )
         </foreach >
   </insert>
+
+  <select id="getFmRecyleLogs" resultMap="BaseResultMap2" parameterType="java.util.HashMap">
+      SELECT fm.`id`,hc.nickname AS nickname,ha.`nickname` AS nicknamef,fm.`take_num`,fm.`take_date`,
+      CASE fm.`take_type`
+          WHEN 0 THEN '用户自己收取'
+          WHEN 1 THEN '定时任务回收'
+          WHEN 2 THEN '释放CNT时没有用户回收'
+          WHEN 3 THEN '未中锤奖励'
+          WHEN 4 THEN '周排行奖励'
+          WHEN 5 THEN '被用户偷取'
+          WHEN 6 THEN '参与活动扣除'
+          WHEN 7 THEN '邀请好友获得'
+          WHEN 8 THEN '确认收货后获取'
+          ELSE '错误类型' END AS take_type,
+      CASE fm.recyle_type
+          WHEN 1 THEN 'CNT'
+          WHEN 2 THEN 'R积分'
+          ELSE '错误类型' END AS recyle_type,
+      fm.take_msg
+      FROM fm_recyle_log fm LEFT JOIN hc_account hc ON fm.`uid`=hc.`id` LEFT JOIN hc_account ha ON fm.`friend_id` = ha.`id`  WHERE 1 = 1
+      <if test="nickname != null">
+        hc.nickname = #{nickname}
+      </if>
+  order by fm.`take_date` desc
+  </select>
 </mapper>

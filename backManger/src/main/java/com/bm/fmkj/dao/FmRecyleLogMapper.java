@@ -11,4 +11,6 @@ public interface FmRecyleLogMapper extends Mapper<FmRecyleLog> {
     void addRecyletLog(HashMap<String, Object> param);
 
     void batchAddRecyleLog(List<FmRecyleLog> recyleLogs);
+
+    List<FmRecyleLog> getFmRecyleLogs(HashMap<String, Object> param);
 }

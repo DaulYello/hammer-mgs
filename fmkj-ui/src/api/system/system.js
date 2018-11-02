@@ -135,4 +135,22 @@ export function deleteOperaLog(ids){
     });
 }
 
+//CNT出入日志的查询
+export function getFmRecyleLogs(pageNo,pageSize,query){
+    console.log("CNT出入日志的查询")
+    const data = {
+        pageNo,
+        pageSize
+    }
+    for (var k in query){
+        if (query[k] !=""){
+            data[k]=query[k];
+        }
+    }
+    return fetch({
+        url: '/backManger/fmkj/FmRecyleLog/getFmRecyleLogs' + getParams(data),
+        method: 'get'
+    });
+}
+
 

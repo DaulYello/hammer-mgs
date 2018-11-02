@@ -90,6 +90,7 @@ public class Helper {
      */
     public boolean init() {
         boolean bl = false;
+        log.info("初始化开始-------------------------------------------------------》 ");
         this.web3j = Web3j.build(new HttpService("http://" + this.ip + ":" + this.port));
         try {
             log.info("Connected to Ethereum client version: "

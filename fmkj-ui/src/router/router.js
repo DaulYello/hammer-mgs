@@ -142,6 +142,12 @@ export const appRouter = [
                 name: 'businessLog',
                 title: '业务操作日志',
                 component: () => import('@/views/system/business-operations-log.vue')
+            },{
+                path: 'cntLogRecode',
+                icon: 'folder',
+                name: 'cntLogRecode',
+                title: 'CNT/R积分日志记录',
+                component: () => import('@/views/system/cnt-recode-log.vue')
             }
         ]
     },
