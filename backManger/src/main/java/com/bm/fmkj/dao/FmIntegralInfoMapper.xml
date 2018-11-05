@@ -24,8 +24,11 @@
     <select id="queryRBefore" resultMap="BaseResultMap">
 
         SELECT
-          uid,
-          SUM(integral_num) AS integral_num
+          IF(
+            ISNULL(SUM(integral_num)),
+            0,
+            SUM(integral_num)
+          ) AS integral_num
         FROM
           fm_integral_info
         WHERE create_date BETWEEN
@@ -35,7 +38,6 @@
           (SELECT
             DATE_SUB(NOW(), INTERVAL 48 HOUR))
           AND STATUS = 0
-        GROUP BY uid
 
     </select>
 
