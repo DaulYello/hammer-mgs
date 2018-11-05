@@ -9,23 +9,25 @@
             <Col>
                 <Card showHead="false">
                     <Row>
-                        <Input v-model="query.nickname" placeholder="获得CNT用户昵称。。。" style="width: 200px;" />
-                        <Input v-model="query.channels" placeholder="获取渠道。。。" style="width: 200px;" />
-                        <!--<select v-model="myVal" v-model="query.takeType">-->
-                            <!--<option v-for="item in options" name="takeType" :value="item.value">
-                                {{item.name}}
-                            </option>-->
-                            <Form :model="query" ref="query" :label-width="80">
-                                <FormItem label="所属类型 : " prop="sendValue">
-                                    <Select style="width:200px" v-model="query.sendValue">
-                                        <Option v-for="item in query.stateList" :value="item.value" :key="item.value" name="sendValue">{{
-                                            item.label }}
-                                        </Option>
-                                    </Select>
-                                </FormItem>
-                            </Form>
-                        <!--</select>-->
-                        <Input v-model="query.recyleType" placeholder="所属类型。。。" style="width: 200px;" />
+                        <Input v-model="query.nickname" placeholder="获得CNT用户昵称。。。" style="width: 200px;margin-left: 50px;" />
+                        <Form :label-width="80" :inline="inline" style="float: left;">
+                            <FormItem label="获取渠道 : " prop="sendValue">
+                                <Select style="width:200px" v-model="query.sendValue">
+                                    <Option v-for="item in stateList" :value="item.value" :key="item.value" name="sendValue">
+                                        {{item.label }}
+                                    </Option>
+                                </Select>
+                            </FormItem>
+                        </Form>
+                        <Form :label-width="80" :inline="inline" style="float: left;">
+                            <FormItem label="所属类型 : " prop="typeValue">
+                                <Select style="width:200px" v-model="query.typeValue">
+                                    <Option v-for="item in typeList" :value="item.value" :key="item.value" name="typeValue">
+                                        {{item.label }}
+                                    </Option>
+                                </Select>
+                            </FormItem>
+                        </Form>
                         <span @click="handleSearch" style="margin: 0 10px;"><Button type="primary" icon="search">搜索</Button></span>
                     </Row>
                     <div class="margin-top-10">
@@ -64,61 +66,59 @@
                 size:20,
                 pageInfo:"",
                 pageData:[],
-                query:{
-                    stateList: [
-                        {
-                            value: '0',
-                            label: '待分配'
-                        },
-                        {
-                            value: '1',
-                            label: '开发中'
-                        },
-                        {
-                            value: '2',
-                            label: '已完成'
-                        },
-                        {
-                            value: '3',
-                            label: '停用'
-                        },
-                        {
-                            value: '4',
-                            label: '已变更'
-                        }
-                    ]
-                },
+                query:{},
+                inline:false,
+                stateList: [
+                    {
+                        value: '0',
+                        label: '用户自己收取'
+                    },
+                    {
+                        value: '1',
+                        label: '定时任务回收'
+                    },
+                    {
+                        value: '2',
+                        label: '释放CNT时没有用户回收'
+                    },
+                    {
+                        value: '3',
+                        label: '未中锤奖励'
+                    },
+                    {
+                        value: '4',
+                        label: '周排行奖励'
+                    },
+                    {
+                        value: '5',
+                        label: '被用户偷取'
+                    },
+                    {
+                        value: '6',
+                        label: '参与活动扣除'
+                    },
+                    {
+                        value: '7',
+                        label: '邀请好友获得'
+                    },
+                    {
+                        value: '8',
+                        label: '确认收货后获取'
+                    }
+                ],
+                typeList:[
+                    {
+                        value: '1',
+                        label: 'CNT'
+                    },
+                    {
+                        value: '2',
+                        label: 'R积分'
+                    }
+                ],
                 value:'',
                 multipleSelection:[],
-                // label:['CNT','R积分'],
-                /*labelInValue:true,*/
-                /*disabled:false,*/
-                // placeholder:'所属类型',
-                // name:'所属类型,,',
-                // elementId:'1',
-               /* myVal:0, //默认选中第一项
-                options:[
-                    {
-                        name:'所属类型',
-                        value:0
-                    },
-                    {
-                        name:'CNT',
-                        value:1
-                    },
-                    {
-                        name:'R积分',
-                        value:2
-                    },
-                ],*/
                 columns:[
-                    /*{
-                        title: '序号',
-                        type: 'selection',
-                        width: 80,
-                        key: 'id',
-                        align: 'center'
-                    },*/
                     {
                         title: '序号',
                         align: 'center',

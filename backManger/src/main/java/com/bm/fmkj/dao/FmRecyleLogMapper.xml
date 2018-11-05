@@ -67,7 +67,13 @@
       fm.take_msg
       FROM fm_recyle_log fm LEFT JOIN hc_account hc ON fm.`uid`=hc.`id` LEFT JOIN hc_account ha ON fm.`friend_id` = ha.`id`  WHERE 1 = 1
       <if test="nickname != null">
-        hc.nickname = #{nickname}
+        and hc.nickname = #{nickname}
+      </if>
+      <if test="sendValue != null">
+        and fm.take_type = #{sendValue}
+      </if>
+      <if test="typeValue != null">
+        and fm.recyle_type = #{typeValue}
       </if>
   order by fm.`take_date` desc
   </select>
