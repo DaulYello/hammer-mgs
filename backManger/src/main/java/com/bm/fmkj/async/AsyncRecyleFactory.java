@@ -73,16 +73,16 @@ public class AsyncRecyleFactory {
                     Double totalNum = 0D;
                     List<FmRecyleLog> recyleLogs = new ArrayList<>();
                     for(FmIntegralInfo info : integralInfoList){
+                        totalNum = info.getIntegralNum();
                         FmRecyleLog recyleLog = new FmRecyleLog();
                         recyleLog.setUid(uid);
-                        recyleLog.setFriendId(info.getUid());
+                        recyleLog.setFriendId(uid);
                         recyleLog.setTakeNum(info.getIntegralNum());
                         recyleLog.setTakeDate(new Date());
                         recyleLog.setTakeType(TakeEnum.TYPE_TASK.status);
                         recyleLog.setRecyleType(RecyleEnum.TYPE_R.status);
                         recyleLog.setTakeMsg("系统回收了" + totalNum + "R积分到积分池");
                         recyleLogs.add(recyleLog);
-                        totalNum = totalNum + info.getIntegralNum();
                     }
                     FmRpool fmRpool  = SpringContextUtil.getBean(FmRpoolService.class).queryRpoolByYear(DateUtil.getSysYear());
                     if(StringUtils.isNull(fmRpool)){

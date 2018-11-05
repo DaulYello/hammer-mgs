@@ -106,7 +106,7 @@ public class FmRpoolService {
 	}
 
 	public void recyleR(FmRpool fmRpool, List<FmRecyleLog> recyleLogs) {
-		fmrpoolMapper.updateByPrimaryKey(fmRpool);
+		fmrpoolMapper.updateByPrimaryKeySelective(fmRpool);
 		fmRecyleLogMapper.batchAddRecyleLog(recyleLogs);
 	}
 }
