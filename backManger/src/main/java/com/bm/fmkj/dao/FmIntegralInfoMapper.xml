@@ -33,13 +33,29 @@
           fm_integral_info
         WHERE create_date BETWEEN
           (SELECT
-            DATE_SUB(NOW(), INTERVAL 120 HOUR))
+            DATE_SUB(NOW(), INTERVAL 240 HOUR))
           AND
           (SELECT
             DATE_SUB(NOW(), INTERVAL 48 HOUR))
           AND STATUS = 0
 
     </select>
+
+    <update id="updateFmIntegral">
+
+        UPDATE
+          fm_integral_info
+        SET
+          STATUS = 2
+        WHERE create_date BETWEEN
+          (SELECT
+            DATE_SUB(NOW(), INTERVAL 240 HOUR))
+          AND
+          (SELECT
+            DATE_SUB(NOW(), INTERVAL 48 HOUR))
+          AND STATUS = 0
+
+    </update>
 
     <select id="queryLastInvitRank" resultType="java.util.HashMap">
         SELECT

@@ -1,12 +1,11 @@
 package com.bm.fmkj.service;
 
 import com.bm.fmkj.dao.FmIntegralInfo;
+import com.bm.fmkj.dao.FmIntegralInfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.bm.fmkj.dao.FmIntegralInfoMapper;
 
-import java.util.HashMap;
 import java.util.List;
 
 @Transactional
