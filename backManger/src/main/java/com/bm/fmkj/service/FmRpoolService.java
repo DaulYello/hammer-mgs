@@ -105,9 +105,13 @@ public class FmRpoolService {
 		fmRecyleLogMapper.addRecyletLog(param);
 	}
 
-	public void recyleR(FmRpool fmRpool, List<FmRecyleLog> recyleLogs) {
+	public void recyleR(int uid, Double totalNum, FmRpool fmRpool, List<FmRecyleLog> recyleLogs) {
+		HashMap<String, Object> param = new HashMap<>();
+		param.put("uid", uid);
+		param.put("totalNum", totalNum);
 		fmrpoolMapper.updateByPrimaryKeySelective(fmRpool);
 		fmRecyleLogMapper.batchAddRecyleLog(recyleLogs);
 		fmintegralinfoMapper.updateFmIntegral();
+		fmintegralinfoMapper.recyleRToAccount(param);
 	}
 }

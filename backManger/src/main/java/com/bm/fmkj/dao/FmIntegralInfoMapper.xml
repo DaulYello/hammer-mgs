@@ -41,6 +41,14 @@
 
     </select>
 
+    <update id="recyleRToAccount" parameterType="java.util.HashMap">
+        UPDATE
+            hc_account h
+          SET
+            h.my_p = h.my_p + #{totalNum}
+          WHERE h.id = #{uid}
+    </update>
+
     <update id="updateFmIntegral">
 
         UPDATE

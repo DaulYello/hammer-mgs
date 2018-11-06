@@ -94,7 +94,7 @@ public class AsyncRecyleFactory {
                         fmRpool.setRecycleNum(fmRpool.getRecycleNum() + totalNum);
                     }
                     fmRpool.setUpdatedate(new Date());
-                    SpringContextUtil.getBean(FmRpoolService.class).recyleR(fmRpool, recyleLogs);
+                    SpringContextUtil.getBean(FmRpoolService.class).recyleR(uid, totalNum, fmRpool, recyleLogs);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
