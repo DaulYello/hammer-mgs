@@ -84,9 +84,9 @@ public class AsyncRecyleFactory {
                         recyleLog.setTakeDate(new Date());
                         recyleLog.setTakeType(TakeEnum.TYPE_TASK.status);
                         recyleLog.setRecyleType(RecyleEnum.TYPE_R.status);
-                        recyleLog.setTakeMsg("系统回收了" + totalNum + "R积分到公司账户");
                         recyleLogs.add(recyleLog);
                         totalNum = totalNum + info.getIntegralNum();
+                        recyleLog.setTakeMsg("系统回收了" + totalNum + "R积分到公司账户");
                     }
                     if(StringUtils.isNull(fmRpool.getRecycleNum())){
                         fmRpool.setRecycleNum(totalNum);
