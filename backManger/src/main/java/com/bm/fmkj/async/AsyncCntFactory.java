@@ -2,15 +2,10 @@ package com.bm.fmkj.async;
 
 
 import com.bm.fmkj.dao.FmCntInfo;
-import com.bm.fmkj.dao.FmIntegralInfo;
-import com.bm.fmkj.dao.FmRpool;
 import com.bm.fmkj.service.FmCntInfoService;
-import com.bm.fmkj.service.FmIntegralInfoService;
-import com.bm.fmkj.service.FmRpoolService;
 import com.bm.fmkj.utils.SpringContextUtil;
 import com.bm.fmkj.utils.StringUtils;
 
-import java.util.Date;
 import java.util.List;
 import java.util.TimerTask;
 
@@ -35,10 +30,10 @@ public class AsyncCntFactory {
             public void run() {
                 try {
                     //如果onePhase为空、则oneAllotR回收到公司CNT账户
-                    if (StringUtils.isEmpty(onePhase) && StringUtils.isNotNull(oneAllotN)){
+                    if (StringUtils.isNotEmpty(onePhase)){
                         //回收到公司CNT账户
-                        SpringContextUtil.getBean(FmCntInfoService.class).recyleToAccount(oneAllotN, poolId, uid);
-                    }else{
+                       /* SpringContextUtil.getBean(FmCntInfoService.class).recyleToAccount(oneAllotN, poolId, uid);
+                    }else{*/
                         //批量平均分配给用户
                         Double cntNum = oneAllotN / onePhase.size();
                         for(FmCntInfo info : onePhase){
@@ -69,10 +64,10 @@ public class AsyncCntFactory {
                 try {
                     Double allotN = twoAllotN + oneDilutN;
                     //如果onePhase为空、则oneAllotR回收到公司CNT账户
-                    if (StringUtils.isEmpty(twoPhase)){
+                    if (StringUtils.isNotEmpty(twoPhase)){
                         //回收到公司CNT账户
-                        SpringContextUtil.getBean(FmCntInfoService.class).recyleToAccount(allotN, poolId, uid);
-                    }else{
+                       /* SpringContextUtil.getBean(FmCntInfoService.class).recyleToAccount(allotN, poolId, uid);
+                    }else{*/
                         //批量平均分配给用户
                         Double cntNum = allotN / twoPhase.size();
                         for(FmCntInfo info : twoPhase){
@@ -104,10 +99,10 @@ public class AsyncCntFactory {
                 try {
                     Double allotN = threeAllotN + oneDilutN + twoDilutN;
                     //如果onePhase为空、则oneAllotR回收到公司CNT账户
-                    if (StringUtils.isEmpty(threePhase)){
+                    if (StringUtils.isNotEmpty(threePhase)){
                         //回收到公司CNT账户
-                        SpringContextUtil.getBean(FmCntInfoService.class).recyleToAccount(allotN, poolId, uid);
-                    }else{
+                       /* SpringContextUtil.getBean(FmCntInfoService.class).recyleToAccount(allotN, poolId, uid);
+                    }else{*/
                         //批量平均分配给用户
                         Double cntNum = allotN / threePhase.size();
                         for(FmCntInfo info : threePhase){
@@ -141,10 +136,10 @@ public class AsyncCntFactory {
                 try {
                     Double allotN = fourAllotN + oneDilutN + twoDilutN + threeDilutN;
                     //如果onePhase为空、则oneAllotR回收到公司CNT账户
-                    if (StringUtils.isEmpty(fourPhase)){
+                    if (StringUtils.isNotEmpty(fourPhase)){
                         //回收到公司CNT账户
-                        SpringContextUtil.getBean(FmCntInfoService.class).recyleToAccount(allotN, poolId, uid);
-                    }else{
+                       /* SpringContextUtil.getBean(FmCntInfoService.class).recyleToAccount(allotN, poolId, uid);
+                    }else{*/
                         //批量平均分配给用户
                         Double cntNum = allotN / fourPhase.size();
                         for(FmCntInfo info : fourPhase){
@@ -177,10 +172,10 @@ public class AsyncCntFactory {
                 try {
                     Double allotN = fiveN + oneDilutN + twoDilutN + threeDilutN + fourDilutN;
                     //如果onePhase为空、则oneAllotR回收到公司CNT账户
-                    if (StringUtils.isEmpty(fivePhase)){
+                    if (StringUtils.isNotEmpty(fivePhase)){
                         //回收到公司CNT账户
-                        SpringContextUtil.getBean(FmCntInfoService.class).recyleToAccount(allotN, poolId, uid);
-                    }else{
+                       /* SpringContextUtil.getBean(FmCntInfoService.class).recyleToAccount(allotN, poolId, uid);
+                    }else{*/
                         //批量平均分配给用户
                         Double cntNum = allotN / fivePhase.size();
                         for(FmCntInfo info : fivePhase){

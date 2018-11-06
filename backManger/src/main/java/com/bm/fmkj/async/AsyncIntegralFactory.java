@@ -4,13 +4,9 @@ package com.bm.fmkj.async;
 import com.bm.fmkj.dao.FmIntegralInfo;
 import com.bm.fmkj.dao.FmRpool;
 import com.bm.fmkj.service.FmIntegralInfoService;
-import com.bm.fmkj.service.FmRpoolService;
 import com.bm.fmkj.utils.SpringContextUtil;
 import com.bm.fmkj.utils.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.TimerTask;
 
@@ -35,12 +31,12 @@ public class AsyncIntegralFactory {
             public void run() {
                 try {
                     //如果onePhase为空、则oneAllotR回收到R积分回收池
-                    if (StringUtils.isEmpty(onePhase) && StringUtils.isNotNull(oneAllotR)){
+                    if (StringUtils.isNotEmpty(onePhase)){
                         //回收到R积分回收池
-                        fmRpool.setRecycleNum(fmRpool.getRecycleNum() + oneAllotR);
+                       /* fmRpool.setRecycleNum(fmRpool.getRecycleNum() + oneAllotR);
                         fmRpool.setUpdatedate(new Date());
                         SpringContextUtil.getBean(FmRpoolService.class).updateRecycle(fmRpool, oneAllotR, uid);
-                    }else{
+                   */
                         //批量平均分配给用户
                         Double integralNum = oneAllotR / onePhase.size();
                         for(FmIntegralInfo info : onePhase){
@@ -71,12 +67,12 @@ public class AsyncIntegralFactory {
                 try {
                     Double allotR = twoAllotR + oneDilutR;
                     //如果onePhase为空、则twoAllotR回收到R积分回收池
-                    if (StringUtils.isEmpty(twoPhase)){
+                    if (StringUtils.isNotEmpty(twoPhase)){
                         //回收到R积分回收池
-                        fmRpool.setRecycleNum(fmRpool.getRecycleNum() + allotR);
+                      /*  fmRpool.setRecycleNum(fmRpool.getRecycleNum() + allotR);
                         fmRpool.setUpdatedate(new Date());
                         SpringContextUtil.getBean(FmRpoolService.class).updateRecycle(fmRpool, allotR, uid);
-                    }else{
+                    }else{*/
                         //批量平均分配给用户
                         Double integralNum = allotR / twoPhase.size();
                         for(FmIntegralInfo info : twoPhase){
@@ -107,12 +103,12 @@ public class AsyncIntegralFactory {
                 try {
                     Double allotR = threeAllotR + oneDilutR + twoDilutR;
                     //如果onePhase为空、则threeAllotR回收到R积分回收池
-                    if (StringUtils.isEmpty(threePhase)){
+                    if (StringUtils.isNotEmpty(threePhase)){
                         //回收到R积分回收池
-                        fmRpool.setRecycleNum(fmRpool.getRecycleNum() + allotR);
+                       /* fmRpool.setRecycleNum(fmRpool.getRecycleNum() + allotR);
                         fmRpool.setUpdatedate(new Date());
                         SpringContextUtil.getBean(FmRpoolService.class).updateRecycle(fmRpool, allotR, uid);
-                    }else{
+                    }else{*/
                         //批量平均分配给用户
                         Double integralNum = allotR / threePhase.size();
                         for(FmIntegralInfo info : threePhase){
@@ -146,12 +142,12 @@ public class AsyncIntegralFactory {
                 try {
                     Double allotR = fourAllotR + oneDilutR + twoDilutR + threeDilutR;
                     //如果onePhase为空、则fourAllotR回收到R积分回收池
-                    if (StringUtils.isEmpty(fourPhase)){
+                    if (StringUtils.isNotEmpty(fourPhase)){
                         //回收到R积分回收池
-                        fmRpool.setRecycleNum(fmRpool.getRecycleNum() + allotR);
+                       /* fmRpool.setRecycleNum(fmRpool.getRecycleNum() + allotR);
                         fmRpool.setUpdatedate(new Date());
                         SpringContextUtil.getBean(FmRpoolService.class).updateRecycle(fmRpool, allotR, uid);
-                    }else{
+                    }else{*/
                         //批量平均分配给用户
                         Double integralNum = allotR / fourPhase.size();
                         for(FmIntegralInfo info : fourPhase){
@@ -184,12 +180,12 @@ public class AsyncIntegralFactory {
                 try {
                     Double allotR = fiveR + oneDilutR + twoDilutR + threeDilutR + fourDilutR;
                     //如果onePhase为空、则fourAllotR回收到R积分回收池
-                    if (StringUtils.isEmpty(fivePhase)){
+                    if (StringUtils.isNotEmpty(fivePhase)){
                         //回收到R积分回收池
-                        fmRpool.setRecycleNum(fmRpool.getRecycleNum() + allotR);
+                        /*fmRpool.setRecycleNum(fmRpool.getRecycleNum() + allotR);
                         fmRpool.setUpdatedate(new Date());
                         SpringContextUtil.getBean(FmRpoolService.class).updateRecycle(fmRpool, allotR, uid);
-                    }else{
+                    }else{*/
                         //批量平均分配给用户
                         Double integralNum = allotR / fivePhase.size();
                         for(FmIntegralInfo info : fivePhase){

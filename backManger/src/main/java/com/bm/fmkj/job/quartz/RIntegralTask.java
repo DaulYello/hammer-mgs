@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -53,35 +54,6 @@ public class RIntegralTask {
 		}
 		Date nowTime = new Date();
 
-		//每天分成6个阶段
-		//int phase = getPhase(nowTime);
-
-		//每个用户获取的R将均分6份，在24小时内分6个时段，在每个时段随机投放1份。
-		Double everyRinteg = dayRinteg / 6;
-
-		//0~1000 用户一共得到当天20%, 分配60%R积分、40%向下稀释给飞羽更高高阶段的用户
-		Double oneR = everyRinteg * 0.2;
-		Double oneAllotR = oneR * 0.6;
-		Double oneDilutR = oneR * 0.4;
-
-		//1000~3000 用户一共得到当天10%, 分配70%R积分、30%向下稀释给飞羽更高高阶段的用户
-		Double twoR = everyRinteg * 0.1;
-		Double twoAllotR = twoR * 0.7;
-		Double twoDilutR = twoR * 0.3;
-
-		//3000~6000 用户一共得到当天20%, 分配80%R积分、20%向下稀释给飞羽更高高阶段的用户
-		Double threeR = everyRinteg * 0.2;
-		Double threeAllotR = threeR * 0.8;
-		Double threeDilutR = threeR * 0.2;
-
-		//6000~10000 用户一共得到当天20%, 分配90%R积分、10%向下稀释给飞羽更高高阶段的用户
-		Double fourR = everyRinteg * 0.3;
-		Double fourAllotR = fourR * 0.9;
-		Double fourDilutR = fourR * 0.1;
-
-
-		//10000以上用户一共得到当天20%
-		Double fiveR = everyRinteg * 0.2;
 
 		//第二步：按用户飞羽区间统计用户
 
@@ -97,6 +69,7 @@ public class RIntegralTask {
 		List<FmIntegralInfo> fivePhase = new ArrayList<>();
 
 		List hcAccountList = hcaccountService.queryUserPointNum();
+
 		if(StringUtils.isNotEmpty(hcAccountList)){
 			for(int i = 0; i < hcAccountList.size(); i++){
 				FmIntegralInfo fmIntegralInfo = new FmIntegralInfo();
@@ -121,7 +94,42 @@ public class RIntegralTask {
 					fivePhase.add(fmIntegralInfo);
 				}
 			}
+
 		}
+
+		//计算权重
+		int total = hcAccountList.size();
+		DecimalFormat df=new DecimalFormat("0.00");
+		//每天分成6个阶段
+		//int phase = getPhase(nowTime);
+
+		//每个用户获取的R将均分6份，在24小时内分6个时段，在每个时段随机投放1份。
+		Double everyRinteg = dayRinteg / 6;
+
+		//0~1000 用户一共得到当天20%, 分配60%R积分、40%向下稀释给飞羽更高高阶段的用户
+		Double oneR = everyRinteg * Double.parseDouble(df.format((float)onePhase.size()/total));
+		Double oneAllotR = oneR * 0.6;
+		Double oneDilutR = oneR * 0.4;
+
+		//1000~3000 用户一共得到当天10%, 分配70%R积分、30%向下稀释给飞羽更高高阶段的用户
+		Double twoR = everyRinteg * Double.parseDouble(df.format((float)twoPhase.size()/total));
+		Double twoAllotR = twoR * 0.7;
+		Double twoDilutR = twoR * 0.3;
+
+		//3000~6000 用户一共得到当天20%, 分配80%R积分、20%向下稀释给飞羽更高高阶段的用户
+		Double threeR = everyRinteg * Double.parseDouble(df.format((float)threePhase.size()/total));
+		Double threeAllotR = threeR * 0.8;
+		Double threeDilutR = threeR * 0.2;
+
+		//6000~10000 用户一共得到当天20%, 分配90%R积分、10%向下稀释给飞羽更高高阶段的用户
+		Double fourR = everyRinteg * Double.parseDouble(df.format((float)fourPhase.size()/total));
+		Double fourAllotR = fourR * 0.9;
+		Double fourDilutR = fourR * 0.1;
+
+
+		//10000以上用户一共得到当天20%
+		Double fiveR = everyRinteg * Double.parseDouble(df.format((float)fivePhase.size()/total));
+
 
 		AsyncManager.me().execute(AsyncIntegralFactory.excuteOnePhase(onePhase, oneAllotR, fmRpool, uid));
 
@@ -134,6 +142,7 @@ public class RIntegralTask {
 		AsyncManager.me().execute(AsyncIntegralFactory.excuteFivePhase(fivePhase, fiveR, oneDilutR * 0.25, twoDilutR * 0.4, threeDilutR * 0.5, fourDilutR, fmRpool, uid));
 
 	}
+
 
 
 

@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -51,29 +52,6 @@ public class CntTask {
 		Double cntPool = fmCntPool.getCntPool() / 2;
 		int poolId = fmCntPool.getId();
 
-		//0~1000 用户一共得到当天20%, 分配60%R积分、40%向下稀释给飞羽更高高阶段的用户
-		Double oneN = cntPool * 0.2;
-		Double oneAllotN = oneN * 0.6;
-		Double oneDilutN = oneN * 0.4;
-
-		//1000~3000 用户一共得到当天10%, 分配70%R积分、30%向下稀释给飞羽更高高阶段的用户
-		Double twoN = cntPool * 0.1;
-		Double twoAllotN = twoN * 0.7;
-		Double twoDilutN = twoN * 0.3;
-
-		//3000~6000 用户一共得到当天20%, 分配80%R积分、20%向下稀释给飞羽更高高阶段的用户
-		Double threeN = cntPool * 0.2;
-		Double threeAllotN = threeN * 0.8;
-		Double threeDilutN = threeN * 0.2;
-
-		//6000~10000 用户一共得到当天20%, 分配90%R积分、10%向下稀释给飞羽更高高阶段的用户
-		Double fourN = cntPool * 0.3;
-		Double fourAllotN = fourN * 0.9;
-		Double fourDilutN = fourN * 0.1;
-
-
-		//10000以上用户一共得到当天20%
-		Double fiveN = cntPool * 0.2;
 
 
 		//第二步：按用户飞羽区间统计用户
@@ -114,6 +92,34 @@ public class CntTask {
 				}
 			}
 		}
+
+		//计算权重
+		int total = hcAccountList.size();
+		DecimalFormat df=new DecimalFormat("0.00");
+
+		//0~1000 用户一共得到当天20%, 分配60%R积分、40%向下稀释给飞羽更高高阶段的用户
+		Double oneN = cntPool * Double.parseDouble(df.format((float)onePhase.size()/total));
+		Double oneAllotN = oneN * 0.6;
+		Double oneDilutN = oneN * 0.4;
+
+		//1000~3000 用户一共得到当天10%, 分配70%R积分、30%向下稀释给飞羽更高高阶段的用户
+		Double twoN = cntPool * Double.parseDouble(df.format((float)twoPhase.size()/total));
+		Double twoAllotN = twoN * 0.7;
+		Double twoDilutN = twoN * 0.3;
+
+		//3000~6000 用户一共得到当天20%, 分配80%R积分、20%向下稀释给飞羽更高高阶段的用户
+		Double threeN = cntPool * Double.parseDouble(df.format((float)threePhase.size()/total));
+		Double threeAllotN = threeN * 0.8;
+		Double threeDilutN = threeN * 0.2;
+
+		//6000~10000 用户一共得到当天20%, 分配90%R积分、10%向下稀释给飞羽更高高阶段的用户
+		Double fourN = cntPool * Double.parseDouble(df.format((float)fourPhase.size()/total));
+		Double fourAllotN = fourN * 0.9;
+		Double fourDilutN = fourN * 0.1;
+
+
+		//10000以上用户一共得到当天20%
+		Double fiveN = cntPool * Double.parseDouble(df.format((float)fivePhase.size()/total));
 
 		AsyncManager.me().execute(AsyncCntFactory.excuteOnePhase(onePhase, oneAllotN, poolId, uid));
 
