@@ -76,7 +76,8 @@ export function updateQuartz(obj) {
         methodParams: obj.methodParams,
         cronExpression: obj.cronExpression,
         misfirePolicy: obj.misfirePolicy,
-        status: obj.status
+        status: obj.status,
+        remark: obj.remark
     };
     return fetch({
         url: '/backManger/fmkj/job/updateJob' +  getParams(data),

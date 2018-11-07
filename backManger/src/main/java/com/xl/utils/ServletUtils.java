@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.alibaba.fastjson.JSON;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 public class ServletUtils {
 
@@ -68,4 +71,15 @@ public class ServletUtils {
 		return null == obj ? "" : obj;
 	}
 
+	/**
+	 * 获取request
+	 */
+	public static HttpServletRequest getRequest() {
+		return getRequestAttributes().getRequest();
+	}
+
+	public static ServletRequestAttributes getRequestAttributes() {
+		RequestAttributes attributes = RequestContextHolder.getRequestAttributes();
+		return (ServletRequestAttributes) attributes;
+	}
 }

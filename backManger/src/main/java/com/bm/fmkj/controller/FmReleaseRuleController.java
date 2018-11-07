@@ -1,10 +1,12 @@
 package com.bm.fmkj.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.bm.fmkj.annotation.BackLog;
 import com.bm.fmkj.base.BaseResult;
 import com.bm.fmkj.base.BaseResultEnum;
 import com.bm.fmkj.base.PageQuery;
 import com.bm.fmkj.base.Pagenation;
+import com.bm.fmkj.constant.LogConstant;
 import com.bm.fmkj.dao.FmRpool;
 import com.bm.fmkj.utils.StringUtils;
 import org.slf4j.Logger;
@@ -55,6 +57,7 @@ public class FmReleaseRuleController extends BaseController {
 	 * @param fmReleaseRule
 	 * @return
 	 */
+	@BackLog(module = LogConstant.BACK_INTEGRAL,actionDesc = "新增积分规则")
 	@RequestMapping(value="addIntegrateRule",method=RequestMethod.POST)
 	@ResponseBody
 	public BaseResult<Boolean> addIntegrateRule(FmReleaseRule fmReleaseRule){
@@ -76,6 +79,7 @@ public class FmReleaseRuleController extends BaseController {
 	 * @param fmReleaseRule
 	 * @return
 	 */
+	@BackLog(module = LogConstant.BACK_INTEGRAL,actionDesc = "修改积分规则")
 	@RequestMapping(value="editIntegralRule",method=RequestMethod.POST)
 	@ResponseBody
 	public BaseResult<Boolean> editIntegralRule(FmReleaseRule fmReleaseRule){
@@ -97,6 +101,7 @@ public class FmReleaseRuleController extends BaseController {
 	 * @param id
 	 * @return
 	 */
+	@BackLog(module = LogConstant.BACK_INTEGRAL,actionDesc = "删除积分规则")
 	@RequestMapping(value="dropIntegrationRule",method=RequestMethod.GET)
 	@ResponseBody
 	public BaseResult<Boolean> dropIntegrationRule(@RequestParam String id){

@@ -1,10 +1,12 @@
 package com.bm.fmkj.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.bm.fmkj.annotation.BackLog;
 import com.bm.fmkj.base.BaseResult;
 import com.bm.fmkj.base.BaseResultEnum;
 import com.bm.fmkj.base.PageQuery;
 import com.bm.fmkj.base.Pagenation;
+import com.bm.fmkj.constant.LogConstant;
 import com.bm.fmkj.utils.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,6 +54,7 @@ public class FmRpoolController extends BaseController {
     /**
      * 新增
      */
+    @BackLog(module = LogConstant.BACK_INTEGRAL,actionDesc = "新增积分池")
     @RequestMapping(value="addIntegrate",method=RequestMethod.POST)
     @ResponseBody
     public BaseResult<Boolean> addIntegrate(FmRpool fmRpool){
@@ -71,6 +74,7 @@ public class FmRpoolController extends BaseController {
     /**
      * 编辑修改
      */
+    @BackLog(module = LogConstant.BACK_INTEGRAL,actionDesc = "新增积分池")
     @RequestMapping(value="editIntegral",method=RequestMethod.POST)
     @ResponseBody
     public BaseResult<Boolean> editIntegral(FmRpool fmRpool){
@@ -90,6 +94,7 @@ public class FmRpoolController extends BaseController {
     /**
      * 删除
      */
+    @BackLog(module = LogConstant.BACK_INTEGRAL,actionDesc = "删除积分池")
     @RequestMapping(value="dropIntegration",method=RequestMethod.GET)
     @ResponseBody
     public BaseResult<Boolean> dropIntegration(@RequestParam String id){

@@ -243,8 +243,7 @@ public class SysOperateLog {
 
     /**
      * 设置主机
-     *
-     * @param requestHost 主机
+      * @param requestHost 主机
      */
     public void setRequestHost(String requestHost) {
         this.requestHost = requestHost;

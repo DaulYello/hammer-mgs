@@ -2,6 +2,8 @@ package com.bm.fmkj.controller;
 
 import java.util.HashMap;
 
+import com.bm.fmkj.annotation.BackLog;
+import com.bm.fmkj.constant.LogConstant;
 import com.bm.fmkj.dao.GcJoinactivityrecord;
 import com.bm.fmkj.service.GcJoinactivityrecordService;
 import org.slf4j.Logger;
@@ -59,6 +61,7 @@ public class GcActivityController extends BaseController {
 	/**
 	 * 通过id及传入参数修改活动数据 status状态-- 1.通过上线 2.強制下线 3.不通过
 	 */
+	@BackLog(module= LogConstant.BACK_HAMMER, actionDesc = "审核活动")
 	@RequestMapping(value = "auditActivity", method = RequestMethod.POST)
 	@ResponseBody
 	public BaseResult<HashMap<String,Object>> auditActivity(@RequestParam HashMap<String,Object> params) {
@@ -78,6 +81,7 @@ public class GcActivityController extends BaseController {
 	 * @param params
 	 * @return
 	 */
+	@BackLog(module= LogConstant.BACK_HAMMER, actionDesc = "活动进入参与状态、竟锤状态以及获取优胜者")
 	@RequestMapping(value = "updatepuzzleHammerState", method = RequestMethod.POST)
 	@ResponseBody
 	public BaseResult<HashMap<String,Object>> updatepuzzleHammerState(@RequestParam HashMap<String, Object> params) {

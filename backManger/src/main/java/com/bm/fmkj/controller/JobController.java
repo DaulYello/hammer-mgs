@@ -2,6 +2,8 @@ package com.bm.fmkj.controller;
 
 import java.util.HashMap;
 
+import com.bm.fmkj.annotation.BackLog;
+import com.bm.fmkj.constant.LogConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +62,7 @@ public class JobController{
 	/**
 	 * 新增
 	 */
+	@BackLog(module= LogConstant.BACK_SYSTEM, actionDesc = "新增job")
 	@RequestMapping(value="addJob",method=RequestMethod.POST)
 	@ResponseBody
 	public BaseResult<Boolean> addJob(Job job){
@@ -78,6 +81,7 @@ public class JobController{
 	/**
 	 * 编辑修改
 	 */
+	@BackLog(module= LogConstant.BACK_SYSTEM, actionDesc = "编辑修改")
 	@RequestMapping(value="updateJob",method=RequestMethod.POST)
 	@ResponseBody
 	public BaseResult<Boolean> updateJob(Job job){
@@ -90,12 +94,12 @@ public class JobController{
 			return new BaseResult<Boolean>(BaseResultEnum.SUCCESS,true);
 		}
 		return new BaseResult<Boolean>(BaseResultEnum.ERROR,false);
-	
 	}
 	
 	/**
 	 * 删除
 	 */
+	@BackLog(module= LogConstant.BACK_SYSTEM, actionDesc = "删除job")
 	@RequestMapping(value="deleteJob",method=RequestMethod.GET)
 	@ResponseBody
 	public BaseResult<Boolean> deleteJob(@RequestParam String ids){
@@ -114,6 +118,7 @@ public class JobController{
 	/**
 	 * 启用、改变状态
 	 */
+	@BackLog(module= LogConstant.BACK_SYSTEM, actionDesc = "启用、改变状态")
 	@RequestMapping(value="changeStatus",method=RequestMethod.POST)
 	@ResponseBody
 	public BaseResult<Boolean> changeStatus(Job job){
@@ -132,6 +137,7 @@ public class JobController{
 	/**
 	 * 立即执行
 	 */
+	@BackLog(module= LogConstant.BACK_SYSTEM, actionDesc = "立即执行")
 	@RequestMapping(value="runJob",method=RequestMethod.POST)
 	@ResponseBody
 	public BaseResult<Boolean> runJob(Job job){
@@ -141,6 +147,7 @@ public class JobController{
 				return new BaseResult<Boolean>(BaseResultEnum.BLANK, false);
 			}
 			int row = jobService.run(job);
+
 			if(row > 0) {
 				return new BaseResult<Boolean>(BaseResultEnum.SUCCESS,true);
 			}else {
@@ -154,6 +161,7 @@ public class JobController{
 	/**
 	 * 删除
 	 */
+	@BackLog(module= LogConstant.BACK_SYSTEM, actionDesc = "删除jobLog")
 	@RequestMapping(value="deleteJobLog",method=RequestMethod.GET)
 	@ResponseBody
 	public BaseResult<Boolean> deleteJobLog(@RequestParam String ids){

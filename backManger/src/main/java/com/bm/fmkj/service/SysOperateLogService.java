@@ -41,4 +41,7 @@ public class SysOperateLogService {
 		return sysoperatelogMapper.deleteOperaLog(logId)>0?true:false;
 	}
 
+	public void insterLog(SysOperateLog operateLog){
+		sysoperatelogMapper.insert(operateLog);
+	}
 }

@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 import javax.json.Json;
 
+import com.bm.fmkj.annotation.BackLog;
+import com.bm.fmkj.constant.LogConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +50,8 @@ public class HcNoticesController extends BaseController {
 		Pagenation<HcNotices> pagedResult = hcnoticesService.selectNotices(pageQuery);
 		return new BaseResult<Pagenation<HcNotices>>(BaseResultEnum.SUCCESS, pagedResult);
 	}
-	
+
+	@BackLog(module= LogConstant.BACK_NOTICE, actionDesc = "发布公告消息")
 	@RequestMapping(value="publishNotice",method=RequestMethod.POST)
 	@ResponseBody
 	public BaseResult<Boolean> savePublishNotice(@RequestParam HashMap<String,Object> param){
@@ -63,7 +66,8 @@ public class HcNoticesController extends BaseController {
 			return new BaseResult<Boolean>(BaseResultEnum.ERROR,false);
 		}
 	}
-	
+
+	@BackLog(module= LogConstant.BACK_NOTICE, actionDesc = "发布公告消息")
 	@RequestMapping(value="deleteTicketById",method=RequestMethod.POST)
 	@ResponseBody
 	public BaseResult<Boolean> deleteTicketById(@RequestParam HashMap<String, Object> param){
@@ -75,7 +79,8 @@ public class HcNoticesController extends BaseController {
 			return new BaseResult<Boolean>(BaseResultEnum.ERROR,false);
 		}
 	}
-	
+
+	@BackLog(module= LogConstant.BACK_NOTICE, actionDesc = "修改发布消息")
 	@RequestMapping(value="editNotifySys",method=RequestMethod.POST)
 	@ResponseBody
 	public BaseResult<Boolean> editNotifySys(@RequestParam HashMap<String,Object> param){

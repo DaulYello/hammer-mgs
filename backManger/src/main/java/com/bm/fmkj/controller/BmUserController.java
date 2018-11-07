@@ -2,6 +2,8 @@ package com.bm.fmkj.controller;
 
 import java.util.HashMap;
 
+import com.bm.fmkj.annotation.BackLog;
+import com.bm.fmkj.constant.LogConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,15 +32,17 @@ public class BmUserController extends BaseController {
 	 * @param bu
 	 * @return
 	 */
+	@BackLog(module= LogConstant.BACK_USER, actionDesc = "用户登录")
 	@RequestMapping(value="login",method = RequestMethod.POST)
 	@ResponseBody
 	public BaseResult<HashMap<String, Object>> userLogin(BmUser bu) {
 		HashMap<String, Object> result = new HashMap<String, Object>();
-		boolean isSuccess = bmuserService.userLogin(bu);
-		if(!isSuccess) {
+		BmUser user = bmuserService.userLogin(bu);
+		if(user == null) {
 			return new BaseResult<HashMap<String, Object>>(BaseResultEnum.NOACCESS.status, "用户名或密码错误", result);
 		}
-		result.put("user", bu);
+		result.put("user", user);
+		result.put("uid",user.getId());
 		result.put("token", TokenUtil.genToken());
         return new BaseResult<HashMap<String, Object>>(BaseResultEnum.SUCCESS.status, "登录成功", result);
 	}

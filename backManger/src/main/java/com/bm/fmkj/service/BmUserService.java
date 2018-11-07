@@ -22,12 +22,9 @@ public class BmUserService {
 	 * 后台管理用户登录
 	 */
 
-	public boolean userLogin(BmUser bu) {
+	public BmUser userLogin(BmUser bu) {
 		BmUser user = bmuserMapper.selectOne(bu);
-		if(user==null) {
-			return false;
-		}
-		return true;
+		return user;
 	}
 	
 	/**

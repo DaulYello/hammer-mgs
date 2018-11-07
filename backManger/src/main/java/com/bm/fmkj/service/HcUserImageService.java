@@ -102,7 +102,7 @@ public class HcUserImageService {
 	 * 更新证件的审核状态
 	 * @param hi
 	 * @return
-	 */
+	 *//*
 	public boolean updateById(HcUserImage hi) {
 		int irow = hcUserImageMapper.updateByPrimaryKeySelective(hi);
 		HcAccount account = new HcAccount();
@@ -118,6 +118,6 @@ public class HcUserImageService {
 		}else {
 			return true; 
 		}
-	}
+	}*/
 
 }
