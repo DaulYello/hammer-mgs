@@ -69,11 +69,14 @@ public class AsyncRecyleFactory {
                     if(StringUtils.isEmpty(integralInfoList)){
                         return;
                     }
+                    FmRpool fmRpool  = SpringContextUtil.getBean(FmRpoolService.class).queryRpoolByYear(DateUtil.getSysYear());
+                    if(StringUtils.isNull(fmRpool)){
+                        return;
+                    }
                     //一共回收多少
                     Double totalNum = 0D;
                     List<FmRecyleLog> recyleLogs = new ArrayList<>();
                     for(FmIntegralInfo info : integralInfoList){
-                        totalNum = info.getIntegralNum();
                         FmRecyleLog recyleLog = new FmRecyleLog();
                         recyleLog.setUid(uid);
                         recyleLog.setFriendId(uid);
@@ -81,16 +84,17 @@ public class AsyncRecyleFactory {
                         recyleLog.setTakeDate(new Date());
                         recyleLog.setTakeType(TakeEnum.TYPE_TASK.status);
                         recyleLog.setRecyleType(RecyleEnum.TYPE_R.status);
-                        recyleLog.setTakeMsg("系统回收了" + totalNum + "R积分到积分池");
                         recyleLogs.add(recyleLog);
+                        totalNum = totalNum + info.getIntegralNum();
+                        recyleLog.setTakeMsg("系统回收了" + totalNum + "R积分到公司账户");
                     }
-                    FmRpool fmRpool  = SpringContextUtil.getBean(FmRpoolService.class).queryRpoolByYear(DateUtil.getSysYear());
-                    if(StringUtils.isNull(fmRpool)){
-                        return;
+                    if(StringUtils.isNull(fmRpool.getRecycleNum())){
+                        fmRpool.setRecycleNum(totalNum);
+                    }else{
+                        fmRpool.setRecycleNum(fmRpool.getRecycleNum() + totalNum);
                     }
-                    fmRpool.setRecycleNum(fmRpool.getRecycleNum() + totalNum);
                     fmRpool.setUpdatedate(new Date());
-                    SpringContextUtil.getBean(FmRpoolService.class).recyleR(fmRpool, recyleLogs);
+                    SpringContextUtil.getBean(FmRpoolService.class).recyleR(uid, totalNum, fmRpool, recyleLogs);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

@@ -5,15 +5,12 @@ import com.bm.fmkj.base.PageUtil;
 import com.bm.fmkj.base.Pagenation;
 import com.bm.fmkj.constant.RecyleEnum;
 import com.bm.fmkj.constant.TakeEnum;
-import com.bm.fmkj.dao.FmRecyleLog;
-import com.bm.fmkj.dao.FmRecyleLogMapper;
+import com.bm.fmkj.dao.*;
 import com.bm.fmkj.utils.StringUtils;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.bm.fmkj.dao.FmRpool;
-import com.bm.fmkj.dao.FmRpoolMapper;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -27,6 +24,9 @@ public class FmRpoolService {
 
 	@Autowired
 	private FmRecyleLogMapper fmRecyleLogMapper;
+
+	@Autowired
+	private FmIntegralInfoMapper fmintegralinfoMapper;
 
 	public FmRpoolMapper getFmRpoolMapper() {
 		return fmrpoolMapper;
@@ -105,8 +105,13 @@ public class FmRpoolService {
 		fmRecyleLogMapper.addRecyletLog(param);
 	}
 
-	public void recyleR(FmRpool fmRpool, List<FmRecyleLog> recyleLogs) {
+	public void recyleR(int uid, Double totalNum, FmRpool fmRpool, List<FmRecyleLog> recyleLogs) {
+		HashMap<String, Object> param = new HashMap<>();
+		param.put("uid", uid);
+		param.put("totalNum", totalNum);
 		fmrpoolMapper.updateByPrimaryKeySelective(fmRpool);
 		fmRecyleLogMapper.batchAddRecyleLog(recyleLogs);
+		fmintegralinfoMapper.updateFmIntegral();
+		fmintegralinfoMapper.recyleRToAccount(param);
 	}
 }

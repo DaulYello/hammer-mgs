@@ -46,7 +46,7 @@ public class RewardTask {
 				switch(i){
 					case 0:
 						//第一名
-						if(invitingNum > 10){
+						if(invitingNum >= 10){
 							FmRecyleLog recyleLog = new FmRecyleLog();
 							recyleLog.setUid(uid);
 							recyleLog.setFriendId(uid);
@@ -60,7 +60,7 @@ public class RewardTask {
 						break;
 					case 1:
 						//第2名
-						if(invitingNum > 10){
+						if(invitingNum >= 10){
 							FmRecyleLog recyleLog = new FmRecyleLog();
 							recyleLog.setUid(uid);
 							recyleLog.setFriendId(uid);
@@ -74,7 +74,7 @@ public class RewardTask {
 						break;
 					case 2:
 						//第3名
-						if(invitingNum > 10){
+						if(invitingNum >= 10){
 							FmRecyleLog recyleLog = new FmRecyleLog();
 							recyleLog.setUid(uid);
 							recyleLog.setFriendId(uid);
