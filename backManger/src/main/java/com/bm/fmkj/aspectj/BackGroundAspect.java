@@ -3,7 +3,7 @@ package com.bm.fmkj.aspectj;
 import com.alibaba.fastjson.JSON;
 import com.bm.fmkj.annotation.BackLog;
 import com.bm.fmkj.async.AsyncBackLogFactory;
-import com.bm.fmkj.async.AsyncBackLogManger;
+import com.bm.fmkj.async.AsyncManager;
 import com.bm.fmkj.constant.LogConstant;
 import com.bm.fmkj.dao.SysOperateLog;
 import com.bm.fmkj.utils.StringUtils;
@@ -91,7 +91,7 @@ public class BackGroundAspect {
             operateLog.setRequestClass(joinPoint.getTarget().getClass().getName());
             LOGGER.info("S;LKDFPSDTKP"+joinPoint.getArgs());
             //异步保存数据库
-            AsyncBackLogManger.me().execute(AsyncBackLogFactory.recordOper(operateLog));
+            AsyncManager.me().execute(AsyncBackLogFactory.recordOper(operateLog));
         }catch(Exception exc){
             // 记录本地异常日志
             LOGGER.error("==前置通知异常==");
