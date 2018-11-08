@@ -194,8 +194,9 @@
 	</select>
 
 	<update id="updateUserCNTbyID" parameterType="java.util.HashMap">
-		<foreach collection="uids" item="item" index="index" open="" close="" separator=";">
-			update hc_account <set>cnt=cnt+#{par}</set> where id =#{item}
+		<foreach collection="uids" index="index" item="item" separator=";">
+			update hc_account set cnt= cnt + #{par} where id = #{item}
 		</foreach>
+
 	</update>
 </mapper>

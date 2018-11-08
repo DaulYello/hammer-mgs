@@ -330,13 +330,21 @@ public class GcActivityService {
 					boolean result = updateActivityStatus(activity);
 					map.put("status",false);
 					map.put("message","查询活动参与记录为0,该活动还没有人参与,取消成功！");
-					return map;
+					continue;
 				}
 				log.debug("给参与活动的用户发放R积分");
 				List<FmRecyleLog> recyleLogs = new ArrayList<>();
-				List<Integer> uids = new ArrayList<>();
+				//List<Integer> uids = new ArrayList<>();
 				for(GcJoinactivityrecord gcJoinactivityrecord : joinactivityrecords){
-					uids.add(gcJoinactivityrecord.getUid());
+					//uids.add(gcJoinactivityrecord.getUid());
+					HcAccount account = hcAccountMapper.selectByPrimaryKey(gcJoinactivityrecord.getUid());
+					account.setCnt(account.getCnt()+activity.getPar());
+					account.setUpdateDate(new Date());
+					boolean rowUpdate= hcAccountMapper.updateByPrimaryKeySelective(account)>0?true : false;
+					if(!rowUpdate){
+						log.info("活动名称为：" + activity.getPname() + "更新cnt报错");
+						continue;
+					}
 					log.debug("记录活动失败用户反回的CNT，用户id="+gcJoinactivityrecord.getUid());
 					FmRecyleLog recyleLog = new FmRecyleLog();
 					recyleLog.setUid(gcJoinactivityrecord.getUid());
@@ -348,14 +356,14 @@ public class GcActivityService {
 					recyleLog.setTakeMsg("活动ID为【"+activity.getId()+"】的活动失败，将参加活动的CNT退还给参与用户");
 					recyleLogs.add(recyleLog);
 				}
-				HashMap<String,Object> param = new HashMap();
+				/*HashMap<String,Object> param = new HashMap();
 				param.put("uids",uids);
 				param.put("par",activity.getPar());
 				int row= hcAccountMapper.updateUserCNTbyID(param);
 				if(row<=0){
 					log.info("更新用户的CNT失败！");
 					throw new RuntimeException("更新用户的cnt时报错！事务回滚!");
-				}
+				}*/
 				fmRecyleLogMapper.batchAddRecyleLog(recyleLogs);
 				boolean result = updateActivityStatus(activity);
 				if(!result){
@@ -449,9 +457,18 @@ public class GcActivityService {
 					continue;
 				}
 				List<FmRecyleLog> recyleLogs = new ArrayList<>();
-				List<Integer> ids = new ArrayList<>();
+				//List<Integer> ids = new ArrayList<>();
+
 				for (GcJoinactivityrecord gcJoinactivityrecord : joinactivityrecords) {
-					ids.add(gcJoinactivityrecord.getUid());
+					//ids.add(gcJoinactivityrecord.getUid());
+					HcAccount account = hcAccountMapper.selectByPrimaryKey(gcJoinactivityrecord.getUid());
+					account.setCnt(account.getCnt()+gcActivity.getPar());
+					account.setUpdateDate(new Date());
+					boolean rowUpdate= hcAccountMapper.updateByPrimaryKeySelective(account)>0?true : false;
+					if(!rowUpdate){
+						log.info("活动名称为：" + gcActivity.getPname() + "更新cnt报错");
+						continue;
+					}
 					FmRecyleLog recyleLog = new FmRecyleLog();
 					recyleLog.setUid(gcJoinactivityrecord.getUid());
 					recyleLog.setFriendId(gcJoinactivityrecord.getUid());
@@ -463,14 +480,14 @@ public class GcActivityService {
 					recyleLogs.add(recyleLog);
 				}
 				log.debug("批量退还给参与互动的用户的cnt");
-				HashMap<String,Object> param = new HashMap();
+				/*HashMap<String,Object> param = new HashMap();
 				param.put("uids",ids);
 				param.put("par",gcActivity.getPar());
-				int row= hcAccountMapper.updateUserCNTbyID(param);
-				if(row<=0){
+				int row= hcAccountMapper.updateUserCNTbyID(param);*/
+				/*if(row<=0){
 					log.info("更新用户的CNT失败！");
 					throw new RuntimeException("更新用户的cnt时报错！事务回滚!");
-				}
+				}*/
 				fmRecyleLogMapper.batchAddRecyleLog(recyleLogs);
 				boolean result = updateActivityStatus(gcActivity);
 				if (!result) {
