@@ -93,4 +93,11 @@ public class GcJoinactivityrecordService {
 		map.put("message","竟锤成功！");
 		return map;
 	}
+
+	public List<GcJoinactivityrecord> getGcJoinactivityrecords(int aid){
+		GcJoinactivityrecord gcJoinactivityrecord = new GcJoinactivityrecord();
+		gcJoinactivityrecord.setAid(aid);
+		return gcjoinactivityrecordMapper.select(gcJoinactivityrecord);
+
+	}
 }

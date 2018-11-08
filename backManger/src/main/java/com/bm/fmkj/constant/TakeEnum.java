@@ -25,7 +25,9 @@ public enum TakeEnum {
 
     INVITE_FRIEND(7, "邀请好友获得"),
 
-    TAKE_GOODS(8, "确认收货后获取得");
+    TAKE_GOODS(8, "确认收货后获取得"),
+
+    FAIL_BACK(9,"活动失败后返回CNT");
 
     public int status;
 

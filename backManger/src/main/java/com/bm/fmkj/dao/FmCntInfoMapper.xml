@@ -23,7 +23,7 @@
       #{fmCntInfo.cntNum},
       #{fmCntInfo.createDate}
       )
-    </foreach >
+    </foreach>
   </insert>
 
   <update id="recyleToAccount" parameterType="java.util.HashMap">

@@ -201,7 +201,7 @@
                         width:100,
                         key: 'time',
                         render:(h,params)=>{
-                            return h('div',formatDateByLong(params.row.time,"yyyy-MM-dd hh-mm-ss"));
+                            return h('div',formatDateByLong(params.row.time,"yyyy-MM-dd hh:mm:ss"));
                         }
                     },
                     {
@@ -232,23 +232,79 @@
                         width: 260,
                         key: 'handle',
                         render: (h, params) => {
-                            return h('div', [
-                                h('Button', {
-                                    props: {
-                                        type: 'primary',
-                                        size: 'small'
-                                    },
-                                    style: {
-                                        marginRight: '5px'
-                                    },
-                                    on: {
-                                        click: () => {
-                                            this.$Modal.confirm({
-                                                title: '提示',
-                                                content: '确定执行审核操作吗?',
-                                                width: 400,
-                                                onOk: () => {
-                                                    if(params.row.status == 0){
+                            if (params.row.cardStatus == 1)
+                            {
+                                return h('div', [
+                                    h('Button', {
+                                        props: {
+                                            type: 'primary',
+                                            size: 'small'
+                                        },
+                                        style: {
+                                            marginRight: '5px'
+                                        },
+                                        on: {
+                                            click: () => {
+                                                this.$Modal.confirm({
+                                                    title: '提示',
+                                                    content: '确定执行审核操作吗?',
+                                                    width: 400,
+                                                    onOk: () => {
+                                                        if(params.row.status == 0){
+                                                            identityCardAudit (params.row.id,1).then(data => {
+                                                                if (data.status === 200) {
+                                                                    this.$Message.success(data.data.message);
+                                                                    this.getData(this.page, this.tabIndex);
+                                                                } else {
+                                                                    this.$Message.error(data.data.message);
+                                                                }
+                                                            }).catch(error => {
+                                                                this.$Message.error('审核出现异常：' + error);
+                                                            });
+                                                        }else if(params.row.status == 1){
+                                                            return this.$Message.success('已经通过审核了，无需再审核！');
+                                                        }else{
+                                                            return this.$Message.success('已经被驳回，不能再审核了！');
+                                                        }
+
+                                                    },
+                                                    onCancel: () => {
+                                                    }
+                                                })
+                                            }
+                                        }
+                                    }, '审核'),
+                                    h('Button', {
+                                        props: {
+                                            type: 'error',
+                                            size: 'small'
+                                        },
+                                        on: {
+                                            click: () => {
+                                                this.showAduitDialog=true;
+                                                this.rowID = params.row.id;
+                                            }
+                                        }
+                                    }, '驳回')
+                                ])
+                            } else if (params.row.cardStatus == -1)
+                            {
+                                return h('div',[
+                                    h('Button', {
+                                        props: {
+                                            type: 'primary',
+                                            size: 'small'
+                                        },
+                                        style: {
+                                            marginRight: '5px'
+                                        },
+                                        on: {
+                                            click: () => {
+                                                this.$Modal.confirm({
+                                                    title: '提示',
+                                                    content: '确定执行审核操作吗?',
+                                                    width: 400,
+                                                    onOk: () => {
                                                         identityCardAudit (params.row.id,1).then(data => {
                                                             if (data.status === 200) {
                                                                 this.$Message.success(data.data.message);
@@ -259,32 +315,20 @@
                                                         }).catch(error => {
                                                             this.$Message.error('审核出现异常：' + error);
                                                         });
-                                                    }else if(params.row.status == 1){
-                                                        return this.$Message.success('已经通过审核了，无需再审核！');
-                                                    }else{
-                                                        return this.$Message.success('已经被驳回，不能再审核了！');
+                                                    },
+                                                    onCancel: () => {
                                                     }
-
-                                                },
-                                                onCancel: () => {
-                                                }
-                                            })
+                                                })
+                                            }
                                         }
-                                    }
-                                }, '审核'),
-                                h('Button', {
-                                    props: {
-                                        type: 'error',
-                                        size: 'small'
-                                    },
-                                    on: {
-                                        click: () => {
-                                            this.showAduitDialog=true;
-                                            this.rowID = params.row.id;
+                                    }, '审核'),
+                                    h("Button",{
+                                        style: {
+                                            marginRight: '5px',
                                         }
-                                    }
-                                }, '驳回')
-                            ])
+                                    })
+                                ])
+                            }
                         }
                     }
                 ]
@@ -310,9 +354,6 @@
             handleSearch(){
                 this.getData(1);
             },
-            /*clickCancel(){
-                this.showDialog=false;
-            },*/
             ok(){
                 identityCardAudit(this.rowID,2,this.query).then(data => {
                     if (data.status === 200) {
@@ -324,13 +365,6 @@
                 }).catch(error => {
                     this.$Message.error('驳回出现异常：' + error);
                 });
-                /*if(params.row.status == 0 || params.row.status == 1){
-
-                }else if(params.row.status == 2){
-                    return this.$Message.success('已驳回，无需再驳回！');
-                }else{
-                    return this.$Message.success('已经审核，不能再驳回！');
-                }*/
             },
             cancel() {
                 this.showDialog=false;

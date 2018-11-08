@@ -78,4 +78,8 @@
         </if>
         GROUP BY gcp.aid
     </select>
+
+    <select id="queryActivityByStatus" resultMap="BaseResultMap">
+        SELECT * FROM gc_activity WHERE status=2
+    </select>
 </mapper>

@@ -192,4 +192,10 @@
 		GROUP BY a.uid) p
 		ON t.id = p.uid
 	</select>
+
+	<update id="updateUserCNTbyID" parameterType="java.util.HashMap">
+		<foreach collection="uids" item="item" index="index" open="" close="" separator=";">
+			update hc_account <set>cnt=cnt+#{par}</set> where id =#{item}
+		</foreach>
+	</update>
 </mapper>

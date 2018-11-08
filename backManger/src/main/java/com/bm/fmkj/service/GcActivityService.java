@@ -24,10 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 
 @Transactional
@@ -314,16 +311,13 @@ public class GcActivityService {
 			String idStr = (String)params.get("ids");
 
 			String ids [] = idStr.split(",");
-			GcActivity activity = new GcActivity();
 			for(int i=0;i<ids.length;i++) {
-				//activity = gcactivityMapper.selectByPrimaryKey(Integer.parseInt(ids[i]));
-				//log.debug("1.获取地址" + activity.getContract());
-				GcActivity ay = gcactivityMapper.selectByPrimaryKey(Integer.parseInt(ids[i]));
-				if(StringUtils.isNull(ay)){
+				GcActivity activity = gcactivityMapper.selectByPrimaryKey(Integer.parseInt(ids[i]));
+				if(StringUtils.isNull(activity)){
 					map.put("status",false);
 					map.put("message","查询活动失败，活动id="+Integer.parseInt(ids[i]));
 					return map;
-				}else if(StringUtils.isNull(ay.getPar())){
+				}else if(StringUtils.isNull(activity.getPar())){
 					map.put("status",false);
 					map.put("message","参见活动的CNT为NULL，活动id="+Integer.parseInt(ids[i]));
 					return map;
@@ -333,63 +327,42 @@ public class GcActivityService {
 				joinactivityrecord.setAid(Integer.parseInt(ids[i]));
 				List<GcJoinactivityrecord> joinactivityrecords = joinactivityrecordMapper.select(joinactivityrecord);
 				if(joinactivityrecords.size()==0){
-					activity.setId(Integer.parseInt(ids[i]));
-					activity.setStatus(5);
-					activity.setEndtime(new Date());
-					boolean result = gcactivityMapper.updateByPrimaryKeySelective(activity)>0 ? true : false;
+					boolean result = updateActivityStatus(activity);
 					map.put("status",false);
 					map.put("message","查询活动参与记录为0,该活动还没有人参与,取消成功！");
 					return map;
 				}
 				log.debug("给参与活动的用户发放R积分");
 				List<FmRecyleLog> recyleLogs = new ArrayList<>();
+				List<Integer> uids = new ArrayList<>();
 				for(GcJoinactivityrecord gcJoinactivityrecord : joinactivityrecords){
-					HcAccount account = hcAccountMapper.selectByPrimaryKey(gcJoinactivityrecord.getUid());
-					double cnt = 0.0;
-					if(null == account.getCnt()){
-						account.setCnt(ay.getPar());
-					}else{
-						account.setCnt(account.getCnt()+ay.getPar());
-					}
-					boolean result = hcAccountMapper.updateByPrimaryKeySelective(account) > 0 ? true : false;
-					if(!result){
-						map.put("status",false);
-						map.put("message","更新参与活动的用户R积分报错，用户id="+gcJoinactivityrecord.getUid());
-						return map;
-					}
-					log.debug("记录用户反回的R积分，用户id="+account.getId());
+					uids.add(gcJoinactivityrecord.getUid());
+					log.debug("记录活动失败用户反回的CNT，用户id="+gcJoinactivityrecord.getUid());
 					FmRecyleLog recyleLog = new FmRecyleLog();
-					recyleLog.setUid(account.getId());
-					recyleLog.setFriendId(account.getId());
+					recyleLog.setUid(gcJoinactivityrecord.getUid());
+					recyleLog.setFriendId(gcJoinactivityrecord.getUid());
 					recyleLog.setRecyleType(RecyleEnum.TYPE_R.status);
 					recyleLog.setTakeDate(new Date());
 					recyleLog.setTakeNum(activity.getPar());
-					recyleLog.setTakeType(TakeEnum.USER_GET.status);
+					recyleLog.setTakeType(TakeEnum.FAIL_BACK.status);
+					recyleLog.setTakeMsg("活动ID为【"+activity.getId()+"】的活动失败，将参加活动的CNT退还给参与用户");
 					recyleLogs.add(recyleLog);
 				}
+				HashMap<String,Object> param = new HashMap();
+				param.put("uids",uids);
+				param.put("par",activity.getPar());
+				int row= hcAccountMapper.updateUserCNTbyID(param);
+				if(row<=0){
+					log.info("更新用户的CNT失败！");
+					throw new RuntimeException("更新用户的cnt时报错！事务回滚!");
+				}
 				fmRecyleLogMapper.batchAddRecyleLog(recyleLogs);
-				activity.setId(Integer.parseInt(ids[i]));
-				log.debug("将活动设为失败状态5");
-				activity.setStatus(5);
-				activity.setEndtime(new Date());
-				boolean result = gcactivityMapper.updateByPrimaryKeySelective(activity)>0 ? true : false;
+				boolean result = updateActivityStatus(activity);
 				if(!result){
 					map.put("status",false);
 					map.put("message","更新活动状态为5失败，活动id="+Integer.parseInt(ids[i]));
 					return map;
 				}
-				/*取消活动时将合约暂时屏蔽。因为合约的状态是一个接一个的，没有到notice状态，是不能直接跳到cancel状态的
-				Helper helper = new Helper(PropUtil.getString("contractPassword"),
-						PropUtil.getString("keystoryPath"), PropUtil.getString("contractIp"),
-						PropUtil.getString("contractPort"));
-				helper.init();
-				boolean result=helper.changeStage(State.cancle);
-				log.debug("取消活动，改变合约状态----》："+result);
-				int row = 0;
-				if(result) {
-					row = gcactivityMapper.updateByPrimaryKeySelective(activity);
-				}
-				rows+=row;*/
 			}
 			map.put("status",true);
 			map.put("message","活动取消成功！");
@@ -425,6 +398,10 @@ public class GcActivityService {
 		}
 	}
 
+	public List<GcActivity> queryActivityByStatus(){
+		return gcactivityMapper.queryActivityByStatus();
+	}
+
 	/**
 	 * 活动分页查询
 	 */
@@ -452,4 +429,62 @@ public class GcActivityService {
 		return gcactivityMapper.updateByPrimaryKeySelective(ga);
 	}
 
+
+	public void acitivtyFailBackCNT() {
+		List<GcActivity> gcActivities = gcactivityMapper.queryActivityByStatus();
+		for (GcActivity gcActivity : gcActivities) {
+			Date now = new Date();
+			if (gcActivity.getEndtime().getTime() - now.getTime() <= 0) {
+				log.info("活动名称为：" + gcActivity.getPname() + "活动已过期，id号位：" + gcActivity.getId());
+				GcJoinactivityrecord joinactivityrecord = new GcJoinactivityrecord();
+				joinactivityrecord.setAid(gcActivity.getId());
+				List<GcJoinactivityrecord> joinactivityrecords = joinactivityrecordMapper.select(joinactivityrecord);
+				log.info("活动名称为：" + gcActivity.getPname() + "活动参与记录的人数" + joinactivityrecords.size());
+				if (joinactivityrecords.size() <= 0) {
+					boolean result = updateActivityStatus(gcActivity);
+					if(!result){
+						log.info("活动名称为：" + gcActivity.getPname() + "活动已更新失败");
+					}
+					log.info("活动名称为：" + gcActivity.getPname() + "活动已经到期也没有人参加这个活动");
+					continue;
+				}
+				List<FmRecyleLog> recyleLogs = new ArrayList<>();
+				List<Integer> ids = new ArrayList<>();
+				for (GcJoinactivityrecord gcJoinactivityrecord : joinactivityrecords) {
+					ids.add(gcJoinactivityrecord.getUid());
+					FmRecyleLog recyleLog = new FmRecyleLog();
+					recyleLog.setUid(gcJoinactivityrecord.getUid());
+					recyleLog.setFriendId(gcJoinactivityrecord.getUid());
+					recyleLog.setRecyleType(RecyleEnum.TYPE_CNT.status);
+					recyleLog.setTakeDate(new Date());
+					recyleLog.setTakeNum(gcActivity.getPar());
+					recyleLog.setTakeType(TakeEnum.FAIL_BACK.status);
+					recyleLog.setTakeMsg("活动流局，活动ID【" + gcActivity.getId() + "】退还用户" + gcActivity.getPar() + "CNT");
+					recyleLogs.add(recyleLog);
+				}
+				log.debug("批量退还给参与互动的用户的cnt");
+				HashMap<String,Object> param = new HashMap();
+				param.put("uids",ids);
+				param.put("par",gcActivity.getPar());
+				int row= hcAccountMapper.updateUserCNTbyID(param);
+				if(row<=0){
+					log.info("更新用户的CNT失败！");
+					throw new RuntimeException("更新用户的cnt时报错！事务回滚!");
+				}
+				fmRecyleLogMapper.batchAddRecyleLog(recyleLogs);
+				boolean result = updateActivityStatus(gcActivity);
+				if (!result) {
+					log.info("更新活动状态为5失败，活动id:" + gcActivity.getId());
+					throw new RuntimeException("更新用户的cnt时报错！事务回滚!");
+				}
+			}
+		}
+	}
+
+	public boolean updateActivityStatus(GcActivity activity){
+		log.debug("将活动设为失败状态5");
+		activity.setStatus(5);
+		activity.setEndtime(new Date());
+		return gcactivityMapper.updateByPrimaryKeySelective(activity) > 0 ? true : false;
+	}
 }
