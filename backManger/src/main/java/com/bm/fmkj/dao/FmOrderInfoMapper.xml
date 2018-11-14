@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bm.fmkj.dao.FmOrderInfoMapper">
+  <resultMap id="BaseResultMap" type="com.bm.fmkj.dao.FmOrderInfo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="product_id" jdbcType="INTEGER" property="productId" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="order_type" jdbcType="TINYINT" property="orderType" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="seller_id" jdbcType="INTEGER" property="sellerId" />
+    <result column="payment" jdbcType="DECIMAL" property="payment" />
+    <result column="trade_num" jdbcType="DOUBLE" property="tradeNum" />
+    <result column="payment_type" jdbcType="TINYINT" property="paymentType" />
+    <result column="order_status" jdbcType="TINYINT" property="orderStatus" />
+    <result column="payment_time" jdbcType="TIMESTAMP" property="paymentTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="leave_msg" jdbcType="VARCHAR" property="leaveMsg" />
+    <result column="is_pay" jdbcType="TINYINT" property="isPay" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="java.util.HashMap">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="product_id" jdbcType="INTEGER" property="productId" />
+    <result column="order_no" jdbcType="VARCHAR" property="orderNo" />
+    <result column="order_type" jdbcType="TINYINT" property="orderType" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="seller_id" jdbcType="INTEGER" property="sellerId" />
+    <result column="payment" jdbcType="DECIMAL" property="payment" />
+    <result column="trade_num" jdbcType="DOUBLE" property="tradeNum" />
+    <result column="payment_type" jdbcType="TINYINT" property="paymentType" />
+    <result column="order_status" jdbcType="TINYINT" property="orderStatus" />
+    <result column="payment_time" jdbcType="TIMESTAMP" property="paymentTime" />
+    <result column="end_time" jdbcType="TIMESTAMP" property="endTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="leave_msg" jdbcType="VARCHAR" property="leaveMsg" />
+    <result column="is_pay" jdbcType="TINYINT" property="isPay" />
+    <result column="seller" jdbcType="VARCHAR" property="seller" />
+    <result column="buyers" jdbcType="VARCHAR" property="buyers" />
+  </resultMap>
+
+  <select id="queryOdersByPId" resultMap="BaseResultMap2" parameterType="int">
+    SELECT
+      o.*,
+      a.`nickname` AS seller,
+      ac.`nickname` AS buyers
+    FROM
+      `fm_order_info` o
+      LEFT JOIN hc_account a
+        ON o.`seller_id` = a.`id`
+      LEFT JOIN hc_account ac
+        ON o.`user_id` = ac.`id`
+    WHERE o.`product_id` = #{pid}
+    ORDER BY o.update_time DESC ,o.`create_time` DESC
+  </select>
+</mapper>

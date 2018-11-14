@@ -23,15 +23,21 @@ public class FmIntegralInfo {
     private Double integralNum;
 
     /**
-     * R积分状态:0未收取状态; 1已收取; 2系统回收;-1被好友偷走
+     * 0未收取状态; 1自己已收取; 2系统回收;-1被好友偷走
      */
-    private Integer status;
+    private Byte status;
 
     /**
      * R积分生成时间
      */
     @Column(name = "create_date")
     private Date createDate;
+
+    /**
+     * 更新时间
+     */
+    @Column(name = "update_date")
+    private Date updateDate;
 
     /**
      * 获取主键
@@ -88,20 +94,20 @@ public class FmIntegralInfo {
     }
 
     /**
-     * 获取R积分状态:-1被偷; 0未收取状态; 1已收取; 2系统回收
+     * 获取0未收取状态; 1自己已收取; 2系统回收;-1被好友偷走
      *
-     * @return status - R积分状态:-1被偷; 0未收取状态; 1已收取; 2系统回收
+     * @return status - 0未收取状态; 1自己已收取; 2系统回收;-1被好友偷走
      */
-    public Integer getStatus() {
+    public Byte getStatus() {
         return status;
     }
 
     /**
-     * 设置R积分状态:-1被偷; 0未收取状态; 1已收取; 2系统回收
+     * 设置0未收取状态; 1自己已收取; 2系统回收;-1被好友偷走
      *
-     * @param status R积分状态:-1被偷; 0未收取状态; 1已收取; 2系统回收
+     * @param status 0未收取状态; 1自己已收取; 2系统回收;-1被好友偷走
      */
-    public void setStatus(Integer status) {
+    public void setStatus(Byte status) {
         this.status = status;
     }
 
@@ -121,5 +127,23 @@ public class FmIntegralInfo {
      */
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    /**
+     * 获取更新时间
+     *
+     * @return update_date - 更新时间
+     */
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    /**
+     * 设置更新时间
+     *
+     * @param updateDate 更新时间
+     */
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 }

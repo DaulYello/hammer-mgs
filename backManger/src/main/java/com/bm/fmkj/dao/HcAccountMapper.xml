@@ -27,6 +27,8 @@
     <result column="cdbid" jdbcType="BIGINT" property="cdbid" />
     <result column="realnam_info" jdbcType="VARCHAR" property="realnamInfo" />
     <result column="cnt" jdbcType="DOUBLE" property="cnt" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
 
 	<resultMap id="RankWeekMap" type="java.util.HashMap">
@@ -64,6 +66,8 @@
 		<result column="cdbid" jdbcType="BIGINT" property="cdbid" />
 		<result column="status" jdbcType="INTEGER" property="status" />
 		<result column="limitLogin" jdbcType="INTEGER" property="limitLogin" />
+		<result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+		<result column="cnt" jdbcType="DOUBLE" property="cnt" />
 	</resultMap>
 
 	<resultMap id="RpointResultMap" type="java.util.HashMap">
@@ -136,7 +140,8 @@
 	<!-- 查询用户的信息 -->
 	<select id="queryUserInfo" parameterType="java.util.HashMap" resultMap="BaseResultMap2">
 		select
-		hc.id,hc.telephone,hc.nickname,hc.email,hc.name,hc.cardnum,hc.my_p,hc.score,hc.grade_id,hc.card_status,hc.isboong,
+		hc.id,hc.telephone,hc.nickname,hc.email,hc.name,hc.cardnum,hc.my_p,hc.score,hc.grade_id,
+		hc.card_status,hc.isboong,hc.create_date,hc.cnt,
 		b.status as status,b.limit_login as limitLogin from hc_account hc left join bm_list b on hc.id = b.uid 
 		where 1=1
 		<if test="userStatus !=null and userStatus == 0">
@@ -151,11 +156,39 @@
 		<if test="nickname != null">
 			and hc.nickname=#{nickname}
 		</if>
-		<if test="name != null">
-			and hc.name=#{name}
+		<if test="starttime != null and endtime != null">
+			and hc.create_date between (SELECT DATE_FORMAT(#{starttime},'%Y-%m-%d 00:00:00')) and (SELECT DATE_FORMAT(#{endtime},'%Y-%m-%d 23:59:59'))
 		</if>
-		<if test="cdbid != null">
-			and hc.cdbid=#{cdbid}
+		order by
+		<if test="cnt == null and cnt == integral">
+			hc.create_date desc
+		</if>
+		<if test="cnt != null">
+			hc.cnt
+			<if test="sort == 'desc'">
+				desc
+			</if>
+			<if test="sort == 'asc'">
+				asc
+			</if>
+		</if>
+		<if test="integral != null and cnt != null">
+			,hc.my_p
+			<if test="sort == 'desc'">
+				desc
+			</if>
+			<if test="sort == 'asc'">
+				asc
+			</if>
+		</if>
+		<if test="integral != null and cnt == null">
+			hc.my_p
+			<if test="sort == 'desc'">
+				desc
+			</if>
+			<if test="sort == 'asc'">
+				asc
+			</if>
 		</if>
 	</select>
 
@@ -197,6 +230,5 @@
 		<foreach collection="uids" index="index" item="item" separator=";">
 			update hc_account set cnt= cnt + #{par} where id = #{item}
 		</foreach>
-
 	</update>
 </mapper>

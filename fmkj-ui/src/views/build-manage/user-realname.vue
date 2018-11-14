@@ -211,7 +211,7 @@
                         render:(h,params)=>{
                             let text = "";
                             const cardStatus = params.row.cardStatus;
-                            if (status === 0) {
+                            if (cardStatus === 0) {
                                 text = "身份未认证";
                             }
                             if (cardStatus === 1) {

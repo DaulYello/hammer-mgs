@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bm.fmkj.dao.FmProductInfoMapper">
+  <resultMap id="BaseResultMap" type="com.bm.fmkj.dao.FmProductInfo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="product_no" jdbcType="VARCHAR" property="productNo" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="product_price" jdbcType="DECIMAL" property="productPrice" />
+    <result column="product_sum" jdbcType="DOUBLE" property="productSum" />
+    <result column="product_stock" jdbcType="DOUBLE" property="productStock" />
+    <result column="product_icon" jdbcType="VARCHAR" property="productIcon" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="category_type" jdbcType="TINYINT" property="categoryType" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="product_detail" jdbcType="VARCHAR" property="productDetail" />
+    <result column="product_type" jdbcType="TINYINT" property="productType" />
+    <result column="currency" jdbcType="TINYINT" property="currency" />
+    <result column="max_price" jdbcType="DECIMAL" property="maxPrice" />
+    <result column="min_limit" jdbcType="DECIMAL" property="minLimit" />
+    <result column="max_limit" jdbcType="DECIMAL" property="maxLimit" />
+    <result column="payment_term" jdbcType="TINYINT" property="paymentTerm" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="com.bm.fmkj.domain.ProductDto">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="product_no" jdbcType="VARCHAR" property="productNo" />
+    <result column="product_name" jdbcType="VARCHAR" property="productName" />
+    <result column="product_price" jdbcType="DECIMAL" property="productPrice" />
+    <result column="product_sum" jdbcType="DOUBLE" property="productSum" />
+    <result column="product_stock" jdbcType="DOUBLE" property="productStock" />
+    <result column="product_icon" jdbcType="VARCHAR" property="productIcon" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="category_type" jdbcType="INTEGER" property="categoryType" />
+    <result column="user_id" jdbcType="INTEGER" property="userId" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="product_detail" jdbcType="VARCHAR" property="productDetail" />
+    <result column="product_type" jdbcType="INTEGER" property="productType" />
+    <result column="currency" jdbcType="INTEGER" property="currency" />
+    <result column="max_price" jdbcType="DECIMAL" property="maxPrice" />
+    <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+    <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+  </resultMap>
+
+  <select id="queryGoodsList" resultMap="BaseResultMap2" parameterType="java.util.HashMap">
+    SELECT
+      pro.`id`,
+      pro.`product_no`,
+      pro.`product_name`,
+      pro.`product_price`,
+      pro.`product_sum`,
+      pro.`product_stock`,
+      pro.product_icon,
+      pro.status,
+      pro.category_type,
+      pro.user_id,
+      pro.create_time,
+      pro.update_time,
+      pro.product_detail,
+      pro.product_type,
+      pro.currency,
+      pro.max_price,
+      acc.`nickname`,
+      acc.`telephone`
+    FROM
+      `fm_product_info` pro
+      LEFT JOIN `hc_account` acc
+        ON pro.`user_id` = acc.`id`
+    where 1=1
+    <if test="starttime != null and endtime != null">
+      and pro.create_time between (SELECT DATE_FORMAT(#{starttime},'%Y-%m-%d 00:00:00')) and (SELECT DATE_FORMAT(#{endtime},'%Y-%m-%d 23:59:59'))
+    </if>
+    <if test="productNo != null">
+      and pro.product_no = #{productNo}
+    </if>
+    <if test="status != null">
+      and pro.status = #{status}
+    </if>
+    <if test="productType != null">
+      and pro.product_type = #{productType}
+    </if>
+    <if test="nickname != null">
+      and acc.nickname = #{nickname}
+    </if>
+    <if test="telephone != null">
+      and acc.telephone = #{telephone}
+    </if>
+    ORDER BY pro.update_time DESC ,pro.`create_time` DESC
+  </select>
+</mapper>

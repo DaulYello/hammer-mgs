@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 //import org.apache.commons.lang3.time.DateFormatUtils;
 
@@ -326,5 +327,22 @@ public class DateUtil {
 				DateUtil.getDateByStrTime("20180110150200", "yyyyMMddHHmmss"), DateUtil.getNow()));
 
 	}
+
+	/**
+	 * @param datdString "Tue Jul 12 12:10:11 GMT+08:00 2016";
+	 * @return 时分秒
+	 */
+	public static String parseHour(String datdString){
+		SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd yyyy HH:mm:ss z", Locale.ENGLISH);
+		Date dateTrans = null;
+		try {
+			dateTrans = format.parse(datdString);
+			return new SimpleDateFormat("yyyy-MM-dd").format(dateTrans);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return datdString;
+	}
+
 
 }

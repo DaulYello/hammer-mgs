@@ -11,6 +11,7 @@ export function getUserPage(pageNo,pageSize,userStatus,query) {
     };
     for(var k in query){
         if (query[k] != "") {
+            console.log("pppppppppppppppppppppppppppp----------->"+query[k]);
             data[k] = query[k];
         }
     };

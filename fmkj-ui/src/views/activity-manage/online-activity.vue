@@ -61,7 +61,7 @@ export default {
             pageData: [],
             multipleSelection: [],
             query:{},
-            tabIndex: 0,
+            index: 0,
             tabStatus: 1,
             picturePath:'',
             columns: [
@@ -225,10 +225,10 @@ export default {
     },
     methods: {
         getDataPage(page){
-            this.getData(page,index)
+            this.getData(page,this.index)
         },
         getData (page, index) {
-          this.tabIndex = index;
+          this.index = index;
           this.tabStatus = index + 1;
           console.log('tabIndextabIndex:' + this.tabIndex)
           console.log('tabStatustabStatus:' + this.tabStatus)

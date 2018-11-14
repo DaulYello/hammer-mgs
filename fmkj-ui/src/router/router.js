@@ -92,13 +92,6 @@ export const appRouter = [
         name: 'race',
         component: Main,
         children: [
-            /*{
-                path: 'tiketManage',
-                icon: 'folder',
-                name: 'tiketManage',
-                title: '门票管理',
-                component: () => import('@/views/build-manage/tiket-manager.vue')
-            },*/
             {
                 path: 'activityManage',
                 icon: 'folder',
@@ -113,6 +106,29 @@ export const appRouter = [
                 title: '黑名单设置',
                 component: () => import('@/views/black-user/black-manager.vue')
             }
+        ]
+    },
+    {
+        path: '/goods',
+        icon: 'android-menu',
+        title: '商品管理',
+        name: 'goods',
+        component: Main,
+        children: [
+            {
+                path: 'goodList',
+                icon: 'folder',
+                name: 'goodList',
+                title: '商品列表',
+                component: () => import('@/views/goods-manage/query-goods.vue')
+            }/*,
+            {
+                path: 'goodList',
+                icon: 'folder',
+                name: 'goodList',
+                title: '商品列表',
+                component: () => import('@/views/goods-manage/query-goods.vue')
+            }*/
         ]
     },
     {

@@ -53,7 +53,7 @@ export default {
             pageInfo: '',
             pageData: [],
             query:{},
-            tabIndex: 0,
+            index: 0,
             picturePath:'',
             tabStatus: 1,
             columns: [
@@ -172,10 +172,10 @@ export default {
     },
     methods: {
         getDataPage(page){
-            this.getData(page,index)
+            this.getData(page,this.index)
         },
         getData (page, index) {
-          this.tabIndex = index;
+          this.index = index;
           this.tabStatus = index + 1;
           console.log('马克思达到');
           console.log(this.tabIndex);

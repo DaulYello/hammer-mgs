@@ -16,7 +16,7 @@
                     <div class="margin-top-10">
                         <can-edit-table :loading="loading"  @on-delete="handleDel" @on-router="handleInfo" @on-change="handleChange" @on-error="handleError"  refs="table2" v-model="pageData" :columns-list="columns"></can-edit-table>
                     </div>
-                    <Page  style="text-align:center;margin-top:20px" @on-change="getData" :total="pageInfo.total" :page-size="size" :current="pageInfo.pageNo" size="small" show-elevator show-total></Page>
+                    <Page  style="text-align:center;margin-top:20px" @on-change="changePage" :total="pageInfo.total" :page-size="size" :current="pageInfo.pageNo" size="small" show-elevator show-total></Page>
                 </Card>
             </Col>
 
@@ -55,25 +55,43 @@ export default {
             pageData: [],
             query:{},
             userStatus: 0,
+            index: 0,
             columns: [
                 {
                     title: '序号',
-                    type: 'index',
+                    type: 'selection',
                     width: 80,
                     key: 'id',
                     align: 'center'
                 },
-                {
-                    title: '电话号码',
+                /*{
+                    title: '名字',
                     align: 'center',
-                    key: 'telephone',
+                    key: 'name',
                     editable: true
-                },
+                },*/
                 {
                     title: '昵称',
                     align: 'center',
                     key: 'nickname',
                     editable: true
+                },
+                {
+                    title: '用户状态',
+                    align: 'center',
+                    key: 'status',
+                    width: 180,
+                    render: (h, params) => {
+                        const row = params.row;
+                        const color = row.status === 1 ? 'red' : row.status === 2 ? 'black' : 'green';
+                        const text = row.status === 1 ? '白名单' : row.status === 2 ? '黑名单' : '普通用户';
+                        return h('Tag', {
+                            props: {
+                                type: 'dot',
+                                color: color
+                            }
+                        }, text);
+                    }
                 },
                 {
                     title: '邮箱',
@@ -82,9 +100,9 @@ export default {
                     editable: true
                 },
                 {
-                    title: '名字',
+                    title: '电话号码',
                     align: 'center',
-                    key: 'name',
+                    key: 'telephone',
                     editable: true
                 },
                 {
@@ -94,15 +112,15 @@ export default {
                     editable: true
                 },
                 {
-                    title: '资产',
+                    title: '资产(CNT)',
                     align: 'center',
-                    key: 'myP',
+                    key: 'cnt',
                     editable: true
                 },
                 {
-                    title: '积分',
+                    title: 'R积分',
                     align: 'center',
-                    key: 'score',
+                    key: 'myP',
                     editable: true
                 },
                 {
@@ -116,8 +134,20 @@ export default {
                     align: 'center',
                     key: 'cardStatus',
                     render: (h, params) => {
-                        const row = params.row;
-                        const text = row.cardStatus === 1 ? '已验证' : '未验证';
+                        let text = "";
+                        const cardStatus = params.row.cardStatus;
+                        if (cardStatus === 0) {
+                            text = "身份未认证";
+                        }
+                        if (cardStatus === 1) {
+                            text = "未审核";
+                        }
+                        if (cardStatus === 2) {
+                            text = "审核通过";
+                        }
+                        if (cardStatus === -1) {
+                            text = "已驳回";
+                        }
                         return h('span',text);
                     }
                 },
@@ -131,11 +161,21 @@ export default {
                         return h('span',text);
                     }
                 },
+                /* {
+                     title: '锤宝ID',
+                     align: 'center',
+                     key: 'cdbid',
+                     editable: true
+                 },*/
                 {
-                    title: '锤宝ID',
+                    title: '注册时间',
                     align: 'center',
-                    key: 'cdbid',
-                    editable: true
+                    key: 'createDate',
+                    render: (h,params)=>{
+                        if(params.row.createDate != null){
+                            return h('div',formatDateByLong(params.row.createDate,"yyyy-MM-dd hh:mm:ss"));
+                        }
+                    }
                 },
                 {
                     title: '操作',
@@ -174,7 +214,11 @@ export default {
         };
     },
     methods: {
+        changePage(page){
+            this.getData(page,this.index)
+        },
         getData (page, index) {
+          this.index = index;
           this.userStatus = index;
           this.page = page;
           this.loading = true;

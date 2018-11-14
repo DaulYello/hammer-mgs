@@ -10,6 +10,7 @@ export function queryActivityPage(pageNo,pageSize,status, query) {
     pageSize,
     status
   };
+  console.log("啥的连接方式两点尽量少的："+pageSize);
   for(var k in query){
       if(query[k] !=""){
           data[k] = query[k];

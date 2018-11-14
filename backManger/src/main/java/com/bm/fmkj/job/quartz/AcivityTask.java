@@ -17,13 +17,13 @@ public class AcivityTask {
     private static final Logger LOGGER = LoggerFactory.getLogger(PoundageTact.class);
 
     @Autowired
-    private GcActivityService gcActivityService;
+    private GcActivityService gcactivityService;
 
 
 
     public void runAcivity(){
 
-        gcActivityService.acitivtyFailBackCNT();
+        gcactivityService.acitivtyFailBackCNT();
 
     }
 }

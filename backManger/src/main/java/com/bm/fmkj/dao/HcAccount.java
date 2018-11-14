@@ -80,22 +80,28 @@ public class HcAccount {
      */
     private Long cdbid;
 
+    /**
+     * 实名认证未通过的原因信息
+     */
     @Column(name = "realnam_info")
     private String realnamInfo;
 
+    /**
+     * 用户拥有CNT
+     */
     private Double cnt;
 
+    /**
+     * 注册时间
+     */
+    @Column(name = "create_date")
+    private Date createDate;
+
+    /**
+     * 更新时间
+     */
     @Column(name = "update_date")
     private Date updateDate;
-
-
-    public Date getUpdateDate() {
-        return updateDate;
-    }
-
-    public void setUpdateDate(Date updateDate) {
-        this.updateDate = updateDate;
-    }
 
     /**
      * @return id
@@ -418,30 +424,74 @@ public class HcAccount {
     }
 
     /**
-     * @return realnam_info
+     * 获取实名认证未通过的原因信息
+     *
+     * @return realnam_info - 实名认证未通过的原因信息
      */
     public String getRealnamInfo() {
         return realnamInfo;
     }
 
     /**
-     * @param realnamInfo
+     * 设置实名认证未通过的原因信息
+     *
+     * @param realnamInfo 实名认证未通过的原因信息
      */
     public void setRealnamInfo(String realnamInfo) {
         this.realnamInfo = realnamInfo;
     }
 
     /**
-     * @return cnt
+     * 获取用户拥有CNT
+     *
+     * @return cnt - 用户拥有CNT
      */
     public Double getCnt() {
         return cnt;
     }
 
     /**
-     * @param cnt
+     * 设置用户拥有CNT
+     *
+     * @param cnt 用户拥有CNT
      */
     public void setCnt(Double cnt) {
         this.cnt = cnt;
+    }
+
+    /**
+     * 获取注册时间
+     *
+     * @return create_date - 注册时间
+     */
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    /**
+     * 设置注册时间
+     *
+     * @param createDate 注册时间
+     */
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    /**
+     * 获取更新时间
+     *
+     * @return update_date - 更新时间
+     */
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    /**
+     * 设置更新时间
+     *
+     * @param updateDate 更新时间
+     */
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 }

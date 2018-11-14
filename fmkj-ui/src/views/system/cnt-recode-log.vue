@@ -104,6 +104,10 @@
                     {
                         value: '8',
                         label: '确认收货后获取'
+                    },
+                    {
+                        value: '9',
+                        label: '活动失败后返回CNT'
                     }
                 ],
                 typeList:[
@@ -150,13 +154,27 @@
                     {
                         title: '获取渠道',
                         align: 'center',
-                        key: 'takeType'
+                        key: 'takeType',
+                        render:(h,params) => {
+                            //获取渠道:0、用户自己收取;1、定时任务回收;2、释放CNT时没有用户回收;3、未中锤奖励;4;周排行奖励;5被用户偷取;6参与活动扣除;7邀请好友获得;8确认收货后获取;
+                            const text = params.row.takeType == 0 ? "用户自己收取" : params.row.takeType == 1 ? "定时任务回收"
+                                : params.row.takeType == 2 ? "释放CNT时没有用户回收" : params.row.takeType == 3 ? "未中锤奖励"
+                                : params.row.takeType == 4 ? "周排行奖励" : params.row.takeType == 5 ? "被用户偷取"
+                                : params.row.takeType == 6 ? "参与活动扣除" : params.row.takeType == 7 ? "邀请好友获得"
+                                : params.row.takeType == 8 ? "确认收货后获取" : "活动失败后返回CNT";
+                            return h('div',text);
+
+                        }
                     },
                     {
                         title: '所属类型',
                         align: 'center',
                         width: 200,
-                        key: 'recyleType'
+                        key: 'recyleType',
+                        render: (h,params) => {//所属类型1、CNT; 2、R积分
+                            const text = params.row.recyleType == 1 ? "CNT" : "R积分";
+                            return h('div',text);
+                        }
                     },
                     {
                         title: '详细描述',
