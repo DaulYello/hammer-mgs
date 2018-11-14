@@ -41,7 +41,8 @@ public class RewardTask {
 		if(StringUtils.isNotEmpty(invitList)){
 			for(int i = 0; i < invitList.size(); i++){
 				Map map = (Map)invitList.get(i);
-				Integer uid = (Integer) map.get("uid");
+				Long id = (Long) map.get("uid");
+				int uid = id.intValue();
 				Long invitingNum  = (Long) map.get("invitingNum");
 				switch(i){
 					case 0:
@@ -68,7 +69,7 @@ public class RewardTask {
 							recyleLog.setTakeDate(new Date());
 							recyleLog.setTakeType(TakeEnum.RANKING_ALLOT.status);
 							recyleLog.setRecyleType(RecyleEnum.TYPE_CNT.status);
-							recyleLog.setTakeMsg("上周邀请排行第一获得15CNT奖励");
+							recyleLog.setTakeMsg("上周邀请排行第二获得15CNT奖励");
 							hcAccountService.updateCntById(uid, recyleLog);
 					    }
 						break;
@@ -82,7 +83,7 @@ public class RewardTask {
 							recyleLog.setTakeDate(new Date());
 							recyleLog.setTakeType(TakeEnum.RANKING_ALLOT.status);
 							recyleLog.setRecyleType(RecyleEnum.TYPE_CNT.status);
-							recyleLog.setTakeMsg("上周邀请排行第一获得10CNT奖励");
+							recyleLog.setTakeMsg("上周邀请排行第三获得10CNT奖励");
 							hcAccountService.updateCntById(uid,recyleLog);
 						}
 						break;
