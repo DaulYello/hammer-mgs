@@ -10,7 +10,7 @@
                 <Card>
                     <p slot="title">
                         <Icon type="android-remove"></Icon>
-                        定时任务
+                        任务列表
                     </p>
                     <Row>
                         <Input v-model="query.jobName" placeholder="请输入任务名称..." style="width: 200px" />
@@ -68,7 +68,7 @@
 
 <script>
     import canEditTable from './components/canEditTable.vue';
-    import columns from './components/quartz_data.js';
+    import columns from './components/task_data.js';
     import formatDate from 'utils/time';
     import {
         getQuartzPage,
