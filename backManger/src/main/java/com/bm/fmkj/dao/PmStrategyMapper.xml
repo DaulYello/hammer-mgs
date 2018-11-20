@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bm.fmkj.dao.PmStrategyMapper">
+  <resultMap id="BaseResultMap" type="com.bm.fmkj.dao.PmStrategy">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="tid" jdbcType="INTEGER" property="tid" />
+    <result column="strategy" jdbcType="VARCHAR" property="strategy" />
+    <result column="order" jdbcType="TINYINT" property="order" />
+  </resultMap>
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bm.fmkj.dao.PmTaskMapper">
+  <resultMap id="BaseResultMap" type="com.bm.fmkj.dao.PmTask">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="task_target" jdbcType="VARCHAR" property="taskTarget" />
+    <result column="sub_desc" jdbcType="VARCHAR" property="subDesc" />
+    <result column="reward" jdbcType="DOUBLE" property="reward" />
+    <result column="audit_cycle" jdbcType="VARCHAR" property="auditCycle" />
+    <result column="type" jdbcType="TINYINT" property="type" />
+    <result column="down_url" jdbcType="VARCHAR" property="downUrl" />
+    <result column="statrt_date" jdbcType="TIMESTAMP" property="statrtDate" />
+    <result column="end_date" jdbcType="TIMESTAMP" property="endDate" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="status" jdbcType="TINYINT" property="status" />
+  </resultMap>
+</mapper>
