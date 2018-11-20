@@ -13,7 +13,7 @@
     <result column="audit_cycle" jdbcType="VARCHAR" property="auditCycle" />
     <result column="type" jdbcType="TINYINT" property="type" />
     <result column="down_url" jdbcType="VARCHAR" property="downUrl" />
-    <result column="statrt_date" jdbcType="TIMESTAMP" property="statrtDate" />
+    <result column="start_date" jdbcType="TIMESTAMP" property="startDate" />
     <result column="end_date" jdbcType="TIMESTAMP" property="endDate" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />

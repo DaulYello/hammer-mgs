@@ -53,8 +53,8 @@ public class PmTask {
     /**
      * 任务开始时间
      */
-    @Column(name = "statrt_date")
-    private Date statrtDate;
+    @Column(name = "start_date")
+    private Date startDate;
 
     /**
      * 任务结束时间
@@ -228,18 +228,19 @@ public class PmTask {
      *
      * @return statrt_date - 任务开始时间
      */
-    public Date getStatrtDate() {
-        return statrtDate;
+    public Date getStartDate() {
+        return startDate;
     }
-
     /**
      * 设置任务开始时间
      *
      * @param statrtDate 任务开始时间
      */
-    public void setStatrtDate(Date statrtDate) {
-        this.statrtDate = statrtDate;
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
     }
+
+
 
     /**
      * 获取任务结束时间
