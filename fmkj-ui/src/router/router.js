@@ -232,7 +232,7 @@ export const appRouter = [
                 icon:'folder',
                 name:'tasklist',
                 title:'任务列表',
-                component:()=>import('@/views/integration-mange/queryIntegral.vue')
+                component:()=>import('@/views/task-manage/task-list.vue')
             },
             {
                 path:'taskstrategy',

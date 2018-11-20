@@ -71,9 +71,9 @@
     import columns from './components/task_data.js';
     import formatDate from 'utils/time';
     import {
-        getQuartzPage,
-        addQuartz,
-        deleteQuartz
+        getTaskList,
+        addTask,
+        deleteTask
     } from 'api/system/system';
     export default {
         name: 'task-list',
@@ -126,7 +126,7 @@
             getData (page) {
                 this.page = page;
                 this.loading = true;
-                getQuartzPage(page,this.size,this.query).then(data => {
+                getTaskList(page,this.size,this.query).then(data => {
                     this.loading = false;
                     if (data.status === 200) {
                         this.pageInfo = data.data;
@@ -138,7 +138,7 @@
                     this.$Message.error('服务器异常' + error);
                 });
             },
-            addQuartz() {
+            addTask() {
                 this.ticketData = {};
                 this.modelShow = true;
             },
@@ -184,7 +184,7 @@
                 this.getData(1);
             },
             handleDel (val, index) {
-                deleteQuartz(val.jobId).then(data => {
+                deleteTask(val.jobId).then(data => {
                     if (data.status === 200) {
                         this.$Message.success('删除成功');
                         this.getData(this.page);
