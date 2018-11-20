@@ -80,7 +80,9 @@
                         key: 'createTime',
                         width:100,
                         render: (h,params) => {
-                            return h("div",formatDateByLong(params.row.createTime,"yyyy-MM-dd hh:mm:ss"))
+                            if(params.row.createTime != null){
+                                return h("div",formatDateByLong(params.row.createTime,"yyyy-MM-dd hh:mm:ss"))
+                            }
                         }
                     },
                     {
@@ -89,7 +91,9 @@
                         key: 'updateTime',
                         width:100,
                         render: (h,params) => {
-                            return h("div",formatDateByLong(params.row.updateTime,"yyyy-MM-dd hh:mm:ss"))
+                            if(params.row.createTime != null){
+                                return h("div",formatDateByLong(params.row.updateTime,"yyyy-MM-dd hh:mm:ss"))
+                            }
                         }
                     },
                     {
@@ -98,7 +102,9 @@
                         key: 'paymentTime',
                         width:100,
                         render: (h,params) => {
-                            return h("div",formatDateByLong(params.row.paymentTime,"yyyy-MM-dd hh:mm:ss"))
+                            if(params.row.createTime != null){
+                                return h("div",formatDateByLong(params.row.paymentTime,"yyyy-MM-dd hh:mm:ss"))
+                            }
                         }
                     },
                     {
@@ -107,7 +113,9 @@
                         key: 'endTime',
                         width:100,
                         render: (h,params) => {
-                            return h("div",formatDateByLong(params.row.endTime,"yyyy-MM-dd hh:mm:ss"))
+                            if(params.row.createTime != null){
+                                return h("div",formatDateByLong(params.row.endTime,"yyyy-MM-dd hh:mm:ss"))
+                            }
                         }
                     },
                     {

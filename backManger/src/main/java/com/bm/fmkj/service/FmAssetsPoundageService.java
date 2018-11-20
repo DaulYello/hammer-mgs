@@ -88,7 +88,7 @@ public class FmAssetsPoundageService {
 			recyleLog.setFriendId(Integer.parseInt(cp_account));
 			recyleLog.setRecyleType(RecyleEnum.TYPE_CNT.status);
 			recyleLog.setTakeType(TakeEnum.TAKE_GOODS.status);
-			recyleLog.setTakeMsg("确认收货【"+hcAccount.getNickname()+"】获得" + subside + "CNT");
+			recyleLog.setTakeMsg("公司账户【"+hcAccount.getNickname()+"】获得沉淀的手续费" + subside + "CNT");
 			recyleLogMapper.insert(recyleLog);
 		}else{
 			LOGGER.info("更新公司CNT时报错！");

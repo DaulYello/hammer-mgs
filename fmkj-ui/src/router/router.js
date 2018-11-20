@@ -219,6 +219,29 @@ export const appRouter = [
                 component:()=>import('@/views/integration-mange/integrationRule.vue')
             }
         ]
+    },
+    {
+        path:'/task',
+        icon:'android-menu',
+        title:'任务管理',
+        name:'task',
+        component:Main,
+        children:[
+            {
+                path:'tasklist',
+                icon:'folder',
+                name:'tasklist',
+                title:'任务列表',
+                component:()=>import('@/views/integration-mange/queryIntegral.vue')
+            },
+            {
+                path:'taskstrategy',
+                icon:'folder',
+                name:'taskstrategy',
+                title:'任务攻略',
+                //component:()=>import('@/views/integration-mange/integrationRule.vue')
+            }
+        ]
     }
 ];
 

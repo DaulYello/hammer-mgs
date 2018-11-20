@@ -26,7 +26,7 @@
                             <!--<Input v-model="query.nickname" placeholder="请输入用户昵称..." style="width: 200px" />-->
                         </div>
                         <div class="serachStyle">
-                            <span @click="handleSearch" style="margin: 0 10px;"><Button type="primary" icon="search">搜用户</Button></span>
+                            <span @click="handleSearch" style="margin: 0 10px;"><Button type="primary" icon="search">搜索</Button></span>
                         </div>
                     </Row>
                     <div class="margin-top-10">
@@ -165,7 +165,9 @@
                         key: 'createTime',
                         width:100,
                         render: (h, params) => {
-                            return h('div',formatDateByLong(params.row.createTime,"yyyy-MM-dd h:m:s"));
+                            if(params.row.createTime != null){
+                                return h('div',formatDateByLong(params.row.createTime,"yyyy-MM-dd h:m:s"));
+                            }
                         }
                     },
                     {
