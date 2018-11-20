@@ -63,8 +63,7 @@ public class FmAssetsPoundageService {
 			return;
 		}
 		LOGGER.info("fm_cnt_pool保存要释放的cnt返回影响的行数："+ saveCnt);
-		int rate= Integer.parseInt(rateStr);
-		boolean result = fmassetspoundageMapper.updateYesterDayPDate(rate,Integer.parseInt(cp_account)) >0 ? true : false;
+		boolean result = fmassetspoundageMapper.updateYesterDayPDate(rateDouble) >0 ? true : false;
 		if(!result){
 			throw new RuntimeException("批量更新fm_assets_poundage：的释放比率和更新时间失败！");
 		}
@@ -89,7 +88,7 @@ public class FmAssetsPoundageService {
 			recyleLog.setFriendId(Integer.parseInt(cp_account));
 			recyleLog.setRecyleType(RecyleEnum.TYPE_CNT.status);
 			recyleLog.setTakeType(TakeEnum.TAKE_GOODS.status);
-			recyleLog.setTakeMsg("确认收货【"+account.getNickname()+"】获得" + subside + "CNT");
+			recyleLog.setTakeMsg("确认收货【"+hcAccount.getNickname()+"】获得" + subside + "CNT");
 			recyleLogMapper.insert(recyleLog);
 		}else{
 			LOGGER.info("更新公司CNT时报错！");

@@ -8,5 +8,5 @@ public interface FmAssetsPoundageMapper extends Mapper<FmAssetsPoundage> {
 
     double getCountPoundage();
 
-    int updateYesterDayPDate(@Param("rate") int rate,@Param("uid") int uid);
+    int updateYesterDayPDate(@Param("rate") double rate);
 }
