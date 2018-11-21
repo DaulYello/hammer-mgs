@@ -239,7 +239,7 @@ export const appRouter = [
                 icon:'folder',
                 name:'taskstrategy',
                 title:'任务攻略',
-                //component:()=>import('@/views/integration-mange/integrationRule.vue')
+                component:()=>import('@/views/task-manage/task-strategy.vue')
             }
         ]
     }

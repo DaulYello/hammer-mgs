@@ -18,6 +18,8 @@
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
     <result column="status" jdbcType="TINYINT" property="status" />
+    <result column="imageId" jdbcType="INTEGER" property="imageId" />
+    <result column="logoId" jdbcType="INTEGER" property="logoId" />
   </resultMap>
 
   <select id="getTaskList" resultMap="BaseResultMap" parameterType="java.util.HashMap">

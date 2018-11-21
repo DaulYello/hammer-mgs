@@ -42,4 +42,47 @@ export function deleteTask(pageNo,pageSize, query) {
         url: '/backManger/fmkj/FmProductInfo/queryGoodsList' + getParams(data),
         method: 'get'
     });
+
+}
+
+
+// 获取调度日志
+export function getStrategyPage(pageNo,pageSize, query) {
+    const data = {
+        pageNo,
+        pageSize
+    };
+    for(var k in query){
+        if (query[k] != "") {
+            data[k] = query[k];
+        }
+    };
+    return fetch({
+        url: '/backManger/fmkj/strategy/getStrategyPage' + getParams(data),
+        method: 'get'
+    });
+}
+
+//删除调度日志
+export function deleteStrategy (ids) {
+    const data = {
+        ids
+    };
+    return fetch({
+        url: '/backManger/fmkj/strategy/deleteStrategy'+  getParams(data),
+        method: 'get'
+    });
+}
+
+export function addStrategy(obj) {
+    const data = {
+        tid: obj.tid,
+        strategy: obj.strategyText,
+        order: obj.strategyOrder,
+        imageUrl: obj.strategyImage
+    };
+    return fetch({
+        url: '/backManger/fmkj/strategy/addStrategy' +  getParams(data),
+        method: 'post'
+    });
 }

@@ -2,12 +2,48 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bm.fmkj.dao.PmStrategyMapper">
   <resultMap id="BaseResultMap" type="com.bm.fmkj.dao.PmStrategy">
-    <!--
-      WARNING - @mbg.generated
-    -->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="tid" jdbcType="INTEGER" property="tid" />
     <result column="strategy" jdbcType="VARCHAR" property="strategy" />
     <result column="order" jdbcType="TINYINT" property="order" />
   </resultMap>
+
+  <resultMap id="StrategyResultMap" type="com.bm.fmkj.domain.PmStrategyDto">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="tid" jdbcType="INTEGER" property="tid" />
+    <result column="strategy" jdbcType="VARCHAR" property="strategy" />
+    <result column="order" jdbcType="TINYINT" property="order" />
+    <result column="imageUrl" jdbcType="VARCHAR" property="imageUrl" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
+    <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
+  </resultMap>
+  
+  <select id="selectStrategyList" parameterType="java.util.HashMap" resultMap="StrategyResultMap">
+
+      SELECT
+        t.id,
+        t.tid,
+        t.create_date,
+        t.update_date,
+        p.title,
+        t.strategy,
+        t.order,
+        t.image_url
+      FROM
+        pm_strategy t
+        LEFT JOIN pm_task p
+          ON t.tid = p.id
+      WHERE 1 = 1
+
+  </select>
+
+  <delete id="deleteStrategy" parameterType="String">
+    delete from pm_strategy where id in
+    <foreach collection="array" item="itemId" open="(" separator="," close=")">
+      #{itemId}
+    </foreach>
+  </delete>
+
 </mapper>

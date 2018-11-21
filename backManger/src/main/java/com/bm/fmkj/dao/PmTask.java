@@ -16,6 +16,10 @@ public class PmTask {
      */
     private String title;
 
+    private Integer logoId;
+
+    private Integer imageId;
+
     /**
      * 任务目标
      */
@@ -78,6 +82,22 @@ public class PmTask {
      * 状态0、正常;-1、已删除
      */
     private Byte status;
+
+    public Integer getLogoId() {
+        return logoId;
+    }
+
+    public void setLogoId(Integer logoId) {
+        this.logoId = logoId;
+    }
+
+    public Integer getImageId() {
+        return imageId;
+    }
+
+    public void setImageId(Integer imageId) {
+        this.imageId = imageId;
+    }
 
     /**
      * 获取主键

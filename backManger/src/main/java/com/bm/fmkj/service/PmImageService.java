@@ -16,4 +16,7 @@ public class PmImageService {
 		return pmimageMapper;
 	}
 
+    public int insert(PmImage image) {
+		return pmimageMapper.insertImage(image);
+    }
 }

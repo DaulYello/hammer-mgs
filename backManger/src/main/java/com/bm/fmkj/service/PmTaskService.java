@@ -36,6 +36,7 @@ public class PmTaskService {
 		return pmtaskMapper;
 	}
 
+/*
     public Pagenation<TaskDto> getTaskList(PageQuery pageQuery) {
 		LOGGER.info("PmTaskService查询任务列表，参数："+ JSON.toJSONString(pageQuery));
 		List<TaskDto> taskDtos = pmtaskMapper.getTaskList(pageQuery.getParam());
@@ -45,6 +46,7 @@ public class PmTaskService {
 		}
 		return PageUtil.toPagedResult(taskDtos);
     }
+*/
 
 	public int saveNewTask(PmTask task) {
 		LOGGER.info("PmTaskService插入新的任务，参数："+ JSON.toJSONString(task));

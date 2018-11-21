@@ -1,6 +1,7 @@
 package com.bm.fmkj.dao;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Table(name = "pm_strategy")
 public class PmStrategy {
@@ -24,6 +25,21 @@ public class PmStrategy {
      * 顺序
      */
     private Byte order;
+
+    /**
+     * 创建时间
+     */
+    @Column(name = "create_date")
+    private Date createDate;
+
+    /**
+     * 更新时间
+     */
+    @Column(name = "update_date")
+    private Date updateDate;
+
+    @Column(name = "image_url")
+    private String imageUrl;
 
     /**
      * 获取主键
@@ -79,6 +95,14 @@ public class PmStrategy {
         this.strategy = strategy;
     }
 
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
     /**
      * 获取顺序
      *
@@ -95,5 +119,21 @@ public class PmStrategy {
      */
     public void setOrder(Byte order) {
         this.order = order;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 }
