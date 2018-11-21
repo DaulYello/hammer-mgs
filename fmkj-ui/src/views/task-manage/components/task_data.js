@@ -1,6 +1,8 @@
 import {
   formatDateByLong
 } from 'utils/time';
+/*const logo = '';
+const image = '';*/
 export const columns = [
     {
         title: '序号',
@@ -9,12 +11,6 @@ export const columns = [
         key: 'id',
         align: 'center'
     },
-    /*{
-        title: '任务编号',
-        type: 'index',
-        key: 'jobId',
-        align: 'center'
-    },*/
     {
         title: '任务标题',
         align: 'center',
@@ -24,13 +20,13 @@ export const columns = [
     {
         title: '任务目标',
         align: 'center',
-        key: 'task_target',
+        key: 'taskTarget',
         editable: true
     },
     {
         title: '二级描述',
         align: 'center',
-        key: 'sub_desc',
+        key: 'subDesc',
         editable: true
     },
     {
@@ -42,14 +38,17 @@ export const columns = [
     {
         title: '审核周期',
         align: 'center',
-        key: 'audit_cycle',
+        key: 'auditCycle',
         editable: true
     },
     {
-        title: '类型',
+        title: '是否下载APP',
         align: 'center',
         key: 'type',
-        editable: true
+        render:(h,params)=>{
+            const text = params.row.type == '0' ? '不需要': params.row.type == '1' ? '需要': '错误状态';
+            return h('div',text);
+        }
     },
     {
         title: '打开地址',
@@ -58,12 +57,57 @@ export const columns = [
         editable: true
     },
     {
+        title: 'logo图片',
+        align: 'center',
+        render:(h,params)=>{
+            return h('Modal',[
+                h('Button',[
+                    h('',{
+                        props:{
+                            type:'primary',
+                            size:'small',
+                            showDialog:false
+                        },
+                        attrs: {
+                            src: params.row.imageUrl
+                        },
+                        on:{
+                            click: () =>{
+                                this.showDialog = true;
+                            }
+                        }
+                    })
+                ],"预览")
+            ])
+        }
+    },
+    {
+        title: '详情图片',
+        align: 'center',
+        render:(h,params)=>{
+            return h('div',[
+                h('Button',{
+                    props:{
+                        type:'primary',
+                        size:'small'
+                    },
+                    on:{
+                        click: () =>{
+                            this.showDialog = true;
+                            this.picturePathImage = params.row.imageUrl;
+                        }
+                    }
+                },"预览")
+            ])
+        }
+    },
+    {
         title: '创建时间',
         align: 'center',
         key: 'createDate',
         render:(h,params)=>{
             if (params.row.createDate != null){
-                return h('div',formatDateByLong(params.row.createDate,"yyyy-MM-dd h:m:s"));
+                return h('div',formatDateByLong(params.row.createDate,"yyyy-MM-dd hh:mm:ss"));
             }
         }
     },
@@ -73,7 +117,7 @@ export const columns = [
         key: 'updateDate',
         render:(h,params)=>{
             if (params.row.updateDate != null){
-                return h('div',formatDateByLong(params.row.updateDate,"yyyy-MM-dd h:m:s"));
+                return h('div',formatDateByLong(params.row.updateDate,"yyyy-MM-dd hh:m:s"));
             }
         }
     },
@@ -83,7 +127,7 @@ export const columns = [
         key: 'startDate',
         render:(h,params)=>{
             if (params.row.startDate != null){
-                return h('div',formatDateByLong(params.row.startDate,"yyyy-MM-dd h:m:s"));
+                return h('div',formatDateByLong(params.row.startDate,"yyyy-MM-dd hh:mm:ss"));
             }
         }
     },
@@ -93,29 +137,10 @@ export const columns = [
         key: 'endDate',
         render:(h,params)=>{
             if (params.row.endDate != null){
-                return h('div',formatDateByLong(params.row.endDate,"yyyy-MM-dd h:m:s"));
+                return h('div',formatDateByLong(params.row.endDate,"yyyy-MM-dd hh:mm:ss"));
             }
         }
     },
-    /*{
-        title: '执行策略',
-        align: 'center',
-        key: 'misfirePolicy',
-        render: (h, params) => {
-            let row = params.row;
-            let text = '';
-            if(row.misfirePolicy === 1){
-                text = '继续'
-            } else if (row.misfirePolicy === 2) {
-                text = '等待'
-            } else if (row.misfirePolicy === 3) {
-                text = '放弃'
-            } else {
-                text = '默认'
-            }
-            return h('span',text);
-        }
-    },*/
     {
         title: '任务状态',
         align: 'center',
@@ -140,4 +165,12 @@ export const columns = [
     }
 ];
 
+
+export function ok(data) {
+    return data;
+}
 export default columns;
+
+export let picturePathLogo;
+export let showDialog;
+export let picturePathImage;

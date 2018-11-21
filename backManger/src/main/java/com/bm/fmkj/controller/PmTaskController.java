@@ -34,7 +34,7 @@ public class PmTaskController extends BaseController {
 	 * @return
 	 */
 	//@BackLog(module= LogConstant.BACK_USER, actionDesc = "用户登录")
-/*	@RequestMapping(value="getTaskList",method = RequestMethod.GET)
+	@RequestMapping(value="getTaskList",method = RequestMethod.GET)
 	@ResponseBody
 	public BaseResult<Pagenation<TaskDto>> getTaskList(@RequestParam HashMap<String,Object> params) {
 
@@ -48,15 +48,15 @@ public class PmTaskController extends BaseController {
 		pageQuery.setParam(params);
 		Pagenation<TaskDto> pageResult = pmtaskService.getTaskList(pageQuery);
 		return new BaseResult<Pagenation<TaskDto>>(BaseResultEnum.SUCCESS,pageResult);
-	}*/
+	}
 
 	/**
 	 * 新增任务
 	 */
 	@RequestMapping(value="addTask",method=RequestMethod.POST)
 	@ResponseBody
-	public BaseResult<Boolean> addJob(PmTask task){
-		LOGGER.info("addTask-params={}", JSON.toJSONString(task));
+	public BaseResult<Boolean> addTask(PmTask task){
+ 		LOGGER.info("addTask-params={}", JSON.toJSONString(task));
 		if(StringUtils.isNull(task)) {
 			return new BaseResult<Boolean>(BaseResultEnum.BLANK,false);
 		}

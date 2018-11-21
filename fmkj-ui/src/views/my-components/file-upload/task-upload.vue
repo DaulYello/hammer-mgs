@@ -61,9 +61,9 @@ export default {
                 desc: '文件 ' + file.name + ' 上传失败。'
             });
         }
-    },
+    }/*,
     mounted () {
         this.uploadList = this.$refs.upload.fileList;
-    }
+    }*/
 };
 </script>

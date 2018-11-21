@@ -16,10 +16,6 @@ public class PmTask {
      */
     private String title;
 
-    private Integer logoId;
-
-    private Integer imageId;
-
     /**
      * 任务目标
      */
@@ -83,21 +79,17 @@ public class PmTask {
      */
     private Byte status;
 
-    public Integer getLogoId() {
-        return logoId;
-    }
+    /**
+     * 任务标题图片
+     */
+    @Column(name = "logoId")
+    private Integer logoid;
 
-    public void setLogoId(Integer logoId) {
-        this.logoId = logoId;
-    }
-
-    public Integer getImageId() {
-        return imageId;
-    }
-
-    public void setImageId(Integer imageId) {
-        this.imageId = imageId;
-    }
+    /**
+     * 详情图片
+     */
+    @Column(name = "imageId")
+    private Integer imageid;
 
     /**
      * 获取主键
@@ -246,21 +238,20 @@ public class PmTask {
     /**
      * 获取任务开始时间
      *
-     * @return statrt_date - 任务开始时间
+     * @return start_date - 任务开始时间
      */
     public Date getStartDate() {
         return startDate;
     }
+
     /**
      * 设置任务开始时间
      *
-     * @param statrtDate 任务开始时间
+     * @param startDate 任务开始时间
      */
     public void setStartDate(Date startDate) {
         this.startDate = startDate;
     }
-
-
 
     /**
      * 获取任务结束时间
@@ -332,5 +323,41 @@ public class PmTask {
      */
     public void setStatus(Byte status) {
         this.status = status;
+    }
+
+    /**
+     * 获取任务标题图片
+     *
+     * @return logoId - 任务标题图片
+     */
+    public Integer getLogoid() {
+        return logoid;
+    }
+
+    /**
+     * 设置任务标题图片
+     *
+     * @param logoid 任务标题图片
+     */
+    public void setLogoid(Integer logoid) {
+        this.logoid = logoid;
+    }
+
+    /**
+     * 获取详情图片
+     *
+     * @return imageId - 详情图片
+     */
+    public Integer getImageid() {
+        return imageid;
+    }
+
+    /**
+     * 设置详情图片
+     *
+     * @param imageid 详情图片
+     */
+    public void setImageid(Integer imageid) {
+        this.imageid = imageid;
     }
 }

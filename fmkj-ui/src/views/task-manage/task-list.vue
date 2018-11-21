@@ -35,38 +35,28 @@
                 <FormItem label="任务目标：" prop="taskTarget">
                     <Input v-model="quartzData.taskTarget" type="text"></Input>
                 </FormItem>
-                <FormItem label="任务时间：" prop="time">
+                <FormItem label="开始时间：" prop="startDate">
                     <div>
-                        <DatePicker v-model="query.startDate" type="datetime" style="width:200px;" placeholder="选择开始日期和时间" ></DatePicker>
-                        <DatePicker v-model="query.endDate" type="datetime" style="width:200px;" placeholder="选择结束日期和时间" ></DatePicker>
+                        <DatePicker v-model="quartzData.startDate" type="datetime" style="width:200px;" placeholder="选择开始日期和时间" ></DatePicker>
+                    </div>
+                </FormItem>
+                <FormItem label="结束时间：" prop="endDate">
+                    <div>
+                        <DatePicker v-model="quartzData.endDate" type="datetime" style="width:200px;" placeholder="选择结束日期和时间" ></DatePicker>
                     </div>
                 </FormItem>
 
                 <FormItem label="二级描述：" prop="subDesc">
                     <Input v-model="quartzData.subDesc"  type="text"></Input>
                 </FormItem>
-                <FormItem label="任务头像：">
+                <FormItem label="任务头像：" prop="logoid">
                     <Row type="flex" align="middle" class="height-100">
-                        <Upload action="//jsonplaceholder.typicode.com/posts/"
-                                :on-format-error="handleFormatError"
-                                :before-upload="handleBeforeUpload"
-                                :format="['jpg','jpeg','png']"
-                                :on-success="handleSuccess"
-                                :on-error="handleError">
-                            <Button type="ghost" icon="ios-cloud-upload-outline">上传文件</Button>
-                        </Upload>
+                        <task-upload @uploadSuccess="uploadLogo"></task-upload>
                     </Row>
                 </FormItem>
-                <FormItem label="详情图片：">
+                <FormItem label="详情图片：" prop="logoid">
                     <Row type="flex" align="middle" class="height-100">
-                        <Upload action="/backManger/fmkj/PmImage/uploadTaskImage" method="post" host="127.0.0.1:8080"
-                                :on-format-error="handleFormatError"
-                                :before-upload="handleBeforeUpload"
-                                :format="['jpg','jpeg','png']"
-                                :on-success="handleSuccess"
-                                :on-error="handleError">
-                            <Button type="ghost" icon="ios-cloud-upload-outline">上传文件</Button>
-                        </Upload>
+                        <task-upload @uploadSuccess="uploadImage"></task-upload>
                     </Row>
                 </FormItem>
                 <FormItem label="任务奖励：" prop="reward">
@@ -79,37 +69,39 @@
                     <Input v-model="quartzData.downUrl" type="text"></Input>
                 </FormItem>
 
-                <FormItem label="类型：" prop="type">
-                    <RadioGroup v-model="quartzData.type">
+                <FormItem label="是否下载APP：" prop="type">
+                    <RadioGroup v-model="quartzData.type"  @on-change="statusValChange">
                         <Radio label="0">不需要</Radio>
                         <Radio label="1">需要</Radio>
                     </RadioGroup>
                 </FormItem>
-                <!--<FormItem label="备注：" prop="remark">
-                    <Input v-model="quartzData.remark"  type="text"></Input>
-                </FormItem>-->
             </Form>
+        </Modal>
+        <Modal title="预览图片" v-model="showDialog">
+            <img :src="picturePathLogo"  style="width: 100%">
         </Modal>
     </div>
 </template>
 
 <script>
     import canEditTable from './components/canEditTable.vue';
-    import columns from './components/task_data.js';
+    import {columns,picturePathLogo,picturePathImage} from './components/task_data.js';
     import formatDate from 'utils/time';
     import {
         getTaskList,
         addTask,
         deleteTask
     } from 'api/task/task';
-    /*import FileUpload from "../my-components/file-upload/file-upload";*/
+    import TaskUpload from "../my-components/file-upload/task-upload";
     export default {
         name: 'task-list',
         components: {
+            TaskUpload,
             canEditTable
         },
         data () {
             return {
+                showDialog:false,
                 loading:true,
                 page: 1,
                 size: 20,
@@ -118,10 +110,13 @@
                 pageData: [],
                 query:{},
                 modelShow: false,
+                picturePath:'',
+                picturePathLogo:'',
                 multipleSelection: [],
                 quartzData: {
-                    misfirePolicy: 0,
-                    status: 0
+                    logoId: 0,
+                    imageId: 0,
+                    type: 1
                 },
                 quartzRules: {
                     jobName: [{
@@ -173,9 +168,15 @@
             misfirePolicyValChange (val) {
                 this.quartzData.misfirePolicy = val;
             },
-            statusValChange () {
-                this.quartzData.status = val;
+            statusValChange (val) {
+                this.quartzData.type = val;
             },
+            /*showImage(logo,image,flag){
+                this.showDialog = flag;
+                this.showDialog = flag;
+                this.picturePathLogo = logo;
+                this.picturePathImage = image;
+            },*/
             ok() {
                 this.$refs['quartzForm'].validate((valid) => {
                     if (valid) {
@@ -272,6 +273,12 @@
                     title: '文件上传失败',
                     desc: '文件 ' + file.name + ' 上传失败。'
                 });
+            },
+            uploadLogo(val){
+                this.quartzData.logoId=val.data
+            },
+            uploadImage(val){
+                this.quartzData.imageId=val.data
             },
             handleInput (val) {
             },

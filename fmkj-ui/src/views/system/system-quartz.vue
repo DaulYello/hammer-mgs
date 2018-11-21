@@ -145,7 +145,7 @@ export default {
         misfirePolicyValChange (val) {
             this.quartzData.misfirePolicy = val;
         },
-        statusValChange () {
+        statusValChange (val) {
             this.quartzData.status = val;
         },
         ok() {
