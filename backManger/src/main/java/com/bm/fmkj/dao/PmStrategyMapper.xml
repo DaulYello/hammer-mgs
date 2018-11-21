@@ -41,6 +41,7 @@
     <if test="title != null and title != ''">
       AND p.title =  #{title}
     </if>
+    ORDER BY t.create_date DESC
 
   </select>
 

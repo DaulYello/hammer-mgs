@@ -45,7 +45,7 @@
           <if test="nickName != null and nickName != ''">
               AND h.nickname = #{nickName}
           </if>
-        ORDER BY create_date DESC
+        ORDER BY t.create_date DESC
   </select>
 
 </mapper>
