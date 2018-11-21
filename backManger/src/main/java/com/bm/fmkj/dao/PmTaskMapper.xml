@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bm.fmkj.dao.PmTaskMapper">
-  <resultMap id="BaseResultMap" type="com.bm.fmkj.dao.PmTask">
+  <resultMap id="BaseResultMap" type="com.bm.fmkj.domain.TaskDto">
     <!--
       WARNING - @mbg.generated
     -->
@@ -19,4 +19,15 @@
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
     <result column="status" jdbcType="TINYINT" property="status" />
   </resultMap>
+
+  <select id="getTaskList" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+    SELECT * FROM pm_task
+    where 1=1
+    <if test="starttime != null and endtime != null">
+    </if>
+    <if test="productNo != null">
+    </if>
+    <if test="status != null">
+    </if>
+  </select>
 </mapper>

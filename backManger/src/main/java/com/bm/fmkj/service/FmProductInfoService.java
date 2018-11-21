@@ -28,7 +28,7 @@ public class FmProductInfoService {
 
     public Pagenation<ProductDto> queryGoodsList(PageQuery pageQuery) {
         try {
-                    PageHelper.startPage(pageQuery.getPageNo(), pageQuery.getPageSize());
+            PageHelper.startPage(pageQuery.getPageNo(), pageQuery.getPageSize());
             List<ProductDto> productDtos = fmproductinfoMapper.queryGoodsList(pageQuery.getParam());
             for (ProductDto productDto:productDtos) {
                 List<FmOrderInfo> orders = fmOrderInfoMapper.queryOdersByPId(productDto.getId());

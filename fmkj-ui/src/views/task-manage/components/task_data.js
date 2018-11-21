@@ -54,15 +54,15 @@ export const columns = [
     {
         title: '打开地址',
         align: 'center',
-        key: 'down_url',
+        key: 'downUrl',
         editable: true
     },
     {
         title: '创建时间',
         align: 'center',
-        key: 'create_date',
-        render:(h,param)=>{
-            if (param.row.createDate != null){
+        key: 'createDate',
+        render:(h,params)=>{
+            if (params.row.createDate != null){
                 return h('div',formatDateByLong(params.row.createDate,"yyyy-MM-dd h:m:s"));
             }
         }
@@ -70,9 +70,9 @@ export const columns = [
     {
         title: '更新时间',
         align: 'center',
-        key: 'update_date',
-        render:(h,param)=>{
-            if (param.row.updateDate != null){
+        key: 'updateDate',
+        render:(h,params)=>{
+            if (params.row.updateDate != null){
                 return h('div',formatDateByLong(params.row.updateDate,"yyyy-MM-dd h:m:s"));
             }
         }
@@ -80,19 +80,19 @@ export const columns = [
     {
         title: '开始时间',
         align: 'center',
-        key: 'statrt_date',
-        render:(h,param)=>{
-            if (param.row.statrtDate != null){
-                return h('div',formatDateByLong(params.row.statrtDate,"yyyy-MM-dd h:m:s"));
+        key: 'startDate',
+        render:(h,params)=>{
+            if (params.row.startDate != null){
+                return h('div',formatDateByLong(params.row.startDate,"yyyy-MM-dd h:m:s"));
             }
         }
     },
     {
         title: '结束时间',
         align: 'center',
-        key: 'end_date',
-        render:(h,param)=>{
-            if (param.row.endDate != null){
+        key: 'endDate',
+        render:(h,params)=>{
+            if (params.row.endDate != null){
                 return h('div',formatDateByLong(params.row.endDate,"yyyy-MM-dd h:m:s"));
             }
         }
@@ -134,7 +134,7 @@ export const columns = [
     {
         title: '操作',
         align: 'center',
-        width: 350,
+        width: 250,
         key: 'handle',
         handle: ['info', 'run', 'edit']
     }

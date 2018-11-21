@@ -18,7 +18,7 @@
                         <span @click="handleSearch" style="margin: 0 10px;"><Button type="primary" icon="search">搜索</Button></span>
                     </Row>
                     <Row class="margin-top-10">
-                        <span @click="addQuartz"><Button type="primary" icon="android-add">新增</Button></span>
+                        <span @click="addTask"><Button type="primary" icon="android-add">新增</Button></span>
                     </Row>
                     <div class="margin-top-10">
                         <can-edit-table :loading="loading" @input="handleInput" @on-delete="handleDel" @on-router="handleInfo" @on-change="handleChange" @on-run="handleRun" @on-start="handleStart" @on-error="handleError"  refs="multipleSelection" v-model="pageData" :columns-list="columns"></can-edit-table>
@@ -29,38 +29,65 @@
         </Row>
         <Modal v-model="modelShow" title="任务" ok-text="保存" :loading="loading" @on-ok="ok" @on-cancel="cancel">
             <Form ref="quartzForm" :model="quartzData" :rules="quartzRules" :label-width="120">
-                <FormItem label="任务名称：" prop="jobName">
-                    <Input v-model="quartzData.jobName" type="text"></Input>
+                <FormItem label="任务标题：" prop="title">
+                    <Input v-model="quartzData.title" type="text"></Input>
                 </FormItem>
-                <FormItem label="任务组名：" prop="jobGroup">
-                    <Input v-model="quartzData.jobGroup" type="text"></Input>
+                <FormItem label="任务目标：" prop="taskTarget">
+                    <Input v-model="quartzData.taskTarget" type="text"></Input>
                 </FormItem>
-                <FormItem label="方法名称：" prop="methodName">
-                    <Input v-model="quartzData.methodName"  type="text"></Input>
+                <FormItem label="任务时间：" prop="time">
+                    <div>
+                        <DatePicker v-model="query.startDate" type="datetime" style="width:200px;" placeholder="选择开始日期和时间" ></DatePicker>
+                        <DatePicker v-model="query.endDate" type="datetime" style="width:200px;" placeholder="选择结束日期和时间" ></DatePicker>
+                    </div>
                 </FormItem>
-                <FormItem label="方法参数：" prop="methodParams">
-                    <Input v-model="quartzData.methodParams"  type="text"></Input>
+
+                <FormItem label="二级描述：" prop="subDesc">
+                    <Input v-model="quartzData.subDesc"  type="text"></Input>
                 </FormItem>
-                <FormItem label="cron表达式：" prop="cronExpression">
-                    <Input v-model="quartzData.cronExpression" type="text"></Input>
+                <FormItem label="任务头像：">
+                    <Row type="flex" align="middle" class="height-100">
+                        <Upload action="//jsonplaceholder.typicode.com/posts/"
+                                :on-format-error="handleFormatError"
+                                :before-upload="handleBeforeUpload"
+                                :format="['jpg','jpeg','png']"
+                                :on-success="handleSuccess"
+                                :on-error="handleError">
+                            <Button type="ghost" icon="ios-cloud-upload-outline">上传文件</Button>
+                        </Upload>
+                    </Row>
                 </FormItem>
-                <FormItem label="执行策略：" prop="misfirePolicy">
-                    <RadioGroup v-model="quartzData.misfirePolicy"  @on-change="misfirePolicyValChange">
-                        <Radio label="0">默认</Radio>
-                        <Radio label="1">继续执行</Radio>
-                        <Radio label="2">等待执行</Radio>
-                        <Radio label="3">放弃执行</Radio>
+                <FormItem label="详情图片：">
+                    <Row type="flex" align="middle" class="height-100">
+                        <Upload action="/backManger/fmkj/PmImage/uploadTaskImage" method="post" host="127.0.0.1:8080"
+                                :on-format-error="handleFormatError"
+                                :before-upload="handleBeforeUpload"
+                                :format="['jpg','jpeg','png']"
+                                :on-success="handleSuccess"
+                                :on-error="handleError">
+                            <Button type="ghost" icon="ios-cloud-upload-outline">上传文件</Button>
+                        </Upload>
+                    </Row>
+                </FormItem>
+                <FormItem label="任务奖励：" prop="reward">
+                    <Input v-model="quartzData.reward"  type="text"></Input>
+                </FormItem>
+                <FormItem label="审核周期：" prop="auditCycle">
+                    <Input v-model="quartzData.auditCycle" type="text"></Input>
+                </FormItem>
+                <FormItem label="下载地址：" prop="downUrl">
+                    <Input v-model="quartzData.downUrl" type="text"></Input>
+                </FormItem>
+
+                <FormItem label="类型：" prop="type">
+                    <RadioGroup v-model="quartzData.type">
+                        <Radio label="0">不需要</Radio>
+                        <Radio label="1">需要</Radio>
                     </RadioGroup>
                 </FormItem>
-                <FormItem label="状态：" prop="status">
-                    <RadioGroup v-model="quartzData.status"  @on-change="statusValChange">
-                        <Radio label="0">正常</Radio>
-                        <Radio label="1">暂停</Radio>
-                    </RadioGroup>
-                </FormItem>
-                <FormItem label="备注：" prop="remark">
+                <!--<FormItem label="备注：" prop="remark">
                     <Input v-model="quartzData.remark"  type="text"></Input>
-                </FormItem>
+                </FormItem>-->
             </Form>
         </Modal>
     </div>
@@ -74,7 +101,8 @@
         getTaskList,
         addTask,
         deleteTask
-    } from 'api/system/system';
+    } from 'api/task/task';
+    /*import FileUpload from "../my-components/file-upload/file-upload";*/
     export default {
         name: 'task-list',
         components: {
@@ -152,7 +180,7 @@
                 this.$refs['quartzForm'].validate((valid) => {
                     if (valid) {
                         this.loading = true;
-                        addQuartz(this.quartzData).then(data => {
+                        addTask(this.quartzData).then(data => {
                             this.loading = false;
                             if (data.status === 200) {
                                 this.$Message.success(data.message);
@@ -171,6 +199,9 @@
                         this.$Message.error('请输入完整信息');
                     }
                 });
+            },
+            uploadFile(){
+                console.log("就开始======")
             },
             cancel() {
             },
@@ -210,6 +241,37 @@
                     this.$Message.success('任务暂停');
                 }
 
+            },
+            handleFormatError (file) {
+                this.$Notice.warning({
+                    title: '文件格式不正确',
+                    desc: '文件 ' + file.name + ' 格式不正确，请选择图片文件。'
+                });
+            },
+            handleBeforeUpload (file) {
+                this.$Notice.warning({
+                    title: '文件准备上传',
+                    desc: '文件 ' + file.name + ' 准备上传。'
+                });
+            },
+            /*handleProgress (event, file) {
+                this.$Notice.info({
+                    title: '文件正在上传',
+                    desc: '文件 ' + file.name + ' 正在上传。'
+                });
+            },*/
+            handleSuccess (evnet, file) {
+                console.log("上传图片");
+                this.$Notice.success({
+                    title: '文件上传成功',
+                    desc: '文件 ' + file.name + ' 上传成功。'
+                });
+            },
+            handleError (event, file) {
+                this.$Notice.error({
+                    title: '文件上传失败',
+                    desc: '文件 ' + file.name + ' 上传失败。'
+                });
             },
             handleInput (val) {
             },

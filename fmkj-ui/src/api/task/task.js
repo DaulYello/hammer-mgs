@@ -15,24 +15,15 @@ export function getTaskList(pageNo,pageSize, query) {
         }
     };
     return fetch({
-        url: '/backManger/fmkj/FmProductInfo/queryGoodsList' + getParams(data),
+        url: '/backManger/fmkj/PmTask/getTaskList' + getParams(data),
         method: 'get'
     });
 }
 //添加任务
-export function addTask(pageNo,pageSize, query) {
-    const data = {
-        pageNo,
-        pageSize
-    };
-    for(var k in query){
-        if (query[k] != "") {
-            data[k] = query[k];
-        }
-    };
+export function addTask(data) {
     return fetch({
-        url: '/backManger/fmkj/FmProductInfo/queryGoodsList' + getParams(data),
-        method: 'get'
+        url: '/backManger/fmkj/PmTask/addTask' +  getParams(data),
+        method: 'post'
     });
 }
 

@@ -12,4 +12,8 @@
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
   </resultMap>
+
+  <select id="queryTaskImagesByID" resultMap="BaseResultMap" parameterType="int">
+    SELECT * FROM pm_image pm WHERE tid=#{tid} AND image_type IN(1,2)
+  </select>
 </mapper>
