@@ -11,4 +11,6 @@ public interface PmStrategyMapper extends Mapper<PmStrategy> {
     List<PmStrategyDto> selectStrategyList(HashMap<String, Object> param);
 
     int deleteStrategy(String[] ids);
+
+    int addStrategy(PmStrategy strategy);
 }

@@ -30,8 +30,8 @@ public class PmPart {
     /**
      * 审核意见
      */
-    @Column(name = "audit_opinion")
-    private String auditOpinion;
+    @Column(name = "audit_option")
+    private String auditOption;
 
     /**
      * 提交电话
@@ -122,22 +122,12 @@ public class PmPart {
         this.auditStatus = auditStatus;
     }
 
-    /**
-     * 获取审核意见
-     *
-     * @return audit_opinion - 审核意见
-     */
-    public String getAuditOpinion() {
-        return auditOpinion;
+    public String getAuditOption() {
+        return auditOption;
     }
 
-    /**
-     * 设置审核意见
-     *
-     * @param auditOpinion 审核意见
-     */
-    public void setAuditOpinion(String auditOpinion) {
-        this.auditOpinion = auditOpinion;
+    public void setAuditOption(String auditOption) {
+        this.auditOption = auditOption;
     }
 
     /**

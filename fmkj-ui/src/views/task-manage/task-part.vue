@@ -10,10 +10,8 @@
                 <Card showHead="false">
                     <Row>
                         <Input v-model="query.title" placeholder="请输入任务名称..." style="width: 200px" />
+                        <Input v-model="query.nickName" placeholder="请输入昵称..." style="width: 200px" />
                         <span @click="handleSearch" style="margin: 0 10px;"><Button type="primary" icon="search">搜索</Button></span>
-                    </Row>
-                    <Row class="margin-top-10">
-                        <span @click="showAdd"><Button type="primary" icon="android-add">新增</Button></span>
                     </Row>
                     <div class="margin-top-10">
                         <Table :loading="loading"  @on-selection-change="handleSelectionChange" @on-select-all="handleSelectionChange" @on-select="handleSelectionChange" @on-delete="handleDel" @on-router="handleInfo" @on-change="handleChange" @on-error="handleError"  refs="multipleTable" :data="pageData" :columns="columns"></Table>
@@ -22,26 +20,21 @@
                 </Card>
             </Col>
         </Row>
-        <Modal title="攻略图片" v-model="showDialog">
-            <img :src="picturePath"  style="width: 100%">
+        <Modal title="审核图片" v-model="showDialog">
+            <div class="demo-upload-list" v-for="item in uploadList">
+                <template>
+                    <img :src="item"  style="width: 100%">
+                </template>
+            </div>
         </Modal>
-        <Modal v-model="modelShow" title="任务攻略" ok-text="保存" :loading="loading" @on-ok="ok" @on-cancel="cancel">
-            <Form ref="strategyForm" :model="strategyData" :rules="strategyRules" :label-width="120">
-                <FormItem label="任务名称 : " prop="tid">
-                    <Select v-model="strategyData.tid" placeholder="请选择任务">
-                        <Option v-for="item in taskList" :value="item.id" :key="item.id" name="tid">
-                            {{item.title }}
-                        </Option>
-                    </Select>
+        <Modal v-model="modelShow" title="审核" :footerHide=true :loading="loading" @on-cancel="cancel">
+            <Form ref="partForm" :model="auditData" :rules="auditRules" :label-width="120">
+                <FormItem label="审核意见：" prop="auditOption">
+                    <textarea v-model="auditData.auditOption" type="text" placeholder="请输入审核意见，如果是通过默认请写‘同意’" style="width: 100%; height: 200px"></textarea>
                 </FormItem>
-                <FormItem label="攻略内容：" prop="strategyText">
-                    <textarea v-model="strategyData.strategyText" type="text" style="width: 100%; height: 200px"></textarea>
-                </FormItem>
-                <FormItem label="展示顺序：" prop="strategyOrder">
-                    <Input v-model="strategyData.strategyOrder"  placeholder="只能输入数字" number></Input>
-                </FormItem>
-               <FormItem label="攻略图片：" prop="strategyImage">
-                    <task-upload @uploadSuccess="uploadOk"></task-upload>
+                <FormItem align="right">
+                    <i-button type="primary" size="large"  @click.native="ok">通过</i-button>
+                    <i-button type="error" size="large"  @click.native="rejected">驳回</i-button>
                 </FormItem>
             </Form>
         </Modal>
@@ -55,15 +48,12 @@ import {
     formatDate
 } from 'utils/time';
 import {
-  getStrategyPage,
-  deleteStrategy,
-  addStrategy
+  getPartPage,
+  auditPart
 } from 'api/task/task';
-import taskUpload from "../my-components/file-upload/task-upload.vue";
 export default {
-    name: 'strategy',
+    name: 'part',
     components: {
-        taskUpload,
         canEditTable
     },
     props: {
@@ -77,27 +67,20 @@ export default {
             loading:true,
             showDialog:false,
             modelShow: false,
-            picturePath:'',
             page: 1,
             size: 20,
             pageInfo: '',
-            imageId: 0,
-            pageData: [],
-            taskList:[],
-            strategyData: {},
-            strategyRules: {
-                strategyText: [{
+            auditData: {},
+            auditRules: {
+                auditOption: [{
                     required: true,
-                    message: '请输入攻略内容',
-                    trigger: 'blur'
-                }],
-                strategyOrder: [{
-                    required: true,
-                    type: 'number',
-                    message: '请输入展示顺序',
+                    message: '审核意见必填',
                     trigger: 'blur'
                 }]
             },
+            uploadList: [],
+            auditId: 0,
+            pageData: [],
             query:{},
             multipleSelection: [],
             columns: [
@@ -119,17 +102,43 @@ export default {
                     key: 'title'
                 },
                 {
-                    title: '顺序',
+                    title: '用户编号',
                     align: 'center',
-                    key: 'orderNum'
+                    key: 'uid'
                 },
                 {
-                    title: '攻略',
+                    title: '用户昵称',
                     align: 'center',
-                    key: 'strategy'
+                    key: 'nickName'
                 },
                 {
-                    title: '攻略图片',
+                    title: '审核状态',
+                    align: 'center',
+                    key: 'auditStatus',
+                    render: (h, params) => {
+                        const row = params.row;
+                        const color = row.auditStatus === 1 ? 'red' : row.auditStatus === 2 ? 'green' : row.auditStatus === -1 ? 'yellow' : 'gray';
+                        const text = row.auditStatus === 1 ? '待审核' : row.auditStatus === 2 ? '审核通过' : row.auditStatus === -1 ? '已驳回' :'未提交审核';
+                        return h('Tag', {
+                            props: {
+                                type: 'dot',
+                                color: color
+                            }
+                        }, text);
+                    }
+                },
+                {
+                    title: '审核意见',
+                    align: 'center',
+                    key: 'auditOption'
+                },
+                {
+                    title: '审核电话',
+                    align: 'center',
+                    key: 'telephone'
+                },
+                {
+                    title: '审核图片',
                     align: 'center',
                     key: 'imageUrl',
                     render:(h,params)=>{
@@ -144,8 +153,12 @@ export default {
                                 },
                                 on: {
                                     click: () => {
-                                        this.picturePath=params.row.imageUrl;
-                                        this.showDialog = true;
+                                        if(params.row.imageUrl){
+                                            this.uploadList = params.row.imageUrl.split(",");
+                                            this.showDialog = true;
+                                        }else{
+                                            this.$Message.error("没有图片");
+                                        }
                                     }
                                 }
                             },"阅览")
@@ -161,7 +174,7 @@ export default {
                     }
                 },
                 {
-                    title: '修改时间',
+                    title: '审核时间',
                     align: 'center',
                     key: 'updateDate',
                     render: (h, params) => {
@@ -175,32 +188,26 @@ export default {
                     align: 'center',
                     key: 'handle',
                     render: (h, params) => {
-                        return h('div', [
-                            h('Button', {
-                                props: {
-                                    type: 'error',
-                                    size: 'small'
-                                },
-                                style: {
-                                    marginRight: '5px'
-                                },
-                                on: {
-                                    click: () => {
-                                        deleteStrategy(params.row.id).then(data => {
-                                            if (data.status === 200) {
-                                                this.$Message.success(data.message);
-                                                this.getData(this.page, this.userStatus);
-                                            } else {
-                                                this.$Message.error(data.message);
-                                                this.getData(this.page, this.userStatus);
-                                            }
-                                        }).catch(error => {
-                                            this.$Message.error('删除异常：' + error);
-                                        });
+                        if(params.row.auditStatus === 1){
+                            return h('div', [
+                                h('Button', {
+                                    props: {
+                                        type: 'primary',
+                                        size: 'small'
+                                    },
+                                    style: {
+                                        marginRight: '5px'
+                                    },
+                                    on: {
+                                        click: () => {
+                                            this.modelShow = true;
+                                            this.auditId = params.row.id;
+                                        }
                                     }
-                                }
-                            }, '删除')
-                        ])
+                                }, '审核')
+                            ])
+                        }
+
                     }
                 }
             ]
@@ -210,12 +217,11 @@ export default {
         getData (page) {
             this.page = page;
             this.loading = true;
-            getStrategyPage(page,this.size,this.query).then(data => {
+            getPartPage(page,this.size,this.query).then(data => {
             this.loading = false;
             if (data.status === 200) {
-              this.pageInfo = data.data.strategy;
-              this.pageData = data.data.strategy.dataList;
-              this.taskList = data.data.task;
+              this.pageInfo = data.data;
+              this.pageData = data.data.dataList;
             } else {
               this.$Message.error(data.message);
             }
@@ -241,12 +247,13 @@ export default {
             this.$Message.error(message);
         },
         ok() {
-            this.$refs['strategyForm'].validate((valid) => {
+            this.$refs['partForm'].validate((valid) => {
                 if (valid) {
                     this.loading = true;
-                    addStrategy(this.strategyData, this.imageId).then(data => {
+                    auditPart(this.auditData.auditOption, this.auditId, 2).then(data => {
                         this.loading = false;
                         if (data.status === 200) {
+                            this.modelShow = false;
                             this.$Message.success(data.message);
                             this.getData(this.page);
                         } else {
@@ -260,18 +267,37 @@ export default {
                     setTimeout(() => {
                         this.modelShow = true;
                     }, 100);
-                    this.$Message.error('请输入完整信息');
+                    this.$Message.error('请输入审核意见');
+                }
+            });
+        },
+        rejected(){
+            this.$refs['partForm'].validate((valid) => {
+                if (valid) {
+                    this.loading = true;
+                    auditPart(this.auditData.auditOption, this.auditId, -1).then(data => {
+                        this.loading = false;
+                        if (data.status === 200) {
+                            this.modelShow = false;
+                            this.$Message.success(data.message);
+                            this.getData(this.page);
+                        } else {
+                            this.$Message.error(data.message);
+                        }
+                    }).catch(error => {
+                        this.loading = false;
+                        this.$Message.error('服务器异常' + error);
+                    });
+                } else {
+                    setTimeout(() => {
+                        this.modelShow = true;
+                    }, 100);
+                    this.$Message.error('请输入审核意见');
                 }
             });
         },
         cancel() {
-        },
-        uploadOk(val){
-            this.imageId = val.data
-        },
-        showAdd() {
-            this.strategyData = {};
-            this.modelShow = true;
+
         },
         handleSelectionChange(val) {
             this.multipleSelection = val;

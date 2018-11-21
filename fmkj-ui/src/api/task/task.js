@@ -76,7 +76,7 @@ export function deleteTask(pageNo,pageSize, query) {
 }
 
 
-// 获取调度日志
+// 获取攻略
 export function getStrategyPage(pageNo,pageSize, query) {
     const data = {
         pageNo,
@@ -93,7 +93,7 @@ export function getStrategyPage(pageNo,pageSize, query) {
     });
 }
 
-//删除调度日志
+//删除攻略
 export function deleteStrategy (ids) {
     const data = {
         ids
@@ -104,15 +104,46 @@ export function deleteStrategy (ids) {
     });
 }
 
-export function addStrategy(obj) {
+export function addStrategy(obj, imageId) {
     const data = {
         tid: obj.tid,
         strategy: obj.strategyText,
-        order: obj.strategyOrder,
-        imageUrl: obj.strategyImage
+        orderNum: obj.strategyOrder,
+        imageId: imageId
     };
     return fetch({
         url: '/backManger/fmkj/strategy/addStrategy' +  getParams(data),
         method: 'post'
     });
 }
+
+
+// 获取参与记录
+export function getPartPage(pageNo,pageSize, query) {
+    const data = {
+        pageNo,
+        pageSize
+    };
+    for(var k in query){
+        if (query[k] != "") {
+            data[k] = query[k];
+        }
+    };
+    return fetch({
+        url: '/backManger/fmkj/part/getPartPage' + getParams(data),
+        method: 'get'
+    });
+}
+
+export function auditPart(auditOption, id, auditStatus) {
+    const data = {
+        auditOption: auditOption,
+        id: id,
+        auditStatus: auditStatus
+    };
+    return fetch({
+        url: '/backManger/fmkj/part/auditPart' +  getParams(data),
+        method: 'post'
+    });
+}
+

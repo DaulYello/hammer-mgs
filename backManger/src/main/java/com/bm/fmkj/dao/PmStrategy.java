@@ -24,7 +24,8 @@ public class PmStrategy {
     /**
      * 顺序
      */
-    private Byte order;
+    @Column(name = "order_num")
+    private Integer orderNum;
 
     /**
      * 创建时间
@@ -38,8 +39,7 @@ public class PmStrategy {
     @Column(name = "update_date")
     private Date updateDate;
 
-    @Column(name = "image_url")
-    private String imageUrl;
+    private Integer imageId;
 
     /**
      * 获取主键
@@ -95,30 +95,20 @@ public class PmStrategy {
         this.strategy = strategy;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public Integer getImageId() {
+        return imageId;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setImageId(Integer imageId) {
+        this.imageId = imageId;
     }
 
-    /**
-     * 获取顺序
-     *
-     * @return order - 顺序
-     */
-    public Byte getOrder() {
-        return order;
+    public Integer getOrderNum() {
+        return orderNum;
     }
 
-    /**
-     * 设置顺序
-     *
-     * @param order 顺序
-     */
-    public void setOrder(Byte order) {
-        this.order = order;
+    public void setOrderNum(Integer orderNum) {
+        this.orderNum = orderNum;
     }
 
     public Date getCreateDate() {

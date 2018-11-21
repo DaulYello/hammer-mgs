@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.bm.fmkj.dao.PmStrategy;
 import com.bm.fmkj.dao.PmStrategyMapper;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -42,6 +43,12 @@ public class PmStrategyService {
 	}
 
 	public List<PmTask> getTaskList(HashMap<String, Object> params) {
-		return pmTaskMapper.selectAll();
+
+		return pmTaskMapper.queryTaskList();
+	}
+
+	public int addStrategy(PmStrategy strategy) {
+		strategy.setCreateDate(new Date());
+		return pmstrategyMapper.addStrategy(strategy);
 	}
 }

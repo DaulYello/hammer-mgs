@@ -7,5 +7,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public interface PmTaskMapper extends Mapper<PmTask> {
+
     List<TaskDto> getTaskList(HashMap<String, Object> param);
+
+    List<PmTask> queryTaskList();
 }

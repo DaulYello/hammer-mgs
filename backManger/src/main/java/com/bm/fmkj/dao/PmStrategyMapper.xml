@@ -12,12 +12,12 @@
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="tid" jdbcType="INTEGER" property="tid" />
     <result column="strategy" jdbcType="VARCHAR" property="strategy" />
-    <result column="order" jdbcType="TINYINT" property="order" />
+    <result column="order_num" jdbcType="TINYINT" property="orderNum" />
     <result column="imageUrl" jdbcType="VARCHAR" property="imageUrl" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
-    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
+    <result column="imageId" jdbcType="INTEGER" property="imageId" />
   </resultMap>
   
   <select id="selectStrategyList" parameterType="java.util.HashMap" resultMap="StrategyResultMap">
@@ -29,21 +29,32 @@
         t.update_date,
         p.title,
         t.strategy,
-        t.order,
-        t.image_url
+        t.order_num,
+        g.image_url
       FROM
         pm_strategy t
         LEFT JOIN pm_task p
           ON t.tid = p.id
+        LEFT JOIN pm_image g
+        ON t.imageId = g.id
       WHERE 1 = 1
+    <if test="title != null and title != ''">
+      AND p.title =  #{title}
+    </if>
 
   </select>
 
-  <delete id="deleteStrategy" parameterType="String">
+  <delete id="deleteStrategy" parameterType="com.bm.fmkj.dao.PmStrategy">
     delete from pm_strategy where id in
     <foreach collection="array" item="itemId" open="(" separator="," close=")">
       #{itemId}
     </foreach>
   </delete>
+  
+  <insert id="addStrategy" parameterType="com.bm.fmkj.dao.PmStrategy">
+
+     INSERT INTO pm_strategy(tid,strategy,order_num,create_date,imageId ) VALUES(#{tid},#{strategy},#{orderNum}, #{createDate},#{imageId})
+
+  </insert>
 
 </mapper>

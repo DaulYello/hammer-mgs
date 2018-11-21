@@ -1,17 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.bm.fmkj.dao.PmPartMapper">
-  <resultMap id="BaseResultMap" type="com.bm.fmkj.dao.PmPart">
-    <!--
-      WARNING - @mbg.generated
-    -->
+  <resultMap id="BaseResultMap" type="com.bm.fmkj.domain.PmPartDto">
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="uid" jdbcType="INTEGER" property="uid" />
     <result column="tid" jdbcType="INTEGER" property="tid" />
     <result column="audit_status" jdbcType="TINYINT" property="auditStatus" />
-    <result column="audit_opinion" jdbcType="VARCHAR" property="auditOpinion" />
+    <result column="audit_option" jdbcType="VARCHAR" property="auditOption" />
     <result column="telephone" jdbcType="VARCHAR" property="telephone" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
+    <result column="imageUrl" jdbcType="VARCHAR" property="imageUrl" />
+    <result column="nickName" jdbcType="VARCHAR" property="nickName" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
   </resultMap>
+  
+  <select id="selectPartList" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+       SELECT
+          t.id,
+          t.uid,
+          t.tid,
+          t.audit_status,
+          t.audit_option,
+          t.telephone,
+          t.create_date,
+          t.update_date,
+          (SELECT
+            GROUP_CONCAT(image_url)
+          FROM
+            pm_image
+          WHERE part_id = t.id) AS imageUrl,
+          h.nickname,
+          k.title
+        FROM
+          pm_part t
+          LEFT JOIN hc_account h
+            ON h.id = t.uid
+          LEFT JOIN pm_task k
+            ON k.id = t.tid
+         WHERE 1 = 1
+          <if test="title != null and title != ''">
+              AND k.title =  #{title}
+          </if>
+          <if test="nickName != null and nickName != ''">
+              AND h.nickname = #{nickName}
+          </if>
+        ORDER BY create_date DESC
+  </select>
+
 </mapper>

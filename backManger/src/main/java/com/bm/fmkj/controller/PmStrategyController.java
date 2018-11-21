@@ -45,10 +45,7 @@ public class PmStrategyController extends BaseController {
 		if(StringUtils.isNull(strategy)) {
 			return new BaseResult<Boolean>(BaseResultEnum.BLANK,false);
 		}
-/*
-		int result = pmstrategyService.insertJobCron(job);
-*/
-		int result = 1;
+		int result = pmstrategyService.addStrategy(strategy);
 		if(result > 0) {
 			return new BaseResult<Boolean>(BaseResultEnum.SUCCESS,true);
 		}else {

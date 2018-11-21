@@ -61,4 +61,10 @@
     <if test="status != null">
     </if>
   </select>
+
+  <select id="queryTaskList" resultMap="BaseResultMap">
+
+      select id, title from pm_task
+
+  </select>
 </mapper>

@@ -240,6 +240,13 @@ export const appRouter = [
                 name:'taskstrategy',
                 title:'任务攻略',
                 component:()=>import('@/views/task-manage/task-strategy.vue')
+            },
+            {
+                path:'taskpart',
+                icon:'folder',
+                name:'taskpart',
+                title:'参与记录',
+                component:()=>import('@/views/task-manage/task-part.vue')
             }
         ]
     }
