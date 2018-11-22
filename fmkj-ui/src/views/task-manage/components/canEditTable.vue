@@ -15,17 +15,16 @@
 <script>
 
 import {
-    updateQuartz,
-    runQuartz,
-    changeStatus
-}
-from 'api/system/system';
+    getTaskList,
+    addTask,
+    deleteTask,
+    updateTask
+} from 'api/task/task';
 //编辑按钮
 const editButton = (vm, h, currentRow, index) => {
     return h('Button', {
         props: {
             type: currentRow.editting ? 'success' : 'primary',
-            //loading: currentRow.saving
         },
         style: {
             margin: '0 5px'
@@ -44,27 +43,31 @@ const editButton = (vm, h, currentRow, index) => {
                 } else {
                     vm.edittingStore[index].saving = true;
                     vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
-                    if (vm.edittingStore[index].jobName === '') {
-                        vm.$Message.error('任务名称不能为空！')
+                    if (vm.edittingStore[index].title === '') {
+                        vm.$Message.error('任务标题不能为空！')
                         return;
                     }
-                    if (vm.edittingStore[index].jobGroup === '') {
-                        vm.$Message.error('任务组名不能为空！')
+                    if (vm.edittingStore[index].taskTarget === '') {
+                        vm.$Message.error('任务目标不能为空！')
                         return;
                     }
-                    if (vm.edittingStore[index].methodName === '') {
-                        vm.$Message.error('方法名称不能为空！')
+                    if (vm.edittingStore[index].subDesc === '') {
+                        vm.$Message.error('二级描述不能为空！')
                         return;
                     }
-                    if (vm.edittingStore[index].cronExpression === '') {
-                        vm.$Message.error('表达式不能为空！')
+                    if (vm.edittingStore[index].reward === '') {
+                        vm.$Message.error('任务奖励不能为空！')
                         return;
                     }
-                    if (vm.edittingStore[index].misfirePolicy === '') {
-                        vm.$Message.error('执行策略不能为空！')
+                    if (vm.edittingStore[index].auditCycle === '') {
+                        vm.$Message.error('审核周期不能为空！')
                         return;
                     }
-                    updateQuartz(vm.thisTableData[index]).then(data => {
+                    if (vm.edittingStore[index].downUrl === '') {
+                        vm.$Message.error('打开地址不能为空！')
+                        return;
+                    }
+                    updateTask(vm.thisTableData[index]).then(data => {
                         if (data.status === 200) {
                             vm.edittingStore[index].editting = false;
                             vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
@@ -110,6 +113,22 @@ const deleteButton = (vm, h, currentRow, index) => {
             }
         }, '删除')
     ]);
+};
+//显示任务头像图片
+const imageShow = (vm, h, index,item) => {
+    return h('div', [
+        h('Button',{
+            props:{
+                type:'primary',
+                size:'small'
+            },
+            on:{
+                click: () => {
+                    vm.$emit('on-show', vm.thisTableData[index],item);
+                }
+            }
+        },"预览")
+    ])
 };
 //启用
 const infoButton = (vm, h, currentRow, index) => {
@@ -365,10 +384,10 @@ export default {
                                     children.push(editButton(this, h, currentRowData, param.index));
                                 } else if (item === 'delete') {
                                     children.push(deleteButton(this, h, currentRowData, param.index));
-                                } else if (item === 'info') {
-                                    children.push(infoButton(this, h, currentRowData, param.index));
-                                } else if (item === 'run') {
-                                    children.push(runButton(this, h, currentRowData, param.index));
+                                } else if (item === 'logoShow') {
+                                    children.push(imageShow(this, h, param.index,item));
+                                }else if (item === 'detalShow') {
+                                    children.push(imageShow(this, h, param.index,item));
                                 }
 
                             });

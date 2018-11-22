@@ -21,7 +21,7 @@
                         <span @click="addTask"><Button type="primary" icon="android-add">新增</Button></span>
                     </Row>
                     <div class="margin-top-10">
-                        <can-edit-table :loading="loading" @input="handleInput" @on-delete="handleDel" @on-router="handleInfo" @on-change="handleChange" @on-run="handleRun" @on-start="handleStart" @on-error="handleError"  refs="multipleSelection" v-model="pageData" :columns-list="columns"></can-edit-table>
+                        <can-edit-table :loading="loading" @input="handleInput" @on-delete="handleDel" @on-show="showLogo" @on-router="handleInfo" @on-change="handleChange" @on-run="handleRun" @on-start="handleStart" @on-error="handleError"  refs="multipleSelection" v-model="pageData" :columns-list="columns"></can-edit-table>
                     </div>
                     <Page  style="text-align:center;margin-top:20px" @on-change="getData" :total="pageInfo.total" :page-size="size" :current="pageInfo.pageNo" size="small" show-elevator show-total></Page>
                 </Card>
@@ -54,7 +54,7 @@
                         <task-upload @uploadSuccess="uploadLogo"></task-upload>
                     </Row>
                 </FormItem>
-                <FormItem label="详情图片：" prop="logoid">
+                <FormItem label="详情图片：" prop="imageid">
                     <Row type="flex" align="middle" class="height-100">
                         <task-upload @uploadSuccess="uploadImage"></task-upload>
                     </Row>
@@ -78,14 +78,14 @@
             </Form>
         </Modal>
         <Modal title="预览图片" v-model="showDialog">
-            <img :src="picturePathLogo"  style="width: 100%">
+            <img :src="picturePath"  style="width: 100%">
         </Modal>
     </div>
 </template>
 
 <script>
     import canEditTable from './components/canEditTable.vue';
-    import {columns,picturePathLogo,picturePathImage} from './components/task_data.js';
+    import {columns} from './components/task_data.js';
     import formatDate from 'utils/time';
     import {
         getTaskList,
@@ -111,11 +111,9 @@
                 query:{},
                 modelShow: false,
                 picturePath:'',
-                picturePathLogo:'',
-                multipleSelection: [],
                 quartzData: {
-                    logoId: 0,
-                    imageId: 0,
+                    logoid: 0,
+                    imageid: 0,
                     type: 1
                 },
                 quartzRules: {
@@ -171,12 +169,6 @@
             statusValChange (val) {
                 this.quartzData.type = val;
             },
-            /*showImage(logo,image,flag){
-                this.showDialog = flag;
-                this.showDialog = flag;
-                this.picturePathLogo = logo;
-                this.picturePathImage = image;
-            },*/
             ok() {
                 this.$refs['quartzForm'].validate((valid) => {
                     if (valid) {
@@ -227,6 +219,15 @@
                     this.$Message.error(data.message);
                 });
             },
+            showLogo(val,item){
+                if (item === "logoShow") {
+                    this.picturePath = val.logoUrl;
+                }
+                if (item === "detalShow") {
+                    this.picturePath = val.imageUrl;
+                }
+                this.showDialog = true;
+            },
             handleCellChange (val, index, key) {
                 this.getData(this.page);
                 this.$Message.success('修改了第 ' + (index + 1) + ' 行列名为 ' + key + ' 的数据');
@@ -275,10 +276,10 @@
                 });
             },
             uploadLogo(val){
-                this.quartzData.logoId=val.data
+                this.quartzData.logoid=val.data
             },
             uploadImage(val){
-                this.quartzData.imageId=val.data
+                this.quartzData.imageid=val.data
             },
             handleInput (val) {
             },

@@ -1,8 +1,9 @@
 import {
   formatDateByLong
 } from 'utils/time';
-/*const logo = '';
-const image = '';*/
+const picturePathLogo = '';
+const showDialog = '';
+const picturePathImage = '';
 export const columns = [
     {
         title: '序号',
@@ -57,49 +58,16 @@ export const columns = [
         editable: true
     },
     {
-        title: 'logo图片',
-        align: 'center',
-        render:(h,params)=>{
-            return h('Modal',[
-                h('Button',[
-                    h('',{
-                        props:{
-                            type:'primary',
-                            size:'small',
-                            showDialog:false
-                        },
-                        attrs: {
-                            src: params.row.imageUrl
-                        },
-                        on:{
-                            click: () =>{
-                                this.showDialog = true;
-                            }
-                        }
-                    })
-                ],"预览")
-            ])
-        }
-    },
-    {
         title: '详情图片',
         align: 'center',
-        render:(h,params)=>{
-            return h('div',[
-                h('Button',{
-                    props:{
-                        type:'primary',
-                        size:'small'
-                    },
-                    on:{
-                        click: () =>{
-                            this.showDialog = true;
-                            this.picturePathImage = params.row.imageUrl;
-                        }
-                    }
-                },"预览")
-            ])
-        }
+        key: 'imageUrl',
+        handle: ['detalShow']
+    },
+    {
+        title: 'logo图片',
+        align: 'center',
+        key: 'logoUrl',
+        handle: ['logoShow']
     },
     {
         title: '创建时间',
@@ -161,16 +129,10 @@ export const columns = [
         align: 'center',
         width: 250,
         key: 'handle',
-        handle: ['info', 'run', 'edit']
+        handle: ['edit','delete']
     }
 ];
 
 
-export function ok(data) {
-    return data;
-}
-export default columns;
 
-export let picturePathLogo;
-export let showDialog;
-export let picturePathImage;
+export default columns;
