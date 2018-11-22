@@ -45,6 +45,22 @@ public class PmTaskService {
 	public int saveNewTask(PmTask task) {
 		LOGGER.info("PmTaskService插入新的任务，参数："+ JSON.toJSONString(task));
 		task.setCreateDate(new Date());
+		/*task.setStatus((byte)0);*/
 		return pmtaskMapper.insert(task);
+	}
+
+    public int updateTask(PmTask task) {
+		LOGGER.info("PmTaskService修改任务，参数："+ JSON.toJSONString(task));
+		task.setUpdateDate(new Date());
+		return pmtaskMapper.updateByPrimaryKeySelective(task);
+    }
+
+	public int deleteTask(Integer id) {
+		LOGGER.info("PmTaskService逻辑删除任务，参数："+ JSON.toJSONString(id));
+		PmTask task = new PmTask();
+		task.setId(id);
+		task.setStatus((byte)-1);
+		task.setUpdateDate(new Date());
+		return pmtaskMapper.updateByPrimaryKeySelective(task);
 	}
 }

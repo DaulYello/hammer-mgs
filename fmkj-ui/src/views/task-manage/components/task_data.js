@@ -8,7 +8,7 @@ export const columns = [
     {
         title: '序号',
         type: 'index',
-        width: 80,
+        width: 60,
         key: 'id',
         align: 'center'
     },
@@ -33,12 +33,14 @@ export const columns = [
     {
         title: '任务奖励',
         align: 'center',
+        width: 70,
         key: 'reward',
         editable: true
     },
     {
         title: '审核周期',
         align: 'center',
+        width: 70,
         key: 'auditCycle',
         editable: true
     },
@@ -60,17 +62,42 @@ export const columns = [
     {
         title: '详情图片',
         align: 'center',
+        width: 80,
         key: 'imageUrl',
         handle: ['detalShow']
     },
     {
         title: 'logo图片',
         align: 'center',
+        width: 80,
         key: 'logoUrl',
         handle: ['logoShow']
     },
     {
+        title: '开始时间',
+        align: 'center',
+        width: 100,
+        key: 'startDate',
+        render:(h,params)=>{
+            if (params.row.startDate != null){
+                return h('div',formatDateByLong(params.row.startDate,"yyyy-MM-dd hh:mm:ss"));
+            }
+        }
+    },
+    {
+        title: '结束时间',
+        align: 'center',
+        width: 100,
+        key: 'endDate',
+        render:(h,params)=>{
+            if (params.row.endDate != null){
+                return h('div',formatDateByLong(params.row.endDate,"yyyy-MM-dd hh:mm:ss"));
+            }
+        }
+    },
+    {
         title: '创建时间',
+        width: 100,
         align: 'center',
         key: 'createDate',
         render:(h,params)=>{
@@ -82,30 +109,11 @@ export const columns = [
     {
         title: '更新时间',
         align: 'center',
+        width: 100,
         key: 'updateDate',
         render:(h,params)=>{
             if (params.row.updateDate != null){
                 return h('div',formatDateByLong(params.row.updateDate,"yyyy-MM-dd hh:m:s"));
-            }
-        }
-    },
-    {
-        title: '开始时间',
-        align: 'center',
-        key: 'startDate',
-        render:(h,params)=>{
-            if (params.row.startDate != null){
-                return h('div',formatDateByLong(params.row.startDate,"yyyy-MM-dd hh:mm:ss"));
-            }
-        }
-    },
-    {
-        title: '结束时间',
-        align: 'center',
-        key: 'endDate',
-        render:(h,params)=>{
-            if (params.row.endDate != null){
-                return h('div',formatDateByLong(params.row.endDate,"yyyy-MM-dd hh:mm:ss"));
             }
         }
     },
@@ -115,7 +123,7 @@ export const columns = [
         key: 'status',
         render: (h, params) => {
             //const color = params.row.status === '0' ? 'green' : 'red';
-            const text = params.row.status === '0' ? '正常': '删除';
+            const text = params.row.status == '0' ? '正常' : params.row.status == '-1' ? '删除' : '错误数据';
             /*return h('Tag', {
                 props: {
                     color: color
@@ -127,9 +135,9 @@ export const columns = [
     {
         title: '操作',
         align: 'center',
-        width: 250,
+        width: 100,
         key: 'handle',
-        handle: ['edit','delete']
+        handle: ['edit']
     }
 ];
 

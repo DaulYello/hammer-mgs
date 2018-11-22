@@ -55,11 +55,18 @@
       ON pe.id = pt.imageId
     where 1=1
     <if test="starttime != null and endtime != null">
+      and pt.create_date between #{starttime} and #{endtime}
     </if>
-    <if test="productNo != null">
+    <if test="statusValue != null">
+      and pt.status = #{statusValue}
     </if>
-    <if test="status != null">
+    <if test="typeValue != null">
+      and pt.type = #{typeValue}
     </if>
+    <if test="title != null">
+      and pt.title = #{title}
+    </if>
+    order by pt.create_date desc
   </select>
 
   <select id="queryTaskList" resultMap="BaseResultMap">

@@ -67,4 +67,39 @@ public class PmTaskController extends BaseController {
 			return new BaseResult<Boolean>(BaseResultEnum.ERROR,false);
 		}
 	}
+	/**
+	 * 修改任务
+	 */
+	@RequestMapping(value="updateTask",method=RequestMethod.POST)
+	@ResponseBody
+	public BaseResult<Boolean> updateTask(PmTask task){
+ 		LOGGER.info("addTask-params={}", JSON.toJSONString(task));
+		if(StringUtils.isNull(task)) {
+			return new BaseResult<Boolean>(BaseResultEnum.BLANK,false);
+		}
+		int result = pmtaskService.updateTask(task);
+		if(result > 0) {
+			return new BaseResult<Boolean>(BaseResultEnum.SUCCESS,true);
+		}else {
+			return new BaseResult<Boolean>(BaseResultEnum.ERROR,false);
+		}
+	}
+
+	/**
+	 * 删除任务（逻辑删除）
+	 */
+	@RequestMapping(value="deleteTask",method=RequestMethod.POST)
+	@ResponseBody
+	public BaseResult<Boolean> deleteTask(@RequestParam Integer id){
+ 		LOGGER.info("addTask-params={}", JSON.toJSONString(id));
+		if(StringUtils.isNull(id)) {
+			return new BaseResult<Boolean>(BaseResultEnum.BLANK,false);
+		}
+		int result = pmtaskService.deleteTask(id);
+		if(result > 0) {
+			return new BaseResult<Boolean>(BaseResultEnum.SUCCESS,true);
+		}else {
+			return new BaseResult<Boolean>(BaseResultEnum.ERROR,false);
+		}
+	}
 }

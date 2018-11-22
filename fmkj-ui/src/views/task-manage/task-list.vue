@@ -13,15 +13,39 @@
                         任务列表
                     </p>
                     <Row>
-                        <Input v-model="query.jobName" placeholder="请输入任务名称..." style="width: 200px" />
-                        <Input v-model="query.methodName" placeholder="请输入方法名..." style="width: 200px" />
+                        <div class="serachStyle">
+                            <DatePicker v-model="query.starttime" type="datetime" style="width:200px;" placeholder="选择开始日期和时间" ></DatePicker>
+                        </div>
+                        <div style="margin-top: 6px;float: left;margin-left: 5px;margin-right: 5px"> 至 </div>
+                        <div class="serachStyle">
+                            <DatePicker v-model="query.endtime" type="datetime" style="width:200px;" placeholder="选择结束日期和时间" ></DatePicker>
+                        </div>
+                        <Form :label-width="80" style="float: left;">
+                            <FormItem label="任务状态 : " prop="statusValue">
+                                <Select style="width:200px" v-model="query.statusValue">
+                                    <Option v-for="item in statusList" :value="item.value" :key="item.value" name="statusValue">
+                                        {{item.label }}
+                                    </Option>
+                                </Select>
+                            </FormItem>
+                        </Form>
+                        <Form :label-width="80" style="float: left;margin-right: 10px;">
+                            <FormItem label="下载状态 : " prop="typeValue">
+                                <Select style="width:200px" v-model="query.typeValue">
+                                    <Option v-for="item in typeList" :value="item.value" :key="item.value" name="typeValue">
+                                        {{item.label }}
+                                    </Option>
+                                </Select>
+                            </FormItem>
+                        </Form>
+                        <Input v-model="query.title" placeholder="请输入任务标题..." style="width: 200px" />
                         <span @click="handleSearch" style="margin: 0 10px;"><Button type="primary" icon="search">搜索</Button></span>
                     </Row>
                     <Row class="margin-top-10">
                         <span @click="addTask"><Button type="primary" icon="android-add">新增</Button></span>
                     </Row>
                     <div class="margin-top-10">
-                        <can-edit-table :loading="loading" @input="handleInput" @on-delete="handleDel" @on-show="showLogo" @on-router="handleInfo" @on-change="handleChange" @on-run="handleRun" @on-start="handleStart" @on-error="handleError"  refs="multipleSelection" v-model="pageData" :columns-list="columns"></can-edit-table>
+                        <can-edit-table :loading="loading" @input="handleInput" @on-modelShow="editModel" @on-delete="handleDel" @on-show="showLogo" @on-router="handleInfo" @on-change="handleChange" @on-run="handleRun" @on-start="handleStart" @on-error="handleError"  refs="multipleSelection" v-model="pageData" :columns-list="columns"></can-edit-table>
                     </div>
                     <Page  style="text-align:center;margin-top:20px" @on-change="getData" :total="pageInfo.total" :page-size="size" :current="pageInfo.pageNo" size="small" show-elevator show-total></Page>
                 </Card>
@@ -68,9 +92,15 @@
                 <FormItem label="下载地址：" prop="downUrl">
                     <Input v-model="quartzData.downUrl" type="text"></Input>
                 </FormItem>
+                <FormItem label="任务状态：" prop="status">
+                    <RadioGroup v-model="quartzData.status"  @on-change="statusValChange">
+                        <Radio label="0">正常</Radio>
+                        <Radio label="-1">删除</Radio>
+                    </RadioGroup>
+                </FormItem>
 
                 <FormItem label="是否下载APP：" prop="type">
-                    <RadioGroup v-model="quartzData.type"  @on-change="statusValChange">
+                    <RadioGroup v-model="quartzData.type"  @on-change="typeValChange">
                         <Radio label="0">不需要</Radio>
                         <Radio label="1">需要</Radio>
                     </RadioGroup>
@@ -89,7 +119,8 @@
     import formatDate from 'utils/time';
     import {
         getTaskList,
-        addTask,
+        taskAddAndModify,
+        updateTask,
         deleteTask
     } from 'api/task/task';
     import TaskUpload from "../my-components/file-upload/task-upload";
@@ -109,12 +140,33 @@
                 pageInfo: '',
                 pageData: [],
                 query:{},
+                typeList:[
+                    {
+                        value: '0',
+                        label: '不需要'
+                    },
+                    {
+                        value: '1',
+                        label: '想要'
+                    }
+                ],
+                statusList:[
+                    {
+                        value: '0',
+                        label: '正常'
+                    },
+                    {
+                        value: '-1',
+                        label: '删除'
+                    }
+                ],
                 modelShow: false,
                 picturePath:'',
                 quartzData: {
-                    logoid: 0,
-                    imageid: 0,
-                    type: 1
+                    logoid: '',
+                    imageid: '',
+                    type: 1,
+                    status: 0
                 },
                 quartzRules: {
                     jobName: [{
@@ -160,22 +212,40 @@
                 });
             },
             addTask() {
-                this.ticketData = {};
                 this.modelShow = true;
             },
             misfirePolicyValChange (val) {
                 this.quartzData.misfirePolicy = val;
             },
             statusValChange (val) {
+                this.quartzData.status = val;
+            },
+            typeValChange (val) {
                 this.quartzData.type = val;
+            },
+            editModel(val){
+                this.quartzData.id = val.id;
+                this.quartzData.title = val.title;
+                this.quartzData.taskTarget = val.taskTarget;
+                this.quartzData.subDesc = val.subDesc;
+                this.quartzData.reward = val.reward;
+                this.quartzData.auditCycle = val.auditCycle;
+                this.quartzData.downUrl = val.downUrl;
+                this.quartzData.startDate = val.startDate;
+                this.quartzData.endDate = val.endDate;
+                this.quartzData.status = val.status;
+                this.quartzData.type = val.type;
+                this.modelShow = true;
             },
             ok() {
                 this.$refs['quartzForm'].validate((valid) => {
                     if (valid) {
                         this.loading = true;
-                        addTask(this.quartzData).then(data => {
+                        this.showDialog = false;
+                        taskAddAndModify(this.quartzData).then(data => {
                             this.loading = false;
                             if (data.status === 200) {
+                                this.cancel();
                                 this.$Message.success(data.message);
                                 this.getData(this.page);
                             } else {
@@ -197,6 +267,17 @@
                 console.log("就开始======")
             },
             cancel() {
+                this.quartzData.id = '';
+                this.quartzData.title = '';
+                this.quartzData.taskTarget = '';
+                this.quartzData.subDesc = '';
+                this.quartzData.reward = '';
+                this.quartzData.auditCycle = '';
+                this.quartzData.downUrl = '';
+                this.quartzData.startDate = '';
+                this.quartzData.endDate = '';
+                this.quartzData.status = 0;
+                this.quartzData.type = 1;
             },
             handleInfo (query) {
                 this.$router.push({
@@ -208,7 +289,8 @@
                 this.getData(1);
             },
             handleDel (val, index) {
-                deleteTask(val.jobId).then(data => {
+                console.log("要删除的任务id："+val.id);
+                deleteTask(val.id).then(data => {
                     if (data.status === 200) {
                         this.$Message.success('删除成功');
                         this.getData(this.page);
@@ -243,37 +325,6 @@
                     this.$Message.success('任务暂停');
                 }
 
-            },
-            handleFormatError (file) {
-                this.$Notice.warning({
-                    title: '文件格式不正确',
-                    desc: '文件 ' + file.name + ' 格式不正确，请选择图片文件。'
-                });
-            },
-            handleBeforeUpload (file) {
-                this.$Notice.warning({
-                    title: '文件准备上传',
-                    desc: '文件 ' + file.name + ' 准备上传。'
-                });
-            },
-            /*handleProgress (event, file) {
-                this.$Notice.info({
-                    title: '文件正在上传',
-                    desc: '文件 ' + file.name + ' 正在上传。'
-                });
-            },*/
-            handleSuccess (evnet, file) {
-                console.log("上传图片");
-                this.$Notice.success({
-                    title: '文件上传成功',
-                    desc: '文件 ' + file.name + ' 上传成功。'
-                });
-            },
-            handleError (event, file) {
-                this.$Notice.error({
-                    title: '文件上传失败',
-                    desc: '文件 ' + file.name + ' 上传失败。'
-                });
             },
             uploadLogo(val){
                 this.quartzData.logoid=val.data

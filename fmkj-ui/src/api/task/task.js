@@ -9,6 +9,10 @@ export function getTaskList(pageNo,pageSize, query) {
         pageNo,
         pageSize
     };
+    if(query.starttime != undefined && query.endtime != undefined && query.starttime != '' && query.endtime != '' && query.starttime != 'NaN-NaN-NaN NaN:NaN:NaN' && query.endtime != 'NaN-NaN-NaN NaN:NaN:NaN'){
+        query.starttime = format(query.starttime, 'yyyy-MM-dd HH:mm:ss');
+        query.endtime = format(query.endtime, 'yyyy-MM-dd HH:mm:ss');
+    }
     for(var k in query){
         if (query[k] != "") {
             data[k] = query[k];
@@ -19,12 +23,39 @@ export function getTaskList(pageNo,pageSize, query) {
         method: 'get'
     });
 }
-//添加任务
-export function addTask(data) {
+//添加任务或者修改任务
+export function taskAddAndModify(data) {
     data.startDate=format(data.startDate, 'yyyy-MM-dd HH:mm:ss');
     data.endDate=format(data.endDate, 'yyyy-MM-dd HH:mm:ss');
+    var urlStr = '';
+    if(data.id != ''){
+        console.log("修改任务数据id="+data.id);
+        urlStr = '/backManger/fmkj/PmTask/updateTask' +  getParams(data);
+    }else{
+        console.log("新增任务数据id="+data.id);
+        urlStr = '/backManger/fmkj/PmTask/addTask' +  getParams(data);
+    }
+
     return fetch({
-        url: '/backManger/fmkj/PmTask/addTask' +  getParams(data),
+        url: urlStr,
+        method: 'post'
+    });
+}
+//编辑任务
+export function updateTask(task) {
+    console.debug("方法参数："+task.methodParams);
+    const data = {
+        id:task.id,
+        title: task.title,
+        taskTarget: task.taskTarget,
+        jobGroup: task.jobGroup,
+        subDesc: task.subDesc,
+        reward: task.reward,
+        auditCycle: task.auditCycle,
+        downUrl: task.downUrl
+    };
+    return fetch({
+        url: '/backManger/fmkj/PmTask/updateTask' +  getParams(data),
         method: 'post'
     });
 }
@@ -58,19 +89,13 @@ var format = function(time, format)
 }
 
 //删除任务
-export function deleteTask(pageNo,pageSize, query) {
+export function deleteTask(id) {
     const data = {
-        pageNo,
-        pageSize
-    };
-    for(var k in query){
-        if (query[k] != "") {
-            data[k] = query[k];
-        }
+        id
     };
     return fetch({
-        url: '/backManger/fmkj/FmProductInfo/queryGoodsList' + getParams(data),
-        method: 'get'
+        url: '/backManger/fmkj/PmTask/deleteTask' + getParams(data),
+        method: 'post'
     });
 
 }
