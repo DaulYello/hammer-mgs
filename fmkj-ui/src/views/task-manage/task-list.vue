@@ -108,8 +108,8 @@
             </Form>
         </Modal>
 
-        <Modal v-model="detalShow" title="提示信息" ok-text="保存" :loading="loading" @on-ok="ok" @on-cancel="cancel">
-
+        <Modal v-model="detalShow" title="提示信息" :loading="loading" :footerHide="true" :width="500">
+            <task-prompt></task-prompt>
         </Modal>
         <Modal title="预览图片" v-model="showDialog">
             <img :src="picturePath"  style="width: 100%">
@@ -128,9 +128,11 @@
         deleteTask
     } from 'api/task/task';
     import TaskUpload from "../my-components/file-upload/task-upload";
+    import TaskPrompt from "./task-prompt";
     export default {
         name: 'task-list',
         components: {
+            TaskPrompt,
             TaskUpload,
             canEditTable
         },
