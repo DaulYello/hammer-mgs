@@ -74,12 +74,16 @@
     <select id="queryLastInvitRank" resultType="java.util.HashMap">
         SELECT
           t.rid AS uid,
+          h.nickname,
           COUNT(t.rid) AS invitingNum
         FROM
           hc_account t
-        WHERE YEARWEEK(create_date, 1) = YEARWEEK(DATE_SUB(CURDATE(), INTERVAL 7 DAY), 1)
+          LEFT JOIN hc_account h
+            ON t.rid = h.id
+        WHERE YEARWEEK(t.create_date, 1) = YEARWEEK(DATE_SUB(CURDATE(), INTERVAL 7 DAY), 1)
         GROUP BY t.rid
         ORDER BY invitingNum DESC
         LIMIT 0, 3
+
     </select>
 </mapper>

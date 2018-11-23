@@ -79,7 +79,9 @@ export default {
                 }]
             },
             uploadList: [],
-            auditId: 0,
+            auditId: '',
+            auditUid: '',
+            auditTid: '',
             pageData: [],
             query:{},
             multipleSelection: [],
@@ -110,6 +112,11 @@ export default {
                     title: '用户昵称',
                     align: 'center',
                     key: 'nickName'
+                },
+                {
+                    title: '用户CNT',
+                    align: 'center',
+                    key: 'cnt'
                 },
                 {
                     title: '审核状态',
@@ -202,6 +209,8 @@ export default {
                                         click: () => {
                                             this.modelShow = true;
                                             this.auditId = params.row.id;
+                                            this.auditUid = params.row.uid;
+                                            this.auditTid = params.row.tid;
                                         }
                                     }
                                 }, '审核')
@@ -250,7 +259,7 @@ export default {
             this.$refs['partForm'].validate((valid) => {
                 if (valid) {
                     this.loading = true;
-                    auditPart(this.auditData.auditOption, this.auditId, 2).then(data => {
+                    auditPart(this.auditData.auditOption, this.auditId, this.auditUid, this.auditTid, 2).then(data => {
                         this.loading = false;
                         if (data.status === 200) {
                             this.modelShow = false;
@@ -275,7 +284,7 @@ export default {
             this.$refs['partForm'].validate((valid) => {
                 if (valid) {
                     this.loading = true;
-                    auditPart(this.auditData.auditOption, this.auditId, -1).then(data => {
+                    auditPart(this.auditData.auditOption, this.auditId, this.auditUid,this.auditTid, -1).then(data => {
                         this.loading = false;
                         if (data.status === 200) {
                             this.modelShow = false;

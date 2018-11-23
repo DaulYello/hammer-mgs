@@ -2,6 +2,8 @@ package com.bm.fmkj.service;
 
 import java.util.List;
 
+import com.bm.fmkj.constant.RecyleEnum;
+import com.bm.fmkj.constant.TakeEnum;
 import com.bm.fmkj.dao.FmRecyleLog;
 import com.bm.fmkj.dao.FmRecyleLogMapper;
 import org.apache.poi.ss.formula.functions.T;
@@ -85,10 +87,25 @@ public class HcAccountService {
 		return hcaccountMapper.queryUserPointNum();
     }
 
-	public void updateCntById(Integer uid, FmRecyleLog recyleLog) {
+	public void updateCntById(Integer uid, int superUid, Double takeNum, List<FmRecyleLog> fmRecyleLogList) {
+
 		HcAccount hc = hcaccountMapper.selectByPrimaryKey(uid);
-		hc.setCnt(hc.getCnt() + recyleLog.getTakeNum());
-		hcaccountMapper.updateByPrimaryKey(hc);
-		fmRecyleLogMapper.insert(recyleLog);
+		hc.setCnt(hc.getCnt() + takeNum);
+		int update = hcaccountMapper.updateByPrimaryKeySelective(hc);
+		if(update > 0 ){
+			LOGGER.info("邀请周排行榜更新用户"+hc.getNickname()+"CNT成功");
+		}else{
+			LOGGER.info("邀请周排行榜更新用户"+hc.getNickname()+"CNT失败");
+		}
+		HcAccount superHc = hcaccountMapper.selectByPrimaryKey(superUid);
+		superHc.setCnt(superHc.getCnt() + takeNum);
+		int updateSuper = hcaccountMapper.updateByPrimaryKeySelective(superHc);
+		if(update > 0 ){
+			LOGGER.info("邀请周排行榜更新公司账户"+hc.getNickname()+"CNT成功");
+		}else{
+			LOGGER.info("邀请周排行榜更新公司账户"+hc.getNickname()+"CNT失败");
+		}
+		fmRecyleLogMapper.batchAddRecyleLog(fmRecyleLogList);
+
 	}
 }

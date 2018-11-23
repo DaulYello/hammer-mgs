@@ -13,6 +13,7 @@
     <result column="imageUrl" jdbcType="VARCHAR" property="imageUrl" />
     <result column="nickName" jdbcType="VARCHAR" property="nickName" />
     <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="cnt" jdbcType="DOUBLE" property="cnt" />
   </resultMap>
   
   <select id="selectPartList" parameterType="java.util.HashMap" resultMap="BaseResultMap">
@@ -31,6 +32,7 @@
             pm_image
           WHERE part_id = t.id) AS imageUrl,
           h.nickname,
+          h.cnt,
           k.title
         FROM
           pm_part t

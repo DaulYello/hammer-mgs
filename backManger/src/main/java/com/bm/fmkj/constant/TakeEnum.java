@@ -27,7 +27,11 @@ public enum TakeEnum {
 
     TAKE_GOODS(8, "确认收货后获取得"),
 
-    FAIL_BACK(9,"活动失败后返回CNT");
+    FAIL_BACK(9,"活动失败后返回CNT"),
+
+    USER_REWARD(10,"任务奖励"),
+
+    AUTO_NUM(11,"公司账户自然增长");
 
     public int status;
 

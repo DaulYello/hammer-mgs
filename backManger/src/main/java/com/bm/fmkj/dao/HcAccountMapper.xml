@@ -75,6 +75,12 @@
 		<result column="pointNum" jdbcType="DOUBLE" property="pointNum" />
 	</resultMap>
 
+	<select id="selectSuperAccount" resultType="com.bm.fmkj.dao.HcAccount">
+
+		select * from hc_account where  grade_id = 9999
+
+	</select>
+
 	<!-- 差选用户邀请人数得周榜单(本周至当前得数据) -->
 	<select id="queryUserRank" parameterType="com.bm.fmkj.model.PageModel" resultMap="RankWeekMap">
 		select

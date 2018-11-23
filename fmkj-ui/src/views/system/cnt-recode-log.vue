@@ -12,7 +12,7 @@
                         <Input v-model="query.nickname" placeholder="获得CNT用户昵称。。。" style="width: 200px;margin-left: 50px;" />
                         <Form :label-width="80" :inline="inline" style="float: left;">
                             <FormItem label="获取渠道 : " prop="sendValue">
-                                <Select style="width:200px" v-model="query.sendValue">
+                                <Select style="width:200px" v-model="query.sendValue" :clearable="true">
                                     <Option v-for="item in stateList" :value="item.value" :key="item.value" name="sendValue">
                                         {{item.label }}
                                     </Option>
@@ -21,7 +21,7 @@
                         </Form>
                         <Form :label-width="80" :inline="inline" style="float: left;">
                             <FormItem label="所属类型 : " prop="typeValue">
-                                <Select style="width:200px" v-model="query.typeValue">
+                                <Select style="width:200px" v-model="query.typeValue" :clearable="true">
                                     <Option v-for="item in typeList" :value="item.value" :key="item.value" name="typeValue">
                                         {{item.label }}
                                     </Option>
@@ -108,6 +108,14 @@
                     {
                         value: '9',
                         label: '活动失败后返回CNT'
+                    },
+                    {
+                        value: '10',
+                        label: '完成任务奖励'
+                    },
+                    {
+                        value: '11',
+                        label: '公司账户自然增长'
                     }
                 ],
                 typeList:[
@@ -161,7 +169,8 @@
                                 : params.row.takeType == 2 ? "释放CNT时没有用户回收" : params.row.takeType == 3 ? "未中锤奖励"
                                 : params.row.takeType == 4 ? "周排行奖励" : params.row.takeType == 5 ? "被用户偷取"
                                 : params.row.takeType == 6 ? "参与活动扣除" : params.row.takeType == 7 ? "邀请好友获得"
-                                : params.row.takeType == 8 ? "确认收货后获取" : "活动失败后返回CNT";
+                                : params.row.takeType == 8 ? "确认收货后获取" : params.row.takeType == 9 ? "活动失败后返回CNT"
+                                : params.row.takeType == 10 ? "完成任务奖励" : params.row.takeType == 11 ? "公司账户自然增长" : '未知渠道'
                             return h('div',text);
 
                         }

@@ -30,7 +30,7 @@ import java.util.List;
 @RequestMapping("/fmkj/part")
 public class PmPartController extends BaseController {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(PmStrategyController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(PmPartController.class);
 
 	@Autowired
 	private PmPartService pmpartService;

@@ -10,6 +10,16 @@ public class PmPartDto extends PmPart {
 
     private String title;
 
+    private Double cnt;
+
+    public Double getCnt() {
+        return cnt;
+    }
+
+    public void setCnt(Double cnt) {
+        this.cnt = cnt;
+    }
+
     public String getImageUrl() {
         return imageUrl;
     }

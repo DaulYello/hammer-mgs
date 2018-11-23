@@ -160,11 +160,13 @@ export function getPartPage(pageNo,pageSize, query) {
     });
 }
 
-export function auditPart(auditOption, id, auditStatus) {
+export function auditPart(auditOption, id, uid, tid, auditStatus) {
     const data = {
         auditOption: auditOption,
         id: id,
-        auditStatus: auditStatus
+        auditStatus: auditStatus,
+        uid: uid,
+        tid: tid
     };
     return fetch({
         url: '/backManger/fmkj/part/auditPart' +  getParams(data),

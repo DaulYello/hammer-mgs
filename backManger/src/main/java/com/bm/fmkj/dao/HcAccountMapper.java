@@ -58,4 +58,6 @@ public interface HcAccountMapper extends Mapper<HcAccount> {
     List<T> queryUserPointNum();
 
     int updateUserCNTbyID(HashMap<String, Object> map);
+
+	HcAccount selectSuperAccount();
 }
