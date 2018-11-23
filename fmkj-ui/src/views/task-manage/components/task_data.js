@@ -135,7 +135,7 @@ export const columns = [
     {
         title: '操作',
         align: 'center',
-        width: 170,
+        width: 200,
         key: 'handle',
         handle: ['edit','detail']
     }

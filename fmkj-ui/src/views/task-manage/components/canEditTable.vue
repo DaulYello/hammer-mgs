@@ -35,6 +35,7 @@ const editButton = (vm, h, index) => {
         }
     }, '编辑');
 };
+
 //详情
 const showDetail = (vm, h, index) => {
     return h('Button', {
@@ -50,8 +51,9 @@ const showDetail = (vm, h, index) => {
                 vm.$emit('on-detailShow', vm.thisTableData[index]);
             }
         }
-    },'详情');
+    },'温馨提示');
 };
+
 //显示任务头像图片
 const imageShow = (vm, h, index,item) => {
     return h('div', [

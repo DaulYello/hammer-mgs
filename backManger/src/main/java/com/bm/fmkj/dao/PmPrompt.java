@@ -26,7 +26,7 @@ public class PmPrompt {
      * 显示顺序
      */
     @Column(name = "order_num")
-    private Byte orderNum;
+    private Integer orderNum;
 
     /**
      * 创建时间
@@ -88,21 +88,11 @@ public class PmPrompt {
         this.promptText = promptText;
     }
 
-    /**
-     * 获取显示顺序
-     *
-     * @return order_num - 显示顺序
-     */
-    public Byte getOrderNum() {
+    public Integer getOrderNum() {
         return orderNum;
     }
 
-    /**
-     * 设置显示顺序
-     *
-     * @param orderNum 显示顺序
-     */
-    public void setOrderNum(Byte orderNum) {
+    public void setOrderNum(Integer orderNum) {
         this.orderNum = orderNum;
     }
 

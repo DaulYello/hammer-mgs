@@ -142,7 +142,6 @@ export function addStrategy(obj, imageId) {
     });
 }
 
-
 // 获取参与记录
 export function getPartPage(pageNo,pageSize, query) {
     const data = {
@@ -160,13 +159,59 @@ export function getPartPage(pageNo,pageSize, query) {
     });
 }
 
-export function auditPart(auditOption, id, uid, tid, auditStatus) {
+// 获取温馨提示
+export function getPromptInfo(pageNo,pageSize, query) {
+    const data = {
+        pageNo,
+        pageSize
+    };
+    for(var k in query){
+        if (query[k] != "") {
+            data[k] = query[k];
+        }
+    };
+    return fetch({
+        url: '/backManger/fmkj/PmPrompt/getPromptInfo' + getParams(data),
+        method: 'get'
+    });
+}
+
+//保存提示信息
+export function savePromptInfo(prompt) {
+    console.log("方法参数："+prompt.tid);
+    console.log("方法参数："+prompt.promptText);
+    console.log("方法参数："+prompt.id);
+    console.log("方法参数："+prompt.orderNum);
+    if(prompt.id == null){
+        prompt.id = 0;
+    }
+    const data = {
+        id: prompt.id,
+        tid: prompt.tid,
+        promptText: prompt.promptText,
+        orderNum: prompt.orderNum
+    };
+    return fetch({
+        url: '/backManger/fmkj/PmPrompt/savePromptInfo' + getParams(data),
+        method: 'post'
+    });
+}
+//删除提示信息
+export function deletePromptInfo(id) {
+    const data = {
+        id
+    };
+    return fetch({
+        url: '/backManger/fmkj/PmPrompt/deletePromptInfo' + getParams(data),
+        method: 'post'
+    });
+}
+
+export function auditPart(auditOption, id, auditStatus) {
     const data = {
         auditOption: auditOption,
         id: id,
-        auditStatus: auditStatus,
-        uid: uid,
-        tid: tid
+        auditStatus: auditStatus
     };
     return fetch({
         url: '/backManger/fmkj/part/auditPart' +  getParams(data),

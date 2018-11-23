@@ -108,8 +108,8 @@
             </Form>
         </Modal>
 
-        <Modal v-model="detalShow" title="提示信息" :loading="loading" :footerHide="true" :width="500">
-            <task-prompt></task-prompt>
+        <Modal v-model="detalShow" title="提示信息" :loading="loading" :footerHide="true" :width="800">
+            <task-prompt ref="prompt"></task-prompt>
         </Modal>
         <Modal title="预览图片" v-model="showDialog">
             <img :src="picturePath"  style="width: 100%">
@@ -244,8 +244,9 @@
                 this.quartzData.type = val.type;
                 this.modelShow = true;
             },
-            detailList(){
+            detailList(vm){
                 this.detalShow = true;
+                this.$refs.prompt.getPromptData(1,vm.id);
             },
             ok() {
                 this.$refs['quartzForm'].validate((valid) => {

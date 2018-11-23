@@ -11,4 +11,9 @@
     <result column="order_num" jdbcType="TINYINT" property="orderNum" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
   </resultMap>
+
+  <select id="getPromptInfo" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    SELECT * FROM `pm_prompt` pm WHERE pm.tid = #{tid}
+    order by pm.create_date desc
+  </select>
 </mapper>
