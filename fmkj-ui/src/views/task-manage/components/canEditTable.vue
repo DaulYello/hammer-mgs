@@ -19,10 +19,11 @@ import {
     addTask
 } from 'api/task/task';
 //编辑按钮
-const editButton = (vm, h, currentRow, index) => {
+const editButton = (vm, h, index) => {
     return h('Button', {
         props: {
-            type: currentRow.editting ? 'success' : 'primary',
+            /*type: currentRow.editting ? 'success' : 'primary',*/
+            type: 'primary',
         },
         style: {
             margin: '0 5px'
@@ -32,7 +33,24 @@ const editButton = (vm, h, currentRow, index) => {
                 vm.$emit('on-modelShow', vm.thisTableData[index]);
             }
         }
-    }, currentRow.editting ? '保存' : '编辑');
+    }, '编辑');
+};
+//详情
+const showDetail = (vm, h, index) => {
+    return h('Button', {
+        props: {
+            type:  'success',
+            placement: 'top'
+        },
+        style: {
+            margin: '0 5px'
+        },
+        on: {
+            'click': () => {
+                vm.$emit('on-detailShow', vm.thisTableData[index]);
+            }
+        }
+    },'详情');
 };
 //显示任务头像图片
 const imageShow = (vm, h, index,item) => {
@@ -162,11 +180,13 @@ export default {
                     }
                     if (item.handle) {
                         item.render = (h, param) => {
-                            let currentRowData = this.thisTableData[param.index];
+                            //let currentRowData = this.thisTableData[param.index];
                             let children = [];
                             item.handle.forEach(item => {
                                 if (item === 'edit') {
-                                    children.push(editButton(this, h, currentRowData, param.index));
+                                    children.push(editButton(this, h, param.index));
+                                } else if (item === 'detail'){
+                                    children.push(showDetail(this, h, param.index));
                                 } else if (item === 'logoShow') {
                                     children.push(imageShow(this, h, param.index,item));
                                 }else if (item === 'detalShow') {

@@ -22,7 +22,7 @@
                         </div>
                         <Form :label-width="80" style="float: left;">
                             <FormItem label="任务状态 : " prop="statusValue">
-                                <Select style="width:200px" v-model="query.statusValue">
+                                <Select style="width:200px" v-model="query.statusValue" :clearable="true">
                                     <Option v-for="item in statusList" :value="item.value" :key="item.value" name="statusValue">
                                         {{item.label }}
                                     </Option>
@@ -31,7 +31,7 @@
                         </Form>
                         <Form :label-width="80" style="float: left;margin-right: 10px;">
                             <FormItem label="下载状态 : " prop="typeValue">
-                                <Select style="width:200px" v-model="query.typeValue">
+                                <Select style="width:200px" v-model="query.typeValue" :clearable="true">
                                     <Option v-for="item in typeList" :value="item.value" :key="item.value" name="typeValue">
                                         {{item.label }}
                                     </Option>
@@ -45,7 +45,7 @@
                         <span @click="addTask"><Button type="primary" icon="android-add">新增</Button></span>
                     </Row>
                     <div class="margin-top-10">
-                        <can-edit-table :loading="loading" @input="handleInput" @on-modelShow="editModel" @on-delete="handleDel" @on-show="showLogo" @on-router="handleInfo" @on-change="handleChange" @on-run="handleRun" @on-start="handleStart" @on-error="handleError"  refs="multipleSelection" v-model="pageData" :columns-list="columns"></can-edit-table>
+                        <can-edit-table :loading="loading" @input="handleInput" @on-modelShow="editModel" @on-detailShow="detailList" @on-delete="handleDel" @on-show="showLogo" @on-router="handleInfo" @on-change="handleChange" @on-run="handleRun" @on-start="handleStart" @on-error="handleError"  refs="multipleSelection" v-model="pageData" :columns-list="columns"></can-edit-table>
                     </div>
                     <Page  style="text-align:center;margin-top:20px" @on-change="getData" :total="pageInfo.total" :page-size="size" :current="pageInfo.pageNo" size="small" show-elevator show-total></Page>
                 </Card>
@@ -107,6 +107,10 @@
                 </FormItem>
             </Form>
         </Modal>
+
+        <Modal v-model="detalShow" title="提示信息" ok-text="保存" :loading="loading" @on-ok="ok" @on-cancel="cancel">
+
+        </Modal>
         <Modal title="预览图片" v-model="showDialog">
             <img :src="picturePath"  style="width: 100%">
         </Modal>
@@ -147,7 +151,7 @@
                     },
                     {
                         value: '1',
-                        label: '想要'
+                        label: '需要'
                     }
                 ],
                 statusList:[
@@ -161,6 +165,7 @@
                     }
                 ],
                 modelShow: false,
+                detalShow: false,
                 picturePath:'',
                 quartzData: {
                     logoid: '',
@@ -236,6 +241,9 @@
                 this.quartzData.status = val.status;
                 this.quartzData.type = val.type;
                 this.modelShow = true;
+            },
+            detailList(){
+                this.detalShow = true;
             },
             ok() {
                 this.$refs['quartzForm'].validate((valid) => {
