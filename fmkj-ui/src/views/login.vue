@@ -30,7 +30,7 @@
                             <Button @click="handleSubmit" type="primary" long>登录</Button>
                         </FormItem>
                     </Form>
-                    <p class="login-tip">费马科技有限公司</p>
+                    <p class="login-tip">风云科技有限公司</p>
                 </div>
             </Card>
         </div>

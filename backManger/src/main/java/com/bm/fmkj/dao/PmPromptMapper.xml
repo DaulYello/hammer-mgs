@@ -16,4 +16,8 @@
     SELECT * FROM `pm_prompt` pm WHERE pm.tid = #{tid}
     order by pm.create_date desc
   </select>
+
+  <insert id="savePromptInfo" parameterType="com.bm.fmkj.dao.PmPrompt" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO pm_prompt(tid,prompt_text,order_num,create_date) VALUE(#{tid},#{promptText},#{orderNum},#{createDate})
+  </insert>
 </mapper>

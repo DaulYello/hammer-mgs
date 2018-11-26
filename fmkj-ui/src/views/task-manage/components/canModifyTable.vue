@@ -51,9 +51,23 @@
                             vm.$Message.error('提示内容不能为空！')
                             return;
                         }
+
+                        let regPos = /(^[1-9]\d*$)/; //正整数
+
+                        if (vm.edittingStore[index].orderNum === '') {
+                            vm.$Message.error('显示顺序不能为空！')
+                            return;
+                        }
+                        if (!regPos.test(vm.edittingStore[index].orderNum)) {
+                            vm.$Message.error('显示顺序只能填正整数！')
+                            return;
+                        }
                         savePromptInfo(vm.thisTableData[index]).then(data => {
                             if (data.status === 200) {
                                 vm.edittingStore[index].editting = false;
+                                var id = data.data;
+                                console.log("返回的id"+id);
+                                vm.edittingStore[vm.edittingStore.length-1].id = id;
                                 vm.thisTableData = JSON.parse(JSON.stringify(vm.edittingStore));
                                 vm.$emit('input', vm.handleBackdata(vm.thisTableData));
                                 vm.$emit('on-change', vm.handleBackdata(vm.thisTableData), index);

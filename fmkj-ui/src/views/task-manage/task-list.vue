@@ -170,6 +170,7 @@
                 detalShow: false,
                 picturePath:'',
                 quartzData: {
+                    id: 0,
                     logoid: '',
                     imageid: '',
                     type: 1,

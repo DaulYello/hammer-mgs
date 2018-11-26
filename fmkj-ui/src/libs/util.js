@@ -7,7 +7,7 @@ let util = {
 
 };
 util.title = function (title) {
-    title = title || '费马科技后台管理系统';
+    title = title || '风云科技后台管理系统';
     window.document.title = title;
 };
 

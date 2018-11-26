@@ -7,4 +7,7 @@ import java.util.List;
 
 public interface PmPromptMapper extends Mapper<PmPrompt> {
     List<PmPrompt> getPromptInfo(HashMap<String, Object> param);
+
+
+    int savePromptInfo(PmPrompt prompt);
 }

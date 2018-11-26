@@ -33,15 +33,15 @@ public class PmPromptService {
 		return PageUtil.toPagedResult(pmPrompts);
     }
 
-	public Boolean savePromptInfo(PmPrompt prompt) {
+	public int savePromptInfo(PmPrompt prompt) {
 		LOGGER.info("PmPromptService保存温馨提示消息，参数："+ JSON.toJSONString(prompt));
 		prompt.setCreateDate(new Date());
 		if(prompt.getId() == 0){
 			LOGGER.info("prompt.getId() == null,新增");
-			return pmpromptMapper.insert(prompt) >0 ? true : false;
+			return pmpromptMapper.savePromptInfo(prompt);
 		}else{
 			LOGGER.info("prompt.getId() != null,修改");
-			return pmpromptMapper.updateByPrimaryKeySelective(prompt)>0 ? true : false;
+			return pmpromptMapper.updateByPrimaryKeySelective(prompt);
 		}
 	}
 

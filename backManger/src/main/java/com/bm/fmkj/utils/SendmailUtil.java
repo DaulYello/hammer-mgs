@@ -37,7 +37,7 @@ public class SendmailUtil {
     private static String FROMADDRESS=SEND_USER+"@qq.com";
 //    private String FROMADDRESS=SEND_USER+"@minstone.com.cn";
 //    private String FROMADDRESS=SEND_USER+"@sina.com";
-    private static String SEND_UNAME = "费马科技锤多宝";
+    private static String SEND_UNAME = "风云科技绿天鹅";
     //邮箱密码
 //    private String SEND_PWD = "25660663abc.";
 //    private String SEND_PWD = "313131abc.";
@@ -113,6 +113,6 @@ public class SendmailUtil {
     }
  
     public static void main(String[] args) {
-        doSendHtmlEmail("费马科技锤多宝官网", "欢迎使用锤多宝app邮箱绑定，本邮件由系统自动发出，请勿回复。<br/>感谢您的使用。<br/>费马科技有限公司", "1824517828@qq.com");
+        doSendHtmlEmail("风云科技绿天鹅官网", "欢迎使用锤多宝app邮箱绑定，本邮件由系统自动发出，请勿回复。<br/>感谢您的使用。<br/>风云科技有限公司", "1824517828@qq.com");
     }
 }

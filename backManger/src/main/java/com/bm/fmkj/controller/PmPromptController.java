@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.HashMap;
 
 @Controller
@@ -52,20 +53,24 @@ public class PmPromptController extends BaseController {
 
 	@RequestMapping(value="savePromptInfo",method = RequestMethod.POST)
 	@ResponseBody
-	public BaseResult<Boolean> savePromptInfo(PmPrompt prompt) {
+	public BaseResult<Integer> savePromptInfo(PmPrompt prompt) {
 
 		if(StringUtils.isNull(prompt)) {
-			return new BaseResult<Boolean>(BaseResultEnum.BLANK,false);
+			return new BaseResult<Integer>(BaseResultEnum.BLANK,-1);
 		}
 		if(StringUtils.isNull(prompt.getTid())) {
-			return new BaseResult<Boolean>(BaseResultEnum.BLANK,false);
+			return new BaseResult<Integer>(BaseResultEnum.BLANK,-1);
 		}
 		if(StringUtils.isNull(prompt.getPromptText())) {
-			return new BaseResult<Boolean>(BaseResultEnum.BLANK,false);
+			return new BaseResult<Integer>(BaseResultEnum.BLANK,-1);
 		}
 		LOGGER.info("getPromptInfo-params={}", JSON.toJSONString(prompt));
-
-		return new BaseResult<Boolean>(BaseResultEnum.SUCCESS,pmpromptService.savePromptInfo(prompt));
+        int row = pmpromptService.savePromptInfo(prompt);
+        if(row > 0){
+            return new BaseResult(BaseResultEnum.SUCCESS,prompt.getId());
+        }else{
+            return new BaseResult(BaseResultEnum.ERROR,-1);
+        }
 	}
 
 	@RequestMapping(value="deletePromptInfo",method = RequestMethod.POST)

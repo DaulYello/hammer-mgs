@@ -27,8 +27,23 @@ export function getTaskList(pageNo,pageSize, query) {
 export function taskAddAndModify(data) {
     data.startDate=format(data.startDate, 'yyyy-MM-dd HH:mm:ss');
     data.endDate=format(data.endDate, 'yyyy-MM-dd HH:mm:ss');
+
+    let regPos = /^\d+(\.\d+)?$/; //非负浮点数
+
+    if (data.title == '') {
+        alert('任务标题不能为空！');
+        return;
+    }
+    if (data.taskTarget == '') {
+        alert('任务目标不能为空！');
+        return;
+    }
+    if (!regPos.test(data.reward)) {
+        alert('任务奖励只能输入数字！');
+        return;
+    }
     var urlStr = '';
-    if(data.id != ''){
+    if(data.id != 0){
         console.log("修改任务数据id="+data.id);
         urlStr = '/backManger/fmkj/PmTask/updateTask' +  getParams(data);
     }else{
@@ -179,9 +194,6 @@ export function getPromptInfo(pageNo,pageSize, query) {
 //保存提示信息
 export function savePromptInfo(prompt) {
     console.log("方法参数："+prompt.tid);
-    console.log("方法参数："+prompt.promptText);
-    console.log("方法参数："+prompt.id);
-    console.log("方法参数："+prompt.orderNum);
     if(prompt.id == null){
         prompt.id = 0;
     }
