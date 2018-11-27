@@ -126,11 +126,13 @@
                         }
                         let regPos = /^([1-9]\d*|[0]{1,1})$/; //正整数，包括0
 
+                        let reg = /^([1]\d*|[0]{1,1})$/; //正整数，包括0
+
                         if (vm.edittingStore[index].orderNum === '') {
                             vm.$Message.error('显示顺序不能为空！');
                             return;
                         }
-                        if (vm.edittingStore[index].emptyHint === '') {
+                        if (vm.edittingStore[index].emptyHint === '' || vm.edittingStore[index].emptyHint == null) {
                             vm.$Message.error('注释不能为空！');
                             return;
                         }
@@ -138,7 +140,7 @@
                             vm.$Message.error('显示顺序只能填正整数！');
                             return;
                         }
-                        if (!regPos.test(vm.edittingStore[index].isEmpty)) {
+                        if (!reg.test(vm.edittingStore[index].isEmpty)) {
                             vm.$Message.error('是否为空，只能填0和1！');
                             return;
                         }
