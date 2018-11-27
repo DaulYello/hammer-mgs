@@ -241,3 +241,52 @@ export function auditPart(auditOption, id, uid, tid, auditStatus) {
     });
 }
 
+// 获取扩展字段信息
+export function getExtendInfo(pageNo,pageSize, query) {
+    const data = {
+        pageNo,
+        pageSize
+    };
+    for(var k in query){
+        if (query[k] != "") {
+            data[k] = query[k];
+        }
+    };
+    return fetch({
+        url: '/backManger/fmkj/PmExtend/getExtendInfo' + getParams(data),
+        method: 'get'
+    });
+}
+
+//添加扩展字段信息
+export function saveExtendInfo(extend) {
+    console.log("方法参数："+extend.tid);
+    if(extend.id == null){
+        extend.id = 0;
+    }
+    const data = {
+        id: extend.id,
+        tid: extend.tid,
+        clounmKey: extend.clounmKey,
+        clounmName: extend.clounmName,
+        clounmTip: extend.clounmTip,
+        isEmpty: extend.isEmpty,
+        emptyHint: extend.emptyHint,
+        orderNum: extend.orderNum
+    };
+    return fetch({
+        url: '/backManger/fmkj/PmExtend/saveExtendInfo' + getParams(data),
+        method: 'post'
+    });
+}
+//删除扩展字段信息
+export function deleteExtendInfo(id) {
+    const data = {
+        id
+    };
+    return fetch({
+        url: '/backManger/fmkj/PmExtend/deleteExtendInfo' + getParams(data),
+        method: 'post'
+    });
+}
+

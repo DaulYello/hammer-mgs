@@ -33,6 +33,7 @@
         <result column="nickname1" jdbcType="VARCHAR" property="nickname1" />
         <result column="startid" jdbcType="INTEGER" property="startid" />
         <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
         <result column="pname" jdbcType="VARCHAR" property="pname" />
         <result column="pnumber" jdbcType="INTEGER" property="pnumber" />
         <result column="isbond" jdbcType="DOUBLE" property="isbond" />
@@ -46,12 +47,15 @@
         <result column="begintime" jdbcType="TIMESTAMP" property="begintime" />
         <result column="endtime" jdbcType="TIMESTAMP" property="endtime" />
         <result column="imageurl" jdbcType="VARCHAR" property="imageurl" />
+        <result column="num" jdbcType="INTEGER" property="num" />
+        <result column="par" jdbcType="INTEGER" property="par" />
+        <result column="pdescribe" jdbcType="LONGVARCHAR" property="pdescribe" />
     </resultMap>
 
     <select id="queryAllActivityByPage" parameterType="java.util.HashMap" resultMap="oneMap">
-        select ga.id,ha.nickname as nickname1,ha.id as startid,ha.name as name,ga.pname,ga.pnumber,
+        select ga.id,ha.nickname as nickname1,ha.id as startid,ga.name,ga.pname,ga.pnumber,
         ga.isbond,ga.place,hca.nickname as nickname2,ga.status,gat.type as activitytype,gat.id as typeid,
-        ga.premium,ga.time,ga.begintime,ga.endtime,gcp.imageurl as imageurl
+        ga.premium,ga.time,ga.begintime,ga.endtime,gcp.imageurl as imageurl,ga.num,ga.par,ga.pdescribe
         from gc_activity ga
         left join gc_activitytype gat on ga.typeid= gat.id
         left join hc_account ha on ga.startid=ha.id

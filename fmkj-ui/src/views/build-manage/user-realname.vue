@@ -75,6 +75,12 @@
                         editable: true
                     },
                     {
+                        title: '名字',
+                        align: 'center',
+                        key: 'name',
+                        editable: true
+                    },
+                    {
                         title: '电话号码',
                         align: 'center',
                         key: 'telephone',
@@ -229,7 +235,7 @@
                     {
                         title: '操作',
                         align: 'center',
-                        width: 260,
+                        width: 180,
                         key: 'handle',
                         render: (h, params) => {
                             if (params.row.cardStatus == 1)

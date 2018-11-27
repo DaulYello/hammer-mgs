@@ -30,6 +30,6 @@
 		<!-- <table tableName="hc_assets"></table> -->
 		<!-- <table tableName="gc_notice"></table>
 		<table tableName="gc_newcollect"></table> -->
-		<table tableName="pm_prompt"></table>
+		<table tableName="pm_extend"></table>
 	</context>
 </generatorConfiguration>

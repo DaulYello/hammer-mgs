@@ -59,19 +59,26 @@ export default {
             columns: [
                 {
                     title: '序号',
-                    type: 'selection',
+                    type: 'index',
+                    width:80,
                     key: 'id',
                     align: 'center'
                 },
                 {
-                    title: '活动ID',
-                    key: 'id',
+                    title: '活动名称',
+                    key: 'name',
                     align: 'center'
                 },
                 {
                     title: '发起人',
                     align: 'center',
-                    key: 'startid',
+                    key: 'nickname1',
+                    editable: true
+                },
+                {
+                    title: '重锤者',
+                    align: 'center',
+                    key: 'nickname2',
                     editable: true
                 },
                 {
@@ -84,15 +91,16 @@ export default {
                     }
                 },
                 {
-                    title: '发起地点',
+                    title: '参与人数上限',
                     align: 'center',
-                    key: 'price',
+                    key: 'num',
                     editable: true
                 },
                 {
-                    title: '保证金',
+                    title: '所需CNT',
                     align: 'center',
-                    key: 'bond',
+                    width:65,
+                    key: 'par',
                     editable: true
                 },
                 {
@@ -110,18 +118,27 @@ export default {
                 {
                     title: '产品数量',
                     align: 'center',
+                    width:60,
                     key: 'pnumber',
                     editable: true
                 },
                 {
                     title: '产品溢价',
                     align: 'center',
+                    width:60,
                     key: 'premium',
+                    editable: true
+                },
+                {
+                    title: '活动描述',
+                    align: 'center',
+                    key: 'pdescribe',
                     editable: true
                 },
                 {
                     title: '图片查看',
                     align: 'center',
+                    width:85,
                     key: 'imageurl',
                     render:(h,params)=>{
                         return h('div',[
@@ -158,7 +175,7 @@ export default {
                         } else if (params.row.status === 3) {
                             text = '活动结束'
                         } else if (params.row.status === 4) {
-                            text = '活动下线'
+                            text = '活动异常'
                         } else if (params.row.status === 5) {
                             text = '活动失败'
                         } else {

@@ -61,7 +61,7 @@ public class HcAccountService {
 	
 	/**
 	 * 分页获取用户的信息
-	 * @param pm
+	 * @param pageQuery
 	 * @return
 	 */
 	public Pagenation<HcAccount> queryUserInfo(PageQuery pageQuery) {

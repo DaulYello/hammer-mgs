@@ -142,9 +142,9 @@ export const columns = [
     {
         title: '操作',
         align: 'center',
-        width: 200,
+        width: 300,
         key: 'handle',
-        handle: ['edit','detail']
+        handle: ['edit','detail','extend']
     }
 ];
 

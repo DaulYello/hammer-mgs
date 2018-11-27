@@ -10,11 +10,11 @@
                 <Card showHead="false">
                     <Row>
                         <div class="serachStyle">
-                            <DatePicker v-model="query.starttime" style="width:200px;" placeholder="选择开始日期和时间" ></DatePicker>
+                            <DatePicker v-model="query.starttime" type="datetime" style="width:200px;" placeholder="选择开始日期和时间" ></DatePicker>
                         </div>
-                        <div style="margin-top: 16px;float: left;margin-left: 5px;margin-right: 5px"> 至 </div>
+                        <div style="margin-top: 8px;float: left;margin-left: 5px;margin-right: 5px"> 至 </div>
                         <div class="serachStyle">
-                            <DatePicker v-model="query.endtime" style="width:200px;" placeholder="选择结束日期和时间" ></DatePicker>
+                            <DatePicker v-model="query.endtime" type="datetime" style="width:200px;" placeholder="选择结束日期和时间" ></DatePicker>
                         </div>
                         <div class="serachStyle">
                             <Input v-model="query.telephone" placeholder="请输入用户电话..." style="width: 200px" />
@@ -93,16 +93,16 @@ export default {
                     key: 'id',
                     align: 'center'
                 },
-                /*{
-                    title: '名字',
-                    align: 'center',
-                    key: 'name',
-                    editable: true
-                },*/
                 {
                     title: '昵称',
                     align: 'center',
                     key: 'nickname',
+                    editable: true
+                },
+                {
+                    title: '名字',
+                    align: 'center',
+                    key: 'name',
                     editable: true
                 },
                 {
@@ -190,12 +190,6 @@ export default {
                         return h('span',text);
                     }
                 },
-               /* {
-                    title: '锤宝ID',
-                    align: 'center',
-                    key: 'cdbid',
-                    editable: true
-                },*/
                {
                    title: '注册时间',
                    align: 'center',
@@ -288,12 +282,6 @@ export default {
             });
             //this.$Message.success('删除了第' + (index + 1) + '行数据');
         },
-        /*setStartTime(datetime){
-            this.starttime = datetime;
-        },
-        setEndTime(datetime){
-            this.endtime = datetime;
-        },*/
         handleCellChange (val, index, key) {
             this.$Message.success('修改了第 ' + (index + 1) + ' 行列名为 ' + key + ' 的数据');
         },

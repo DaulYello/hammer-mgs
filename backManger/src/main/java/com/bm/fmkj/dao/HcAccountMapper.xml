@@ -163,10 +163,10 @@
 			and hc.nickname=#{nickname}
 		</if>
 		<if test="starttime != null and endtime != null">
-			and hc.create_date between (SELECT DATE_FORMAT(#{starttime},'%Y-%m-%d 00:00:00')) and (SELECT DATE_FORMAT(#{endtime},'%Y-%m-%d 23:59:59'))
+			and hc.create_date between #{starttime} and #{endtime}
 		</if>
 		order by
-		<if test="cnt == null and cnt == integral">
+		<if test="cnt == null and integral == null">
 			hc.create_date desc
 		</if>
 		<if test="cnt != null">

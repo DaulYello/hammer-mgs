@@ -53,6 +53,23 @@ const showDetail = (vm, h, index) => {
         }
     },'温馨提示');
 };
+//扩展字段
+const extendShow = (vm, h, index) => {
+    return h('Button', {
+        props: {
+            type:  'success',
+            placement: 'top'
+        },
+        style: {
+            margin: '0 5px'
+        },
+        on: {
+            'click': () => {
+                vm.$emit('on-extendShow', vm.thisTableData[index]);
+            }
+        }
+    },'扩展字段');
+};
 
 //显示任务头像图片
 const imageShow = (vm, h, index,item) => {
@@ -193,6 +210,8 @@ export default {
                                     children.push(imageShow(this, h, param.index,item));
                                 }else if (item === 'detalShow') {
                                     children.push(imageShow(this, h, param.index,item));
+                                }else if (item === 'extend') {
+                                    children.push(extendShow(this, h, param.index,item));
                                 }
 
                             });

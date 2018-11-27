@@ -45,7 +45,7 @@
                         <span @click="addTask"><Button type="primary" icon="android-add">新增</Button></span>
                     </Row>
                     <div class="margin-top-10">
-                        <can-edit-table :loading="loading" @input="handleInput" @on-modelShow="editModel" @on-detailShow="detailList" @on-delete="handleDel" @on-show="showLogo" @on-router="handleInfo" @on-change="handleChange" @on-run="handleRun" @on-start="handleStart" @on-error="handleError"  refs="multipleSelection" v-model="pageData" :columns-list="columns"></can-edit-table>
+                        <can-edit-table :loading="loading" @input="handleInput" @on-modelShow="editModel" @on-extendShow="extendEdit" @on-detailShow="detailList" @on-delete="handleDel" @on-show="showLogo" @on-router="handleInfo" @on-change="handleChange" @on-run="handleRun" @on-start="handleStart" @on-error="handleError"  refs="multipleSelection" v-model="pageData" :columns-list="columns"></can-edit-table>
                     </div>
                     <Page  style="text-align:center;margin-top:20px" @on-change="getData" :total="pageInfo.total" :page-size="size" :current="pageInfo.pageNo" size="small" show-elevator show-total></Page>
                 </Card>
@@ -114,6 +114,10 @@
         <Modal v-model="detalShow" title="提示信息" :loading="loading" :footerHide="true" :width="800">
             <task-prompt ref="prompt"></task-prompt>
         </Modal>
+
+        <Modal v-model="extendShow" title="扩展字段信息" :loading="loading" :footerHide="true" :width="1000">
+            <task-extend ref="extend"></task-extend>
+        </Modal>
         <Modal title="预览图片" v-model="showDialog">
             <img :src="picturePath"  style="width: 100%">
         </Modal>
@@ -132,9 +136,11 @@
     } from 'api/task/task';
     import TaskUpload from "../my-components/file-upload/task-upload";
     import TaskPrompt from "./task-prompt";
+    import TaskExtend from "./task-extend";
     export default {
         name: 'task-list',
         components: {
+            TaskExtend,
             TaskPrompt,
             TaskUpload,
             canEditTable
@@ -171,6 +177,7 @@
                 ],
                 modelShow: false,
                 detalShow: false,
+                extendShow: false,
                 picturePath:'',
                 quartzData: {
                     id: 0,
@@ -252,6 +259,10 @@
             detailList(vm){
                 this.detalShow = true;
                 this.$refs.prompt.getPromptData(1,vm.id);
+            },
+            extendEdit(vm){
+                this.extendShow = true;
+                this.$refs.extend.getExtendData(1,vm.id);
             },
             ok() {
                 this.$refs['quartzForm'].validate((valid) => {

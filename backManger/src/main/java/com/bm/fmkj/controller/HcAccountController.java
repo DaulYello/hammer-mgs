@@ -94,23 +94,6 @@ public class HcAccountController extends BaseController {
 		PageQuery pageQuery = new PageQuery();
 		int pageNo = Integer.parseInt((String)params.get("pageNo"));
 		int pageSize = Integer.parseInt((String)params.get("pageSize"));
-		String starttime=(String)params.get("starttime");
-		String endtime=(String)params.get("endtime");
-		if(null != starttime && null != endtime){
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-			String startDateStr = DateUtil.parseHour(starttime);
-			String endDateStr = DateUtil.parseHour(endtime);
-			try{
-				if(sdf.parse(startDateStr).getTime()>sdf.parse(endDateStr).getTime()){
-					//throw new RuntimeException("开始时间不能大于结束时间！");
-					return new BaseResult(BaseResultEnum.ERROR,"开始时间不能大于结束时间！");
-				}
-				params.put("starttime",startDateStr);
-				params.put("endtime",endDateStr);
-			}catch (ParseException e){
-				e.getErrorOffset();
-			}
-		}
 		if(null==params.get("sort")){
 			params.put("sort","desc");
 		}
