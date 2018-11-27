@@ -43,9 +43,12 @@ export function taskAddAndModify(data) {
         alert('任务奖励只能输入数字！');
         return;
     }
-    if (!integer.test(data.proportion)) {
+    if (typeof(data.proportion) != "undefined" && !integer.test(data.proportion)) {
         alert('奖励比例只能输入正整数！');
         return;
+    }
+    if (typeof(data.proportion) == "undefined") {
+        data.proportion = 100;
     }
     var urlStr = '';
     if(data.id != 0){

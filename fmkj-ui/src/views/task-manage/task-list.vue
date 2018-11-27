@@ -54,10 +54,10 @@
         <Modal v-model="modelShow" title="任务" ok-text="保存" :loading="loading" @on-ok="ok" @on-cancel="cancel">
             <Form ref="quartzForm" :model="quartzData" :rules="quartzRules" :label-width="120">
                 <FormItem label="任务标题：" prop="title">
-                    <Input v-model="quartzData.title" type="text"></Input>
+                    <Input v-model="quartzData.title" placeholder="请输入任务标题" type="text"></Input>
                 </FormItem>
                 <FormItem label="任务目标：" prop="taskTarget">
-                    <Input v-model="quartzData.taskTarget" type="text"></Input>
+                    <Input v-model="quartzData.taskTarget" placeholder="请输入任务目标" type="text"></Input>
                 </FormItem>
                 <FormItem label="开始时间：" prop="startDate">
                     <div>
@@ -71,7 +71,7 @@
                 </FormItem>
 
                 <FormItem label="二级描述：" prop="subDesc">
-                    <Input v-model="quartzData.subDesc"  type="text"></Input>
+                    <Input v-model="quartzData.subDesc" placeholder="请填写二级描述"  type="text"></Input>
                 </FormItem>
                 <FormItem label="任务头像：" prop="logoid">
                     <Row type="flex" align="middle" class="height-100">
@@ -84,16 +84,16 @@
                     </Row>
                 </FormItem>
                 <FormItem label="任务奖励：" prop="reward">
-                    <Input v-model="quartzData.reward"  type="text"></Input>
+                    <Input v-model="quartzData.reward" placeholder="请输入任务奖励"  type="text"></Input>
                 </FormItem>
-                <FormItem label="奖励比例：" prop="proportion">
-                    <Input v-model="quartzData.proportion"  type="text"></Input>
+                <FormItem label="奖励比例(%)：" prop="proportion">
+                    <Input v-model="quartzData.proportion" placeholder="默认奖励比例100"  type="text"></Input>
                 </FormItem>
                 <FormItem label="审核周期：" prop="auditCycle">
-                    <Input v-model="quartzData.auditCycle" type="text"></Input>
+                    <Input v-model="quartzData.auditCycle" placeholder="请输入审核周期，例如：1-5天" type="text"></Input>
                 </FormItem>
                 <FormItem label="下载地址：" prop="downUrl">
-                    <Input v-model="quartzData.downUrl" type="text"></Input>
+                    <Input v-model="quartzData.downUrl" placeholder="请输入下载地址，例如：http://baidu.com"  type="text"></Input>
                 </FormItem>
                 <FormItem label="任务状态：" prop="status">
                     <RadioGroup v-model="quartzData.status"  @on-change="statusValChange">
