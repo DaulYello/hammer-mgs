@@ -39,7 +39,16 @@ public class PmStrategy {
     @Column(name = "update_date")
     private Date updateDate;
 
-    private Integer imageId;
+
+    private String imageIdStr;
+
+    public String getImageIdStr() {
+        return imageIdStr;
+    }
+
+    public void setImageIdStr(String imageIdStr) {
+        this.imageIdStr = imageIdStr;
+    }
 
     /**
      * 获取主键
@@ -93,14 +102,6 @@ public class PmStrategy {
      */
     public void setStrategy(String strategy) {
         this.strategy = strategy;
-    }
-
-    public Integer getImageId() {
-        return imageId;
-    }
-
-    public void setImageId(Integer imageId) {
-        this.imageId = imageId;
     }
 
     public Integer getOrderNum() {

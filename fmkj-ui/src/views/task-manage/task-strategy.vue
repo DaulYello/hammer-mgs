@@ -23,7 +23,11 @@
             </Col>
         </Row>
         <Modal title="攻略图片" v-model="showDialog">
-            <img :src="picturePath"  style="width: 100%">
+            <div class="demo-upload-list" v-for="item in picturePathList">
+                <template>
+                    <img :src="item"  style="width: 100%">
+                </template>
+            </div>
         </Modal>
         <Modal v-model="modelShow" title="任务攻略" ok-text="保存" :loading="loading" @on-ok="ok" @on-cancel="cancel">
             <Form ref="strategyForm" :model="strategyData" :rules="strategyRules" :label-width="120">
@@ -77,11 +81,11 @@ export default {
             loading:true,
             showDialog:false,
             modelShow: false,
-            picturePath:'',
+            picturePathList: [],
             page: 1,
             size: 20,
             pageInfo: '',
-            imageId: 0,
+            imageIdStr: '',
             pageData: [],
             taskList:[],
             strategyData: {},
@@ -144,8 +148,12 @@ export default {
                                 },
                                 on: {
                                     click: () => {
-                                        this.picturePath=params.row.imageUrl;
-                                        this.showDialog = true;
+                                        if(params.row.imageUrl){
+                                            this.picturePathList=params.row.imageUrl.split(",");
+                                            this.showDialog = true;
+                                        }else{
+                                            this.$Message.error("没有图片");
+                                        }
                                     }
                                 }
                             },"阅览")
@@ -244,7 +252,7 @@ export default {
             this.$refs['strategyForm'].validate((valid) => {
                 if (valid) {
                     this.loading = true;
-                    addStrategy(this.strategyData, this.imageId).then(data => {
+                    addStrategy(this.strategyData, this.imageIdStr).then(data => {
                         this.loading = false;
                         if (data.status === 200) {
                             this.$Message.success(data.message);
@@ -267,9 +275,14 @@ export default {
         cancel() {
         },
         uploadOk(val){
-            this.imageId = val.data
+            if(this.imageIdStr){
+                this.imageIdStr = this.imageIdStr + ',' + val.data
+            }else{
+                this.imageIdStr = val.data
+            }
         },
         showAdd() {
+            this.imageIdStr = '';
             this.strategyData = {};
             this.modelShow = true;
         },

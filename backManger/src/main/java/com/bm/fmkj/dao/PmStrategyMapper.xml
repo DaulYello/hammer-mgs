@@ -17,27 +17,28 @@
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="create_date" jdbcType="TIMESTAMP" property="createDate" />
     <result column="update_date" jdbcType="TIMESTAMP" property="updateDate" />
-    <result column="imageId" jdbcType="INTEGER" property="imageId" />
   </resultMap>
   
   <select id="selectStrategyList" parameterType="java.util.HashMap" resultMap="StrategyResultMap">
 
-      SELECT
-        t.id,
-        t.tid,
-        t.create_date,
-        t.update_date,
-        p.title,
-        t.strategy,
-        t.order_num,
-        g.image_url
+    SELECT
+      t.id,
+      t.tid,
+      t.create_date,
+      t.update_date,
+      p.title,
+      t.strategy,
+      t.order_num,
+      (SELECT
+      GROUP_CONCAT(image_url)
       FROM
-        pm_strategy t
-        LEFT JOIN pm_task p
-          ON t.tid = p.id
-        LEFT JOIN pm_image g
-        ON t.imageId = g.id
-      WHERE 1 = 1
+      pm_image
+      WHERE part_id = t.id) AS image_url
+      FROM
+      pm_strategy t
+      LEFT JOIN pm_task p
+      ON t.tid = p.id
+    WHERE 1 = 1
     <if test="title != null and title != ''">
       AND p.title =  #{title}
     </if>
@@ -52,9 +53,9 @@
     </foreach>
   </delete>
   
-  <insert id="addStrategy" parameterType="com.bm.fmkj.dao.PmStrategy">
+  <insert id="addStrategy" parameterType="com.bm.fmkj.dao.PmStrategy" useGeneratedKeys="true" keyProperty="id">
 
-     INSERT INTO pm_strategy(tid,strategy,order_num,create_date,imageId ) VALUES(#{tid},#{strategy},#{orderNum}, #{createDate},#{imageId})
+     INSERT INTO pm_strategy(tid,strategy,order_num,create_date ) VALUES(#{tid},#{strategy},#{orderNum}, #{createDate})
 
   </insert>
 

@@ -6,4 +6,13 @@
     INSERT INTO pm_image(image_url,create_date,path) values (#{imageUrl},#{createDate},#{path})
   </insert>
 
+  <update id="updateStrategyImage" parameterType="java.util.HashMap">
+    update pm_image set part_id = #{strategyId} WHERE id IN
+    <foreach collection="imageIds" index="index" item="item"
+             separator="," open="(" close=")">
+        #{item}
+    </foreach>
+
+  </update>
+
 </mapper>

@@ -152,12 +152,12 @@ export function deleteStrategy (ids) {
     });
 }
 
-export function addStrategy(obj, imageId) {
+export function addStrategy(obj, imageIdStr) {
     const data = {
         tid: obj.tid,
         strategy: obj.strategyText,
         orderNum: obj.strategyOrder,
-        imageId: imageId
+        imageIdStr: imageIdStr
     };
     return fetch({
         url: '/backManger/fmkj/strategy/addStrategy' +  getParams(data),

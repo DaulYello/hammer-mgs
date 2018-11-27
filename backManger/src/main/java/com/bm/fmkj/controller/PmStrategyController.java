@@ -1,15 +1,12 @@
 package com.bm.fmkj.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.bm.fmkj.annotation.BackLog;
 import com.bm.fmkj.base.BaseResult;
 import com.bm.fmkj.base.BaseResultEnum;
 import com.bm.fmkj.base.PageQuery;
 import com.bm.fmkj.base.Pagenation;
-import com.bm.fmkj.constant.LogConstant;
 import com.bm.fmkj.dao.PmStrategy;
 import com.bm.fmkj.dao.PmTask;
-import com.bm.fmkj.domain.Job;
 import com.bm.fmkj.domain.PmStrategyDto;
 import com.bm.fmkj.service.PmStrategyService;
 import com.bm.fmkj.utils.StringUtils;
@@ -46,6 +43,7 @@ public class PmStrategyController extends BaseController {
 			return new BaseResult<Boolean>(BaseResultEnum.BLANK,false);
 		}
 		int result = pmstrategyService.addStrategy(strategy);
+
 		if(result > 0) {
 			return new BaseResult<Boolean>(BaseResultEnum.SUCCESS,true);
 		}else {
