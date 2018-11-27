@@ -174,8 +174,8 @@ export default {
                         }
                         return h('span',text);
                     }
-                },
-                {
+                }
+                /*{
                     title: '操作',
                     align: 'center',
                     width: 150,
@@ -219,7 +219,7 @@ export default {
                             }, text)
                         ])
                     }
-                }
+                }*/
             ]
         };
     },

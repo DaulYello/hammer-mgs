@@ -319,7 +319,7 @@ public class GcActivityService {
 					return map;
 				}else if(StringUtils.isNull(activity.getPar())){
 					map.put("status",false);
-					map.put("message","参见活动的CNT为NULL，活动id="+Integer.parseInt(ids[i]));
+					map.put("message","参与活动的CNT为NULL，活动id="+Integer.parseInt(ids[i]));
 					return map;
 				}
 				log.debug("将活动设为失败后，将参与活动的用户cnt退换");
@@ -356,14 +356,6 @@ public class GcActivityService {
 					recyleLog.setTakeMsg("活动ID为【"+activity.getId()+"】的活动失败，将参加活动的CNT退还给参与用户");
 					recyleLogs.add(recyleLog);
 				}
-				/*HashMap<String,Object> param = new HashMap();
-				param.put("uids",uids);
-				param.put("par",activity.getPar());
-				int row= hcAccountMapper.updateUserCNTbyID(param);
-				if(row<=0){
-					log.info("更新用户的CNT失败！");
-					throw new RuntimeException("更新用户的cnt时报错！事务回滚!");
-				}*/
 				fmRecyleLogMapper.batchAddRecyleLog(recyleLogs);
 				boolean result = updateActivityStatus(activity);
 				if(!result){
@@ -380,31 +372,6 @@ public class GcActivityService {
 		}
 	}
 
-	public boolean endActivity(HashMap<String, Object> params) {
-
-		try {
-			log.debug("endActivity进入业务层");
-			log.info("queryUserInfo-params={}", JSON.toJSONString(params));
-			String idStr = (String)params.get("ids");
-
-			String ids [] = idStr.split(",");
-			GcActivity activity = new GcActivity();
-			int rows = 0;
-			for(int i=0;i<ids.length;i++) {
-				activity.setId(Integer.parseInt(ids[i]));
-				activity.setStatus(4);
-				activity.setEndtime(new Date());
-				int row = gcactivityMapper.updateByPrimaryKeySelective(activity);
-				rows+=row;
-			}
-			if(rows == ids.length) {
-				return true;
-			}
-			return false;
-		} catch (NumberFormatException e) {
-			throw new RuntimeException(e.getMessage());
-		}
-	}
 
 	public List<GcActivity> queryActivityByStatus(){
 		return gcactivityMapper.queryActivityByStatus();
@@ -503,5 +470,17 @@ public class GcActivityService {
 		activity.setStatus(5);
 		activity.setEndtime(new Date());
 		return gcactivityMapper.updateByPrimaryKeySelective(activity) > 0 ? true : false;
+	}
+
+	public boolean blockChainMeltDetail(HashMap<String, Object> params) {
+		try{
+			log.debug("1.查询那些活动还在进行中");
+			List<GcActivity> activities = gcactivityMapper.queryActivityByStatus();
+
+			return false;
+		}catch (RuntimeException e){
+			e.getMessage();
+			return false;
+		}
 	}
 }

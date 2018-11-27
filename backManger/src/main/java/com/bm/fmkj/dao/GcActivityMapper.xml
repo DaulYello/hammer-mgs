@@ -62,10 +62,10 @@
             and status = 0
         </if>
         <if test="status != null and status==2">
-            and ga.status in (2,3)
+            and ga.status = 2
         </if>
         <if test="status != null and status==3">
-            and ga.status in (4,5)
+            and ga.status in (3,4,5)
         </if>
         <if test="status != null and status==4">
             and ga.status = 1

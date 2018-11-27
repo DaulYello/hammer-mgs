@@ -121,16 +121,17 @@ public class GcActivityController extends BaseController {
 	}
 	
 	/**
-	 * 取消活动
+	 * 区块链奔溃后处理数据，从新审核上链
+	 * 注意：不要轻易调用这个接口，只有区块链掉了才能调用这个接口
 	 * @param params
 	 * @return
 	 */
-	@RequestMapping(value = "endActivity", method = RequestMethod.POST)
+	@RequestMapping(value = "blockChainMeltDetail", method = RequestMethod.POST)
 	@ResponseBody
-	public BaseResult<Boolean> endActivity(@RequestParam HashMap<String, Object> params) {
+	public BaseResult<Boolean> blockChainMeltDetail(@RequestParam HashMap<String, Object> params) {
 		try {
-			log.debug("进入--》endActivity");
-			boolean result = gcactivityService.endActivity(params);
+			log.debug("进入区块链奔溃后处理--》blockChainMeltDetail");
+			boolean result = gcactivityService.blockChainMeltDetail(params);
 			if(result) {
 				return new BaseResult<Boolean>(BaseResultEnum.SUCCESS, result);
 			}
