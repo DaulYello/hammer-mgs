@@ -82,4 +82,14 @@
     <select id="queryActivityByStatus" resultMap="BaseResultMap">
         SELECT * FROM gc_activity WHERE status=2
     </select>
+
+    <update id="updateActivte" parameterType="java.util.List">
+        UPDATE gc_activity SET status = 0
+        <where>
+            id in
+            <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </where>
+    </update>
 </mapper>

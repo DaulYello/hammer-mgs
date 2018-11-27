@@ -128,14 +128,14 @@ public class GcActivityController extends BaseController {
 	 */
 	@RequestMapping(value = "blockChainMeltDetail", method = RequestMethod.POST)
 	@ResponseBody
-	public BaseResult<Boolean> blockChainMeltDetail(@RequestParam HashMap<String, Object> params) {
+	public BaseResult<HashMap<String,Object>> blockChainMeltDetail(@RequestParam HashMap<String, Object> params) {
 		try {
 			log.debug("进入区块链奔溃后处理--》blockChainMeltDetail");
-			boolean result = gcactivityService.blockChainMeltDetail(params);
-			if(result) {
-				return new BaseResult<Boolean>(BaseResultEnum.SUCCESS, result);
-			}
-			return new BaseResult<Boolean>(BaseResultEnum.SUCCESS, result);
+            HashMap<String,Object> map = gcactivityService.blockChainMeltDetail(params);
+			/*if(result) {
+				return new BaseResult<HashMap<String,Object>>(BaseResultEnum.SUCCESS, map);
+			}*/
+			return new BaseResult<HashMap<String,Object>>(BaseResultEnum.SUCCESS, map);
 		}catch (Exception e) {
 			throw new RuntimeException(e.getMessage());
 		}

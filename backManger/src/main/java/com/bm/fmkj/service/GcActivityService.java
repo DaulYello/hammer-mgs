@@ -472,15 +472,44 @@ public class GcActivityService {
 		return gcactivityMapper.updateByPrimaryKeySelective(activity) > 0 ? true : false;
 	}
 
-	public boolean blockChainMeltDetail(HashMap<String, Object> params) {
+	public HashMap<String,Object> blockChainMeltDetail(HashMap<String, Object> params) {
+		HashMap<String,Object> map = new HashMap<>();
 		try{
 			log.debug("1.查询那些活动还在进行中");
 			List<GcActivity> activities = gcactivityMapper.queryActivityByStatus();
-
-			return false;
+			if (activities.size() == 0){
+				log.debug("没有在进行中的活动，请查看数据库！");
+				map.put("message","没有在进行中的活动，请查看数据库！");
+				map.put("result",false);
+				return map;
+			}
+			List<Integer> list = new ArrayList<>();
+			for(GcActivity activity : activities){
+				list.add(activity.getId());
+			}
+			log.debug("2.通过还在进行中的活动id更新旗下的所有上链状态isChain为0，目的是重新在新的合约上链");
+			boolean result = joinactivityrecordMapper.updateJoinRecodeIsChain(list) > 0 ? true : false;
+			if (!result){
+				log.debug("没有在进行中的活动，请查看数据库！");
+				map.put("message","2.通过还在进行中的活动id更新旗下的所有上链状态isChain为0，失败！");
+				map.put("result",false);
+				return map;
+			}
+			log.debug("3.将这些在进行中的活动状态都设为0，从新审核");
+			boolean result_a = gcactivityMapper.updateActivte(list) > 0 ? true : false;
+			if (!result){
+				log.debug("3.将这些在进行中的活动状态都设为0，从新审核！");
+				map.put("message","3.将这些在进行中的活动状态都设为0，从新审核，失败！");
+				map.put("result",false);
+				return map;
+			}
+			map.put("message","处理成功！");
+			map.put("result",true);
+			return map;
 		}catch (RuntimeException e){
-			e.getMessage();
-			return false;
+			map.put("message",e.getMessage());
+			map.put("result",false);
+			return map;
 		}
 	}
 }

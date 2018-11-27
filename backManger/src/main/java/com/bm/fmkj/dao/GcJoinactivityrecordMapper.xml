@@ -11,4 +11,14 @@
     <result column="isChain" jdbcType="INTEGER" property="ischain" />
     <result column="time" jdbcType="TIMESTAMP" property="time" />
   </resultMap>
+
+  <update id="updateJoinRecodeIsChain" parameterType="java.util.List">
+    UPDATE `gc_joinactivityrecord` SET isChain = 0
+    <where>
+      aid IN
+      <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+        #{item}
+      </foreach>
+    </where>
+  </update>
 </mapper>

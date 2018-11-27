@@ -10,8 +10,10 @@ public interface GcActivityMapper extends Mapper<GcActivity> {
     /**
      * 分页查询活动
      */
-    public List<GcActivity> queryAllActivityByPage(HashMap<String, Object> param);
+    List<GcActivity> queryAllActivityByPage(HashMap<String, Object> param);
 
-    public List<GcActivity> queryActivityByStatus();
+    List<GcActivity> queryActivityByStatus();
+
+    int updateActivte(List<Integer> list);
 }
 
