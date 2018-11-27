@@ -29,6 +29,7 @@ export function taskAddAndModify(data) {
     data.endDate=format(data.endDate, 'yyyy-MM-dd HH:mm:ss');
 
     let regPos = /^\d+(\.\d+)?$/; //非负浮点数
+    let integer = /(^[1-9]\d*$)/; //正整数
 
     if (data.title == '') {
         alert('任务标题不能为空！');
@@ -40,6 +41,10 @@ export function taskAddAndModify(data) {
     }
     if (!regPos.test(data.reward)) {
         alert('任务奖励只能输入数字！');
+        return;
+    }
+    if (!integer.test(data.proportion)) {
+        alert('奖励比例只能输入正整数！');
         return;
     }
     var urlStr = '';

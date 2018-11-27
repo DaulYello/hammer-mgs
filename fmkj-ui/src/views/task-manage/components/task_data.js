@@ -38,6 +38,13 @@ export const columns = [
         editable: true
     },
     {
+        title: '奖励比例',
+        align: 'center',
+        width: 70,
+        key: 'proportion',
+        editable: true
+    },
+    {
         title: '审核周期',
         align: 'center',
         width: 70,

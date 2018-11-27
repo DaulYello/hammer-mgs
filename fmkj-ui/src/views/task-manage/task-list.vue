@@ -86,6 +86,9 @@
                 <FormItem label="任务奖励：" prop="reward">
                     <Input v-model="quartzData.reward"  type="text"></Input>
                 </FormItem>
+                <FormItem label="奖励比例：" prop="proportion">
+                    <Input v-model="quartzData.proportion"  type="text"></Input>
+                </FormItem>
                 <FormItem label="审核周期：" prop="auditCycle">
                     <Input v-model="quartzData.auditCycle" type="text"></Input>
                 </FormItem>
@@ -237,6 +240,7 @@
                 this.quartzData.taskTarget = val.taskTarget;
                 this.quartzData.subDesc = val.subDesc;
                 this.quartzData.reward = val.reward;
+                this.quartzData.proportion = val.proportion;
                 this.quartzData.auditCycle = val.auditCycle;
                 this.quartzData.downUrl = val.downUrl;
                 this.quartzData.startDate = val.startDate;
@@ -284,6 +288,7 @@
                 this.quartzData.taskTarget = '';
                 this.quartzData.subDesc = '';
                 this.quartzData.reward = '';
+                this.quartzData.proportion = '';
                 this.quartzData.auditCycle = '';
                 this.quartzData.downUrl = '';
                 this.quartzData.startDate = '';
