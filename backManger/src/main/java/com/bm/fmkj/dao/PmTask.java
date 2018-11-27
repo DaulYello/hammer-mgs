@@ -91,6 +91,16 @@ public class PmTask {
     @Column(name = "imageId")
     private Integer imageid;
 
+    private Integer proportion;
+
+    public Integer getProportion() {
+        return proportion;
+    }
+
+    public void setProportion(Integer proportion) {
+        this.proportion = proportion;
+    }
+
     /**
      * 获取主键
      *
