@@ -7,7 +7,7 @@
   </insert>
 
   <update id="updateStrategyImage" parameterType="java.util.HashMap">
-    update pm_image set part_id = #{strategyId} WHERE id IN
+    update pm_image set part_id = #{strategyId}, image_type = 2 WHERE id IN
     <foreach collection="imageIds" index="index" item="item"
              separator="," open="(" close=")">
         #{item}
