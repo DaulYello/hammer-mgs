@@ -77,7 +77,7 @@ public class PmTask {
     /**
      * 状态0、正常;-1、已删除
      */
-    private Byte status;
+    private Integer status;
 
     /**
      * 任务标题图片
@@ -322,7 +322,7 @@ public class PmTask {
      *
      * @return status - 状态0、正常;-1、已删除
      */
-    public Byte getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
@@ -331,7 +331,7 @@ public class PmTask {
      *
      * @param status 状态0、正常;-1、已删除
      */
-    public void setStatus(Byte status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

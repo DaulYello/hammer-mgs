@@ -45,7 +45,7 @@
                         <span @click="addTask"><Button type="primary" icon="android-add">新增</Button></span>
                     </Row>
                     <div class="margin-top-10">
-                        <can-edit-table :loading="loading" @input="handleInput" @on-modelShow="editModel" @on-extendShow="extendEdit" @on-detailShow="detailList" @on-delete="handleDel" @on-show="showLogo" @on-router="handleInfo" @on-change="handleChange" @on-run="handleRun" @on-start="handleStart" @on-error="handleError"  refs="multipleSelection" v-model="pageData" :columns-list="columns"></can-edit-table>
+                        <can-edit-table :loading="loading" @input="handleInput" @on-modelShow="editModel" @on-extendShow="extendEdit" @on-detailShow="detailList" @on-issueTask="handkeIssueTask" @on-show="showLogo" @on-router="handleInfo" @on-error="handleError"  refs="multipleSelection" v-model="pageData" :columns-list="columns"></can-edit-table>
                     </div>
                     <Page  style="text-align:center;margin-top:20px" @on-change="getData" :total="pageInfo.total" :page-size="size" :current="pageInfo.pageNo" size="small" show-elevator show-total></Page>
                 </Card>
@@ -99,6 +99,7 @@
                     <RadioGroup v-model="quartzData.status"  @on-change="statusValChange">
                         <Radio label="0">正常</Radio>
                         <Radio label="-1">删除</Radio>
+                        <Radio label="1" disabled="true">已发布</Radio>
                     </RadioGroup>
                 </FormItem>
 
@@ -131,8 +132,7 @@
     import {
         getTaskList,
         taskAddAndModify,
-        updateTask,
-        deleteTask
+        issueTask
     } from 'api/task/task';
     import TaskUpload from "../my-components/file-upload/task-upload";
     import TaskPrompt from "./task-prompt";
@@ -264,6 +264,19 @@
                 this.extendShow = true;
                 this.$refs.extend.getExtendData(1,vm.id);
             },
+            handkeIssueTask(vm){
+                issueTask(vm.id).then(data =>{
+                    this.loading = false;
+                    if (data.status === 200) {
+                        this.$Message.success(data.data.message);
+                        this.getData(1);
+                    } else {
+                        this.$Message.error(data.data.message);
+                    }
+                }).catch(error =>{
+                    this.$Message.error('发布任务异常' + error);
+                })
+            },
             ok() {
                 this.$refs['quartzForm'].validate((valid) => {
                     if (valid) {
@@ -316,19 +329,6 @@
             handleSearch(){
                 this.getData(1);
             },
-            handleDel (val, index) {
-                console.log("要删除的任务id："+val.id);
-                deleteTask(val.id).then(data => {
-                    if (data.status === 200) {
-                        this.$Message.success('删除成功');
-                        this.getData(this.page);
-                    } else {
-                        this.$Message.error(data.message);
-                    }
-                }).catch(error => {
-                    this.$Message.error(data.message);
-                });
-            },
             showLogo(val,item){
                 if (item === "logoShow") {
                     this.picturePath = val.logoUrl;
@@ -337,22 +337,6 @@
                     this.picturePath = val.imageUrl;
                 }
                 this.showDialog = true;
-            },
-            handleCellChange (val, index, key) {
-                this.getData(this.page);
-                this.$Message.success('修改了第 ' + (index + 1) + ' 行列名为 ' + key + ' 的数据');
-            },
-            handleChange (val, index) {
-                this.$Message.success('修改了第' + (index + 1) + '行数据');
-            },
-            handleStart (val, index, changeValue) {
-                this.getData(this.page);
-                if(changeValue === 0){
-                    this.$Message.success('任务启用');
-                }else{
-                    this.$Message.success('任务暂停');
-                }
-
             },
             uploadLogo(val){
                 this.quartzData.logoid=val.data

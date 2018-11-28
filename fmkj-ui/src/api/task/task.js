@@ -111,18 +111,6 @@ var format = function(time, format)
     })
 }
 
-//删除任务
-export function deleteTask(id) {
-    const data = {
-        id
-    };
-    return fetch({
-        url: '/backManger/fmkj/PmTask/deleteTask' + getParams(data),
-        method: 'post'
-    });
-
-}
-
 
 // 获取攻略
 export function getStrategyPage(pageNo,pageSize, query) {
@@ -286,6 +274,17 @@ export function deleteExtendInfo(id) {
     };
     return fetch({
         url: '/backManger/fmkj/PmExtend/deleteExtendInfo' + getParams(data),
+        method: 'post'
+    });
+}
+
+//发布任务
+export function issueTask(id) {
+    const data = {
+        id
+    };
+    return fetch({
+        url: '/backManger/fmkj/PmTask/issueTaskInfo' + getParams(data),
         method: 'post'
     });
 }

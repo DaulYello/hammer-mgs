@@ -130,7 +130,7 @@ export const columns = [
         key: 'status',
         render: (h, params) => {
             //const color = params.row.status === '0' ? 'green' : 'red';
-            const text = params.row.status == '0' ? '正常' : params.row.status == '-1' ? '删除' : '错误数据';
+            const text = params.row.status == '0' ? '正常' : params.row.status == '-1' ? '删除' : params.row.status == '1' ? '已发布' : '错误数据';
             /*return h('Tag', {
                 props: {
                     color: color
@@ -142,9 +142,9 @@ export const columns = [
     {
         title: '操作',
         align: 'center',
-        width: 300,
+        width: 340,
         key: 'handle',
-        handle: ['edit','detail','extend']
+        handle: ['edit','detail','extend','issue']
     }
 ];
 

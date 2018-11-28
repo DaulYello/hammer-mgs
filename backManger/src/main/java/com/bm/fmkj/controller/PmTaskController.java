@@ -84,21 +84,21 @@ public class PmTaskController extends BaseController {
 		}
 	}
 
-	/**
-	 * 删除任务（逻辑删除）
-	 */
-	@RequestMapping(value="deleteTask",method=RequestMethod.POST)
+
+	@RequestMapping(value="issueTaskInfo",method = RequestMethod.POST)
 	@ResponseBody
-	public BaseResult<Boolean> deleteTask(@RequestParam Integer id){
- 		LOGGER.info("addTask-params={}", JSON.toJSONString(id));
+	public BaseResult<HashMap<String,Object>> issueTaskInfo(@RequestParam String id) {
+		LOGGER.info("issueTaskInfo-params={}", JSON.toJSONString(id));
+		HashMap<String, Object> map = new HashMap<>();
 		if(StringUtils.isNull(id)) {
-			return new BaseResult<Boolean>(BaseResultEnum.BLANK,false);
+			map.put("result",false);
+			map.put("message","参数不能为空!");
+			return new BaseResult<HashMap<String,Object>>(BaseResultEnum.BLANK,map);
 		}
-		int result = pmtaskService.deleteTask(id);
-		if(result > 0) {
-			return new BaseResult<Boolean>(BaseResultEnum.SUCCESS,true);
-		}else {
-			return new BaseResult<Boolean>(BaseResultEnum.ERROR,false);
+		HashMap<String,Object> mapResult = pmtaskService.issueTaskInfo(id);
+		if (mapResult.get("result").equals(false)){
+			return new BaseResult<HashMap<String,Object>>(BaseResultEnum.ERROR,mapResult);
 		}
+		return new BaseResult<HashMap<String,Object>>(BaseResultEnum.SUCCESS,mapResult);
 	}
 }

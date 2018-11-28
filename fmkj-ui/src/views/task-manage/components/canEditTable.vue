@@ -26,7 +26,7 @@ const editButton = (vm, h, index) => {
             type: 'primary',
         },
         style: {
-            margin: '0 5px'
+            /*margin: '0 2px'*/
         },
         on: {
             'click': () => {
@@ -44,7 +44,7 @@ const showDetail = (vm, h, index) => {
             placement: 'top'
         },
         style: {
-            margin: '0 5px'
+            margin: '0 2px'
         },
         on: {
             'click': () => {
@@ -61,7 +61,7 @@ const extendShow = (vm, h, index) => {
             placement: 'top'
         },
         style: {
-            margin: '0 5px'
+           /* margin: '0 2px'*/
         },
         on: {
             'click': () => {
@@ -87,6 +87,32 @@ const imageShow = (vm, h, index,item) => {
         },"预览")
     ])
 };
+
+//发布任务
+const issueTask = (vm,h,index,item) => {
+    return h('Poptip', {
+        props: {
+            confirm: true,
+            title: '温馨提示和扩展字段都添加了吗？'
+        },
+        on: {
+            'on-ok': () => {
+                vm.$emit('on-issueTask',vm.thisTableData[index]);
+            }
+        }
+    },[
+        h('Button',{
+            style: {
+                margin: '0 2px'
+            },
+            props: {
+                type: 'error',
+                placement: 'top'
+            }
+        },'发布')
+    ])
+};
+
 export default {
     name: 'canEditTable',
     props: {
@@ -212,6 +238,8 @@ export default {
                                     children.push(imageShow(this, h, param.index,item));
                                 }else if (item === 'extend') {
                                     children.push(extendShow(this, h, param.index,item));
+                                }else if (item === 'issue') {
+                                    children.push(issueTask(this, h, param.index,item));
                                 }
 
                             });
