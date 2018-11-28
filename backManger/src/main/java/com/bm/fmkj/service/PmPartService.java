@@ -8,6 +8,7 @@ import com.bm.fmkj.constant.TakeEnum;
 import com.bm.fmkj.controller.PmPartController;
 import com.bm.fmkj.dao.*;
 import com.bm.fmkj.domain.PmPartDto;
+import com.bm.fmkj.utils.StringUtils;
 import com.github.pagehelper.PageHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,6 +59,13 @@ public class PmPartService {
 		if(row > 0 && pmPart.getAuditStatus() ==  2){
 			PmTask pmTask = pmTaskMapper.selectByPrimaryKey(pmPart.getTid());
 			Double reward = pmTask.getReward();
+			Double proportReward = 0D;
+			int proport =  pmTask.getProportion();
+			LOGGER.info("任务奖励用户占比：" + proport);
+			if(StringUtils.isNotNull(proport) && proport > 0){
+				reward = reward * proport / 100;
+				proportReward = pmTask.getReward() - reward;
+			}
 			HcAccount hcAccount = hcAccountMapper.selectByPrimaryKey(pmPart.getUid());
 			hcAccount.setCnt(hcAccount.getCnt() + reward);
 			hcAccount.setUpdateDate(now);
@@ -76,20 +84,23 @@ public class PmPartService {
 				fmRecyleLogList.add(recyleLog);
 
 				//获取公司账户
-				HcAccount superAccount = hcAccountMapper.selectSuperAccount();
-				superAccount.setCnt(superAccount.getCnt() + reward);
-				superAccount.setUpdateDate(now);
-				int superUpdate = hcAccountMapper.updateByPrimaryKeySelective(superAccount);
-				if(superUpdate > 0){
-					FmRecyleLog fmRecyleLog = new FmRecyleLog();
-					fmRecyleLog.setUid(superAccount.getId());
-					fmRecyleLog.setFriendId(superAccount.getId());
-					fmRecyleLog.setRecyleType(RecyleEnum.TYPE_CNT.status);
-					fmRecyleLog.setTakeDate(now);
-					fmRecyleLog.setTakeNum(reward);
-					fmRecyleLog.setTakeMsg("【" + hcAccount.getNickname() + "】完成任务获得"+reward+"CNT奖励，同时公司账户增加" + reward + "CNT");
-					fmRecyleLog.setTakeType(TakeEnum.AUTO_NUM.status);
-					fmRecyleLogList.add(fmRecyleLog);
+				if(proportReward > 0){
+					HcAccount superAccount = hcAccountMapper.selectSuperAccount();
+					superAccount.setCnt(superAccount.getCnt() + proportReward);
+					superAccount.setUpdateDate(now);
+					int superUpdate = hcAccountMapper.updateByPrimaryKeySelective(superAccount);
+					if(superUpdate > 0){
+						int p = 100 - proport;
+						FmRecyleLog log = new FmRecyleLog();
+						log.setUid(superAccount.getId());
+						log.setFriendId(superAccount.getId());
+						log.setRecyleType(RecyleEnum.TYPE_CNT.status);
+						log.setTakeDate(now);
+						log.setTakeNum(proportReward);
+						log.setTakeMsg("【" + hcAccount.getNickname() + "】完成任务获得"+reward+"CNT任务奖励，公司账户获得" + proportReward + "CNT奖励, 占总奖励" +p+"%");
+						log.setTakeType(TakeEnum.USER_REWARD.status);
+						fmRecyleLogList.add(log);
+					}
 				}
 				fmRecyleLogMapper.batchAddRecyleLog(fmRecyleLogList);
 
