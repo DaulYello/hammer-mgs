@@ -79,7 +79,7 @@ public class PmPartService {
 				recyleLog.setRecyleType(RecyleEnum.TYPE_CNT.status);
 				recyleLog.setTakeDate(now);
 				recyleLog.setTakeNum(reward);
-				recyleLog.setTakeMsg("任务审核通过后获得"+reward+"CNT奖励");
+				recyleLog.setTakeMsg("任务审核通过后获得"+reward+"CNT奖励, 占总奖励" +proport+"%");
 				recyleLog.setTakeType(TakeEnum.USER_REWARD.status);
 				fmRecyleLogList.add(recyleLog);
 
