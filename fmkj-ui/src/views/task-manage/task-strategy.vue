@@ -23,9 +23,10 @@
             </Col>
         </Row>
         <Modal title="攻略图片" v-model="showDialog">
-            <div class="demo-upload-list" v-for="item in picturePathList">
+            <div class="demo-upload-list" v-for="(item,index) in picturePathList">
                 <template>
-                    <img :src="item"  style="width: 100%">
+                    <span style="font-weight: bold">攻略图片-{{index + 1}}</span>
+                    <img :src="item"  style="width: 100%" title="index">
                 </template>
             </div>
         </Modal>
@@ -45,6 +46,7 @@
                     <Input v-model="strategyData.strategyOrder"  placeholder="只能输入数字" number></Input>
                 </FormItem>
                <FormItem label="攻略图片：" prop="strategyImage">
+                    <Alert show-icon>注：多张图片必须按照显示的顺序上传</Alert>
                     <task-upload @uploadSuccess="uploadOk"></task-upload>
                 </FormItem>
             </Form>

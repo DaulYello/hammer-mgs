@@ -21,8 +21,9 @@
             </Col>
         </Row>
         <Modal title="审核图片" v-model="showDialog">
-            <div class="demo-upload-list" v-for="item in uploadList">
+            <div class="demo-upload-list" v-for="(item, index) in uploadList">
                 <template>
+                    <span style="font-weight: bold">审核图片-{{index + 1}}</span>
                     <img :src="item"  style="width: 100%">
                 </template>
             </div>
