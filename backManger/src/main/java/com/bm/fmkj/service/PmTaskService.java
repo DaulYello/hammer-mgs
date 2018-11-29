@@ -34,6 +34,9 @@ public class PmTaskService {
 	@Autowired
 	private PmExtendMapper pmExtendMapper;
 
+	@Autowired
+	private PmStrategyMapper pmStrategyMapper;
+
 
 
 	public PmTaskMapper getPmTaskMapper() {
@@ -80,10 +83,20 @@ public class PmTaskService {
 			map.put("message","该任务没有添加扩展字段，请添加扩展字段再发布！");
 			return map;
 		}
-		LOGGER.info("3.更新任务的status为发布状态");
+		LOGGER.info("3.通过任务id查询该任务是否有添加了任务攻略");
+		/*PmStrategy strategy = new PmStrategy();
+		strategy.setTid(Integer.parseInt(id));*/
+		List<PmStrategy> strategies = pmStrategyMapper.selectByTaskId(Integer.parseInt(id));
+		if (strategies.size() <= 0){
+			map.put("result",false);
+			map.put("message","该任务没有任务攻略，请添加任务攻略再发布！");
+			return map;
+		}
+		LOGGER.info("4.更新任务的status为发布状态");
 		PmTask task = new PmTask();
 		task.setId(Integer.parseInt(id));
 		task.setStatus(1);
+		task.setUpdateDate(new Date());
 		boolean result = pmtaskMapper.updateByPrimaryKeySelective(task) > 0 ? true : false;
 		if (!result){
 			map.put("result",false);

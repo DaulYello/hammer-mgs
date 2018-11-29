@@ -15,4 +15,6 @@ public interface PmStrategyMapper extends Mapper<PmStrategy> {
     int addStrategy(PmStrategy strategy);
 
     int updateStrategy(PmStrategy strategy);
+
+    List<PmStrategy> selectByTaskId(int parseInt);
 }

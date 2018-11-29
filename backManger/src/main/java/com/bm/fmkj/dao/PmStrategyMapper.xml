@@ -63,4 +63,8 @@
     UPDATE pm_strategy  SET tid = #{tid},strategy = #{strategy},order_num = #{orderNum},update_date = #{updateDate} WHERE  id = #{id}
   </update>
 
+  <select id="selectByTaskId" resultType="java.util.HashMap">
+    select id from pm_strategy where tid = #{parseInt}
+  </select>
+
 </mapper>
