@@ -134,6 +134,7 @@ export default {
                 {
                     title: '审核状态',
                     align: 'center',
+                    width: 200,
                     key: 'auditStatus',
                     render: (h, params) => {
                         const row = params.row;
