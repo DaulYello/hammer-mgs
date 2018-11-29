@@ -15,4 +15,8 @@
 
   </update>
 
+  <delete id="dropOldImage">
+    DELETE FROM `pm_image` WHERE part_id = #{id} AND image_type = 2
+  </delete>
+
 </mapper>

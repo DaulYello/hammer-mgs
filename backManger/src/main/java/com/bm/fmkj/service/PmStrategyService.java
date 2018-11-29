@@ -55,23 +55,41 @@ public class PmStrategyService {
 		if(row > 0){
 			String imageStr = strategy.getImageIdStr();
 			if(StringUtils.isNotEmpty(imageStr)){
-				HashMap<String, Object> hashMap = new HashMap<>();
-				List<Integer> iamgeList = new ArrayList<>();
-				String [] imageArray = imageStr.split(",");
-				for(int i = 0; i < imageArray.length; i++){
-					String imageId = imageArray[i];
-					iamgeList.add(Integer.parseInt(imageId));
-				}
-				hashMap.put("strategyId", strategy.getId());
-				hashMap.put("imageIds", iamgeList);
-				int res = pmImageMapper.updateStrategyImage(hashMap);
-				if(res > 0){
-					row = res;
-				}else{
-					throw new RuntimeException("新增攻略失败");
-				}
+				row = detaIlimageType(strategy.getId(),imageStr);
 			}
 		}
 		return row;
+	}
+
+	public int editStrategy(PmStrategy strategy) {
+		strategy.setUpdateDate(new Date());
+		int row = pmstrategyMapper.updateStrategy(strategy);
+		if(row > 0){
+			String imageStr = strategy.getImageIdStr();
+			if(StringUtils.isNotEmpty(imageStr)){
+				//删除旧图片
+				pmImageMapper.dropOldImage(strategy.getId());
+				row = detaIlimageType(strategy.getId(),imageStr);
+			}
+		}
+		return row;
+	}
+
+	public int detaIlimageType(int id,String imageStr){
+		HashMap<String, Object> hashMap = new HashMap<>();
+		List<Integer> iamgeList = new ArrayList<>();
+		String [] imageArray = imageStr.split(",");
+		for(int i = 0; i < imageArray.length; i++){
+			String imageId = imageArray[i];
+			iamgeList.add(Integer.parseInt(imageId));
+		}
+		hashMap.put("strategyId", id);
+		hashMap.put("imageIds", iamgeList);
+		int res = pmImageMapper.updateStrategyImage(hashMap);
+		if(res > 0){
+			return res;
+		}else{
+			throw new RuntimeException("新增攻略失败");
+		}
 	}
 }

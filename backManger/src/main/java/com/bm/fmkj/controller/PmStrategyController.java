@@ -50,6 +50,25 @@ public class PmStrategyController extends BaseController {
 			return new BaseResult<Boolean>(BaseResultEnum.ERROR,false);
 		}
 	}
+
+	/**
+	 * 修改
+	 */
+	@RequestMapping(value="editStrategy",method=RequestMethod.POST)
+	@ResponseBody
+	public BaseResult<Boolean> editStrategy(PmStrategy strategy){
+		LOGGER.info("editStrategy-params={}", JSON.toJSONString(strategy));
+		if(StringUtils.isNull(strategy)) {
+			return new BaseResult<Boolean>(BaseResultEnum.BLANK,false);
+		}
+		int result = pmstrategyService.editStrategy(strategy);
+
+		if(result > 0) {
+			return new BaseResult<Boolean>(BaseResultEnum.SUCCESS,true);
+		}else {
+			return new BaseResult<Boolean>(BaseResultEnum.ERROR,false);
+		}
+	}
 	/**
 	 * 删除
 	 */

@@ -28,6 +28,9 @@ export const columns = [
         title: '二级描述',
         align: 'center',
         key: 'subDesc',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        overflow: 'hidden',
         editable: true
     },
     {
@@ -142,7 +145,7 @@ export const columns = [
     {
         title: '操作',
         align: 'center',
-        width: 340,
+        width: 260,
         key: 'handle',
         handle: ['edit','detail','extend','issue']
     }

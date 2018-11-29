@@ -25,6 +25,7 @@
                 <template>
                     <span style="font-weight: bold">审核图片-{{index + 1}}</span>
                     <img :src="item"  style="width: 100%">
+                    <hr/>
                 </template>
             </div>
         </Modal>

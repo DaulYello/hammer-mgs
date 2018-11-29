@@ -99,7 +99,7 @@
                     <RadioGroup v-model="quartzData.status"  @on-change="statusValChange">
                         <Radio label="0">正常</Radio>
                         <Radio label="-1">删除</Radio>
-                        <Radio label="1" disabled="true">已发布</Radio>
+                        <Radio label="1" :disabled="true">已发布</Radio>
                     </RadioGroup>
                 </FormItem>
 
@@ -121,6 +121,11 @@
         </Modal>
         <Modal title="预览图片" v-model="showDialog">
             <img :src="picturePath"  style="width: 100%">
+        </Modal>
+        <Modal title="提示信息" v-model="hintInfo" ok-text="确定" @on-ok="yes">
+            <div>
+                <Alert show-icon>注：确定扩展字段、温馨提示以及任务攻略已编辑编，才能发布！</Alert>
+            </div>
         </Modal>
     </div>
 </template>
@@ -149,6 +154,7 @@
             return {
                 showDialog:false,
                 loading:true,
+                hintInfo:false,
                 page: 1,
                 size: 20,
                 columns: [],
@@ -179,6 +185,7 @@
                 detalShow: false,
                 extendShow: false,
                 picturePath:'',
+                id:'',
                 quartzData: {
                     id: 0,
                     logoid: '',
@@ -265,7 +272,11 @@
                 this.$refs.extend.getExtendData(1,vm.id);
             },
             handkeIssueTask(vm){
-                issueTask(vm.id).then(data =>{
+                this.id = vm.id;
+                this.hintInfo = true;
+            },
+            yes() {
+                issueTask(this.id).then(data =>{
                     this.loading = false;
                     if (data.status === 200) {
                         this.$Message.success(data.data.message);

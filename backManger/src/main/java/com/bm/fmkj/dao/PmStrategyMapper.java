@@ -13,4 +13,6 @@ public interface PmStrategyMapper extends Mapper<PmStrategy> {
     int deleteStrategy(String[] ids);
 
     int addStrategy(PmStrategy strategy);
+
+    int updateStrategy(PmStrategy strategy);
 }

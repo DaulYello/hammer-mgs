@@ -64,7 +64,7 @@ export function taskAddAndModify(data) {
         method: 'post'
     });
 }
-//编辑任务
+/*//编辑任务
 export function updateTask(task) {
     console.debug("方法参数："+task.methodParams);
     const data = {
@@ -81,7 +81,7 @@ export function updateTask(task) {
         url: '/backManger/fmkj/PmTask/updateTask' +  getParams(data),
         method: 'post'
     });
-}
+}*/
 
 var format = function(time, format)
 {
@@ -140,15 +140,15 @@ export function deleteStrategy (ids) {
     });
 }
 
-export function addStrategy(obj, imageIdStr) {
-    const data = {
-        tid: obj.tid,
-        strategy: obj.strategyText,
-        orderNum: obj.strategyOrder,
-        imageIdStr: imageIdStr
-    };
+export function saveStrategy(obj) {
+    let urlStr ='';
+    if (obj.id != 0) {//这种情况是修改
+        urlStr = '/backManger/fmkj/strategy/editStrategy';
+    } else{//新增
+        urlStr = '/backManger/fmkj/strategy/addStrategy';
+    }
     return fetch({
-        url: '/backManger/fmkj/strategy/addStrategy' +  getParams(data),
+        url: urlStr +  getParams(obj),
         method: 'post'
     });
 }

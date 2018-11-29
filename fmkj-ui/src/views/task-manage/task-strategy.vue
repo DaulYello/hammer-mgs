@@ -39,11 +39,11 @@
                         </Option>
                     </Select>
                 </FormItem>
-                <FormItem label="攻略内容：" prop="strategyText">
-                    <textarea v-model="strategyData.strategyText" type="text" style="width: 100%; height: 200px"></textarea>
+                <FormItem label="攻略内容：" prop="strategy">
+                    <textarea v-model="strategyData.strategy" type="text" style="width: 100%; height: 200px"></textarea>
                 </FormItem>
-                <FormItem label="展示顺序：" prop="strategyOrder">
-                    <Input v-model="strategyData.strategyOrder"  placeholder="只能输入数字" number></Input>
+                <FormItem label="展示顺序：" prop="orderNum">
+                    <Input v-model="strategyData.orderNum"  placeholder="只能输入数字" number></Input>
                 </FormItem>
                <FormItem label="攻略图片：" prop="strategyImage">
                     <Alert show-icon>注：多张图片必须按照显示的顺序上传</Alert>
@@ -63,7 +63,7 @@ import {
 import {
   getStrategyPage,
   deleteStrategy,
-  addStrategy
+  saveStrategy
 } from 'api/task/task';
 import taskUpload from "../my-components/file-upload/task-upload.vue";
 export default {
@@ -90,14 +90,15 @@ export default {
             imageIdStr: '',
             pageData: [],
             taskList:[],
+            id: 0,
             strategyData: {},
             strategyRules: {
-                strategyText: [{
+                strategy: [{
                     required: true,
                     message: '请输入攻略内容',
                     trigger: 'blur'
                 }],
-                strategyOrder: [{
+                orderNum: [{
                     required: true,
                     type: 'number',
                     message: '请输入展示顺序',
@@ -188,6 +189,26 @@ export default {
                         return h('div', [
                             h('Button', {
                                 props: {
+                                    type: 'info',
+                                    size: 'small'
+                                },
+                                style: {
+                                    marginRight: '5px'
+                                },
+                                on: {
+                                    click: () => {
+                                        this.id = params.row.id;
+                                        this.strategyData.id = params.row.id;
+                                        this.strategyData.tid = params.row.tid;
+                                        this.strategyData.strategy = params.row.strategy;
+                                        this.strategyData.orderNum = params.row.orderNum;
+                                        this.imageIdStr = '';
+                                        this.modelShow = true;
+                                    }
+                                }
+                            }, '编辑'),
+                            h('Button', {
+                                props: {
                                     type: 'error',
                                     size: 'small'
                                 },
@@ -254,7 +275,9 @@ export default {
             this.$refs['strategyForm'].validate((valid) => {
                 if (valid) {
                     this.loading = true;
-                    addStrategy(this.strategyData, this.imageIdStr).then(data => {
+                    this.strategyData.id = this.id;
+                    this.strategyData.imageIdStr = this.imageIdStr;
+                    saveStrategy(this.strategyData).then(data => {
                         this.loading = false;
                         if (data.status === 200) {
                             this.$Message.success(data.message);
@@ -284,6 +307,7 @@ export default {
             }
         },
         showAdd() {
+            this.id = 0;
             this.imageIdStr = '';
             this.strategyData = {};
             this.modelShow = true;

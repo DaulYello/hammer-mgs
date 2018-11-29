@@ -22,8 +22,8 @@ import {
 const editButton = (vm, h, index) => {
     return h('Button', {
         props: {
-            /*type: currentRow.editting ? 'success' : 'primary',*/
             type: 'primary',
+            size: 'small'
         },
         style: {
             /*margin: '0 2px'*/
@@ -41,6 +41,7 @@ const showDetail = (vm, h, index) => {
     return h('Button', {
         props: {
             type:  'success',
+            size: 'small',
             placement: 'top'
         },
         style: {
@@ -57,7 +58,8 @@ const showDetail = (vm, h, index) => {
 const extendShow = (vm, h, index) => {
     return h('Button', {
         props: {
-            type:  'success',
+            type:  'info',
+            size: 'small',
             placement: 'top'
         },
         style: {
@@ -68,7 +70,7 @@ const extendShow = (vm, h, index) => {
                 vm.$emit('on-extendShow', vm.thisTableData[index]);
             }
         }
-    },'扩展字段');
+    },'配置字段');
 };
 
 //显示任务头像图片
@@ -90,27 +92,38 @@ const imageShow = (vm, h, index,item) => {
 
 //发布任务
 const issueTask = (vm,h,index,item) => {
-    return h('Poptip', {
-        props: {
-            confirm: true,
-            title: '温馨提示和扩展字段都添加了吗？'
-        },
-        on: {
-            'on-ok': () => {
-                vm.$emit('on-issueTask',vm.thisTableData[index]);
-            }
-        }
-    },[
-        h('Button',{
-            style: {
-                margin: '0 2px'
-            },
-            props: {
-                type: 'error',
-                placement: 'top'
-            }
-        },'发布')
-    ])
+
+    if (vm.thisTableData[index].status == 1) {
+        return h('Button',{
+                style: {
+                    margin: '0 2px'
+                },
+                props: {
+                    disabled: true,
+                    size: 'small',
+                    type: 'warning',
+                    placement: 'top'
+
+                }
+            },'发布');
+    }else{
+        return h('Button',{
+                style: {
+                    margin: '0 2px'
+                },
+                props: {
+                    disabled: false,
+                    size: 'small',
+                    type: 'warning',
+                    placement: 'top'
+
+                },on: {
+                    click: () => {
+                        vm.$emit('on-issueTask',vm.thisTableData[index]);
+                    }
+                }
+            },'发布');
+    }
 };
 
 export default {

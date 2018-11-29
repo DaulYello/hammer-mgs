@@ -9,4 +9,6 @@ public interface PmImageMapper extends Mapper<PmImage> {
     int insertImage(PmImage image);
 
     int updateStrategyImage(HashMap<String, Object> paramsMap);
+
+    void dropOldImage(Integer id);
 }
