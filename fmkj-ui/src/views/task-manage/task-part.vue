@@ -25,7 +25,6 @@
                 <template>
                     <span style="font-weight: bold">审核图片-{{index + 1}}</span>
                     <img :src="item"  style="width: 100%">
-                    <hr/>
                 </template>
             </div>
         </Modal>
@@ -40,11 +39,16 @@
                 </FormItem>
             </Form>
         </Modal>
+
+        <Modal v-model="moreShow" title="更多审核内容" :loading="loading" :footerHide="true" :width="800">
+            <task-part-msg ref="partMsg" ></task-part-msg>
+        </Modal>
     </div>
 </template>
 
 <script>
 import canEditTable from './components/canEditTable.vue';
+import TaskPartMsg from "./task-part-msg";
 import {
     formatDateByLong,
     formatDate
@@ -56,7 +60,8 @@ import {
 export default {
     name: 'part',
     components: {
-        canEditTable
+        canEditTable,
+        TaskPartMsg
     },
     props: {
         isLoad: {
@@ -69,6 +74,7 @@ export default {
             loading:true,
             showDialog:false,
             modelShow: false,
+            moreShow: false,
             page: 1,
             size: 20,
             pageInfo: '',
@@ -104,6 +110,11 @@ export default {
                     title: '任务名称',
                     align: 'center',
                     key: 'title'
+                },
+                {
+                    title: '任务奖励',
+                    align: 'center',
+                    key: 'reward'
                 },
                 {
                     title: '用户编号',
@@ -142,9 +153,28 @@ export default {
                     key: 'auditOption'
                 },
                 {
-                    title: '审核电话',
+                    title: '审核内容',
                     align: 'center',
-                    key: 'telephone'
+                    key: 'telephone',
+                    render: (h, params) => {
+                        return h('div', [
+                            h('Button', {
+                                props: {
+                                    type: 'primary',
+                                    size: 'small'
+                                },
+                                style: {
+                                    marginRight: '5px'
+                                },
+                                on: {
+                                    click: () => {
+                                        this.moreShow = true;
+                                        this.$refs.partMsg.getMartMsgData(params.row.id);
+                                    }
+                                }
+                            }, '审核内容')
+                        ])
+                    }
                 },
                 {
                     title: '审核图片',
@@ -201,7 +231,7 @@ export default {
                             return h('div', [
                                 h('Button', {
                                     props: {
-                                        type: 'primary',
+                                        type: 'warning',
                                         size: 'small'
                                     },
                                     style: {

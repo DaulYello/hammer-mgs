@@ -58,12 +58,12 @@
                     {
                         title: '提交信息',
                         align: 'center',
-                        key: 'clo'
+                        key: 'clounmName'
                     },
                     {
                         title: '提交内容',
                         align: 'center',
-                        key: 'orderNum'
+                        key: 'xvalue'
                     }
                 ]
             };

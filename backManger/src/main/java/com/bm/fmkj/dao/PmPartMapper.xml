@@ -14,6 +14,7 @@
     <result column="nickName" jdbcType="VARCHAR" property="nickName" />
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="cnt" jdbcType="DOUBLE" property="cnt" />
+    <result column="reward" jdbcType="DOUBLE" property="reward" />
   </resultMap>
   
   <select id="selectPartList" parameterType="java.util.HashMap" resultMap="BaseResultMap">
@@ -30,10 +31,11 @@
             GROUP_CONCAT(image_url)
           FROM
             pm_image
-          WHERE part_id = t.id) AS imageUrl,
+          WHERE part_id = t.id and image_type = 1) AS imageUrl,
           h.nickname,
           h.cnt,
-          k.title
+          k.title,
+          k.reward * k.proportion / 100 AS reward
         FROM
           pm_part t
           LEFT JOIN hc_account h
@@ -49,5 +51,18 @@
           </if>
         ORDER BY t.create_date DESC
   </select>
+
+   <select id="selectPartExtendList" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT
+          t.id,
+          p.clounm_name AS clounmName,
+          t.xvalue
+        FROM
+          pm_extend_value t
+          LEFT JOIN pm_extend p
+            ON t.xid = p.id
+        WHERE t.pid = #{pid}
+
+   </select>
 
 </mapper>

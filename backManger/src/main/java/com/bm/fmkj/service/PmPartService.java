@@ -47,6 +47,12 @@ public class PmPartService {
 		return PageUtil.toPagedResult(pmpartMapper.selectPartList(pageQuery.getParam()));
     }
 
+
+	public Pagenation getPartExtendPage(PageQuery pageQuery) {
+		PageHelper.startPage(pageQuery.getPageNo(), pageQuery.getPageSize());
+		return PageUtil.toPagedResult(pmpartMapper.selectPartExtendList(pageQuery.getParam()));
+	}
+
 	/**
 	 * 审核通过需要向账户
 	 * @param pmPart
@@ -110,4 +116,5 @@ public class PmPartService {
 		}
 		return row;
 	}
+
 }

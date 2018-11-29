@@ -33,7 +33,7 @@
       GROUP_CONCAT(image_url)
       FROM
       pm_image
-      WHERE part_id = t.id) AS image_url
+      WHERE part_id = t.id AND image_type = 2) AS image_url
       FROM
       pm_strategy t
       LEFT JOIN pm_task p

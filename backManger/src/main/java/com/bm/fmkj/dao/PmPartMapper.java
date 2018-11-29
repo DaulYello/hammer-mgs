@@ -11,4 +11,6 @@ public interface PmPartMapper extends Mapper<PmPart> {
     List<PmPartDto> selectPartList(HashMap<String, Object> param);
 
     void auditPart(PmPart pmPart);
+
+    List selectPartExtendList(HashMap<String, Object> param);
 }

@@ -12,6 +12,16 @@ public class PmPartDto extends PmPart {
 
     private Double cnt;
 
+    private Double reward;
+
+    public Double getReward() {
+        return reward;
+    }
+
+    public void setReward(Double reward) {
+        this.reward = reward;
+    }
+
     public Double getCnt() {
         return cnt;
     }

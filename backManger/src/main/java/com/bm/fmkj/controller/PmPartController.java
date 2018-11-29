@@ -52,6 +52,23 @@ public class PmPartController extends BaseController {
 		return new BaseResult(BaseResultEnum.SUCCESS,pagedResult);
 	}
 
+	/**
+	 * 列表
+	 */
+	@RequestMapping(value="getPartExtendPage",method= RequestMethod.GET)
+	@ResponseBody
+	public BaseResult getPartExtendPage(@RequestParam HashMap<String, Object> params){
+		LOGGER.info("getPartExtendPage-params={}", JSON.toJSONString(params));
+		PageQuery pageQuery = new PageQuery();
+		int pageNo = Integer.parseInt((String)params.get("pageNo"));
+		int pageSize = Integer.parseInt((String)params.get("pageSize"));
+		pageQuery.setPageNo(pageNo);
+		pageQuery.setPageSize(pageSize);
+		pageQuery.setParam(params);
+		Pagenation pagedResult = pmpartService.getPartExtendPage(pageQuery);
+		return new BaseResult(BaseResultEnum.SUCCESS,pagedResult);
+	}
+
 
 	/**
 	 * 审核
