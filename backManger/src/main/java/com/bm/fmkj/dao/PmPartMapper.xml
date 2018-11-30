@@ -43,11 +43,20 @@
           LEFT JOIN pm_task k
             ON k.id = t.tid
          WHERE 1 = 1
-          <if test="title != null and title != ''">
+          <if test="idKey != null">
+              AND t.id =  #{idKey}
+          </if>
+          <if test="title != null">
               AND k.title =  #{title}
           </if>
-          <if test="nickName != null and nickName != ''">
+          <if test="nickName != null">
               AND h.nickname = #{nickName}
+          </if>
+          <if test="statusValue != null">
+              AND t.audit_status = #{statusValue}
+          </if>
+          <if test="starttime != null and endtime != null">
+              and t.create_date between #{starttime} and #{endtime}
           </if>
         ORDER BY t.create_date DESC
   </select>

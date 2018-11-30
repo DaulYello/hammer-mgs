@@ -11,7 +11,30 @@
                     <Row>
                         <Input v-model="query.title" placeholder="请输入任务名称..." style="width: 200px" />
                         <Input v-model="query.nickName" placeholder="请输入昵称..." style="width: 200px" />
+                        <Input v-model="query.idKey" placeholder="请输入主键ID..." style="width: 200px" />
+                        <div class="serachStyle">
+                            <DatePicker v-model="query.starttime" type="datetime" style="width:200px;" placeholder="选择开始日期和时间" ></DatePicker>
+                        </div>
+                        <div style="margin-top: 6px;float: left;margin-left: 5px;margin-right: 5px"> 至 </div>
+                        <div class="serachStyle">
+                            <DatePicker v-model="query.endtime" type="datetime" style="width:200px;" placeholder="选择结束日期和时间" ></DatePicker>
+                        </div>
+                        <Form :label-width="80" style="float: left;">
+                            <FormItem label="任务状态 : " prop="statusValue">
+                                <Select style="width:200px" v-model="query.statusValue" :clearable="true">
+                                    <Option v-for="item in statusList" :value="item.value" :key="item.value" name="statusValue">
+                                        {{item.label }}
+                                    </Option>
+                                </Select>
+                            </FormItem>
+                        </Form>
                         <span @click="handleSearch" style="margin: 0 10px;"><Button type="primary" icon="search">搜索</Button></span>
+
+                    </Row>
+                    <Row class="margin-top-10">
+                        <Button type="primary" icon="ios-download" @click="handExport">
+                            <span>导出</span>
+                        </Button>
                     </Row>
                     <div class="margin-top-10">
                         <Table :loading="loading"  @on-selection-change="handleSelectionChange" @on-select-all="handleSelectionChange" @on-select="handleSelectionChange" @on-delete="handleDel" @on-router="handleInfo" @on-change="handleChange" @on-error="handleError"  refs="multipleTable" :data="pageData" :columns="columns"></Table>
@@ -43,6 +66,7 @@
         <Modal v-model="moreShow" title="更多审核内容" :loading="loading" :footerHide="true" :width="800">
             <task-part-msg ref="partMsg" ></task-part-msg>
         </Modal>
+
     </div>
 </template>
 
@@ -55,7 +79,8 @@ import {
 } from 'utils/time';
 import {
   getPartPage,
-  auditPart
+  auditPart,
+  exportPart
 } from 'api/task/task';
 export default {
     name: 'part',
@@ -93,11 +118,27 @@ export default {
             pageData: [],
             query:{},
             multipleSelection: [],
+            statusList:[
+                {
+                    value: '0',
+                    label: '未提交审核'
+                },
+                {
+                    value: '1',
+                    label: '待审核'
+                },
+                {
+                    value: '2',
+                    label: '审核通过'
+                },
+                {
+                    value: '-1',
+                    label: '已驳回'
+                }
+            ],
             columns: [
                 {
-                    title: '序号',
-                    type: 'selection',
-                    width: 80,
+                    title: '索引主键',
                     key: 'id',
                     align: 'center'
                 },
@@ -272,6 +313,30 @@ export default {
           });
         },
         handleInfo (query) {
+        },
+        handExport () {
+            this.$Modal.confirm({
+                title: '导出提示',
+                content: '<p>注：默认导出所有待审核的数据,如需按条件导出请自行选择查询条件!</p>',
+                loading: true,
+                okText: '导出',
+                onOk: () => {
+                    exportPart(this.query).then(data => {
+                        if (data.status === 200) {
+                            setTimeout(() => {
+                                this.$Modal.remove();
+                                this.$Message.info('导出成功!');
+                            }, 1000);
+                        } else {
+                            this.$Modal.remove();
+                            this.$Message.error(data.message);
+                        }
+                    }).catch(error => {
+                        this.$Modal.remove();
+                        this.$Message.error("服务器异常:" + error)
+                    });
+                }
+            });
         },
         handleSearch(){
             this.getData(1);

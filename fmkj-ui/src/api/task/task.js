@@ -158,6 +158,10 @@ export function getPartPage(pageNo,pageSize, query) {
         pageNo,
         pageSize
     };
+    if(query.starttime != undefined && query.endtime != undefined && query.starttime != '' && query.endtime != '' && query.starttime != 'NaN-NaN-NaN NaN:NaN:NaN' && query.endtime != 'NaN-NaN-NaN NaN:NaN:NaN'){
+        query.starttime = format(query.starttime, 'yyyy-MM-dd HH:mm:ss');
+        query.endtime = format(query.endtime, 'yyyy-MM-dd HH:mm:ss');
+    }
     for(var k in query){
         if (query[k] != "") {
             data[k] = query[k];
@@ -168,6 +172,24 @@ export function getPartPage(pageNo,pageSize, query) {
         method: 'get'
     });
 }
+
+export function exportPart(query) {
+    const data = {};
+    if(query.starttime != undefined && query.endtime != undefined && query.starttime != '' && query.endtime != '' && query.starttime != 'NaN-NaN-NaN NaN:NaN:NaN' && query.endtime != 'NaN-NaN-NaN NaN:NaN:NaN'){
+        query.starttime = format(query.starttime, 'yyyy-MM-dd HH:mm:ss');
+        query.endtime = format(query.endtime, 'yyyy-MM-dd HH:mm:ss');
+    }
+    for(var k in query){
+        if (query[k] != "") {
+            data[k] = query[k];
+        }
+    };
+    return fetch({
+        url: '/backManger/fmkj/part/exportPart' + getParams(data),
+        method: 'get'
+    });
+}
+
 
 // 获取温馨提示
 export function getPromptInfo(pageNo,pageSize, query) {

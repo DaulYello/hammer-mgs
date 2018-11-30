@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 @Transactional
@@ -46,6 +47,16 @@ public class PmPartService {
 		PageHelper.startPage(pageQuery.getPageNo(), pageQuery.getPageSize());
 		return PageUtil.toPagedResult(pmpartMapper.selectPartList(pageQuery.getParam()));
     }
+
+	public List<PmPartDto> downLoadList(HashMap<String, Object> params) {
+		return pmpartMapper.selectPartList(params);
+	}
+
+	public List getPartExtendList(Integer id) {
+		HashMap<String, Object> parmMap = new HashMap<>();
+		parmMap.put("pid", id);
+		return pmpartMapper.selectPartExtendList(parmMap);
+	}
 
 
 	public Pagenation getPartExtendPage(PageQuery pageQuery) {
@@ -116,5 +127,7 @@ public class PmPartService {
 		}
 		return row;
 	}
+
+
 
 }
