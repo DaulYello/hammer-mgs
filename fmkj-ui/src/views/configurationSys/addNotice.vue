@@ -34,7 +34,7 @@
     import {
         publishNotice,
         editNotify
-    } from './components/configurate.js';
+    } from './components/configurate';
     export default {
         props: {
             beforePush: {

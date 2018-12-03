@@ -256,23 +256,16 @@
                                                     content: '确定执行审核操作吗?',
                                                     width: 400,
                                                     onOk: () => {
-                                                        if(params.row.status == 0){
-                                                            identityCardAudit (params.row.id,1).then(data => {
-                                                                if (data.status === 200) {
-                                                                    this.$Message.success(data.data.message);
-                                                                    this.getData(this.page, this.tabIndex);
-                                                                } else {
-                                                                    this.$Message.error(data.data.message);
-                                                                }
-                                                            }).catch(error => {
-                                                                this.$Message.error('审核出现异常：' + error);
-                                                            });
-                                                        }else if(params.row.status == 1){
-                                                            return this.$Message.success('已经通过审核了，无需再审核！');
-                                                        }else{
-                                                            return this.$Message.success('已经被驳回，不能再审核了！');
-                                                        }
-
+                                                        identityCardAudit (params.row.id,1).then(data => {
+                                                            if (data.status === 200) {
+                                                                this.$Message.success(data.data.message);
+                                                                this.getData(this.page, this.tabIndex);
+                                                            } else {
+                                                                this.$Message.error(data.data.message);
+                                                            }
+                                                        }).catch(error => {
+                                                            this.$Message.error('审核出现异常：' + error);
+                                                        });
                                                     },
                                                     onCancel: () => {
                                                     }
@@ -327,7 +320,23 @@
                                                 })
                                             }
                                         }
-                                    }, '审核')
+                                    }, '审核'),
+                                    h('Button',{
+                                        props: {
+                                            type: 'error',
+                                            size: 'small',
+                                            disabled: true
+                                        },
+                                        style: {
+
+                                        },
+                                        on: {
+                                            click: () => {
+                                                this.showAduitDialog=true;
+                                                this.rowID = params.row.id;
+                                            }
+                                        }
+                                    },'驳回')
                                 ])
                             }
                         }

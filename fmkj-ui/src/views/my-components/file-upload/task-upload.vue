@@ -5,10 +5,9 @@
 
 
 <template>
-    <!--action="/backManger/fmkj/image/upload"-->
     <Upload
             multiple
-            action="http://127.0.0.1:8080/backManger/fmkj/image/upload"
+            action="/backManger/fmkj/image/upload"
             :format="['jpg','jpeg','png']"
             :on-format-error="handleFormatError"
             :before-upload="handleBeforeUpload"

@@ -27,6 +27,9 @@ export function getNoticePage(pageNo,pageSize,query) {
 
 // 发布公告
 export function publishNotice(contents,title) {
+    //下面这两行代码是获取body中的东西
+    /*var REG_BODY = /<body[^>]*>([\s\S]*)<\/body>/;
+    var result = REG_BODY.exec(contents);*/
     contents=encodeURIComponent(contents);
     const data = {
         title,
@@ -40,6 +43,8 @@ export function publishNotice(contents,title) {
 
 //修改公告信息
 export function  editNotify(id,title,contents) {
+    /*var REG_BODY = /<body[^>]*>([\s\S]*)<\/body>/;
+    var result = REG_BODY.exec(contents);*/
     contents=encodeURIComponent(contents);
     const data = {
         id,
