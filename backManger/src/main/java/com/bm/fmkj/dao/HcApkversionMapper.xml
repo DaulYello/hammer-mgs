@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bm.fmkj.dao.HcApkversionMapper">
+  <resultMap id="BaseResultMap" type="com.bm.fmkj.dao.HcApkversion">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="Id" jdbcType="INTEGER" property="id" />
+    <result column="apk_url" jdbcType="VARCHAR" property="apkUrl" />
+    <result column="apk_version" jdbcType="VARCHAR" property="apkVersion" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="upgrade_msg" jdbcType="LONGVARCHAR" property="upgradeMsg" />
+  </resultMap>
+
+  <select id="getVersionPage" parameterType="java.util.HashMap" resultMap="BaseResultMap">
+    SELECT * FROM `hc_apkversion` WHERE 1=1
+  </select>
+</mapper>

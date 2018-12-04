@@ -155,3 +155,50 @@ export function getFmRecyleLogs(pageNo,pageSize,query){
 }
 
 
+//版本信息
+//获取所有的版本信息
+export function getVersionPage(pageNo,pageSize, query) {
+    console.log("参数信息："+query[k]);
+    const data = {
+        pageNo,
+        pageSize
+    };
+    for(var k in query){
+        if (query[k] != "") {
+            data[k] = query[k];
+            console.log("参数信息："+query[k]);
+        }
+    };
+    return fetch({
+        url: '/backManger/fmkj/HcApkversion/getVersionPage' + getParams(data),
+        method: 'get'
+    });
+}
+
+//删除版本信息
+export function deleteVersion(id){
+    console.log('idsidsids:' + id)
+    const data = {
+        id
+    };
+    return fetch({
+        url: '/backManger/fmkj/HcApkversion/deleteVersion'+ getParams(data),
+        method: 'get'
+    });
+}
+
+//保存版本信息
+export function saveVersion(version) {
+    console.log("保存版本信息");
+    let urlStr ='';
+    if (version.id != 0) {//这种情况是修改
+        urlStr = '/backManger/fmkj/HcApkversion/updateVersion';
+    } else{//新增
+        urlStr = '/backManger/fmkj/HcApkversion/addVersion';
+    }
+    return fetch({
+        url: urlStr +  getParams(version),
+        method: 'post'
+    });
+}
+

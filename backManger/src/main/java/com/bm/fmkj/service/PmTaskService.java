@@ -84,8 +84,7 @@ public class PmTaskService {
 			return map;
 		}
 		LOGGER.info("3.通过任务id查询该任务是否有添加了任务攻略");
-		/*PmStrategy strategy = new PmStrategy();
-		strategy.setTid(Integer.parseInt(id));*/
+
 		List<PmStrategy> strategies = pmStrategyMapper.selectByTaskId(Integer.parseInt(id));
 		if (strategies.size() <= 0){
 			map.put("result",false);

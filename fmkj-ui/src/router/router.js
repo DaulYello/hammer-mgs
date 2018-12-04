@@ -164,6 +164,12 @@ export const appRouter = [
                 name: 'cntLogRecode',
                 title: 'CNT/R积分日志记录',
                 component: () => import('@/views/system/cnt-recode-log.vue')
+            },{
+                path: 'versionControl',
+                icon: 'folder',
+                name: 'versionControl',
+                title: '版本管理',
+                component: () => import('@/views/system/version-manager.vue')
             }
         ]
     },
@@ -187,14 +193,7 @@ export const appRouter = [
                 name:'noticeSys',
                 title:'公告管理',
                 component:()=>import('@/views/configurationSys/noticeSys.vue')
-            }/*,
-            {
-                path:'dataConfigurate',
-                icon:'folder',
-                name:'dataConfigurate',
-                title:'数据字典配置',
-                component:()=>import('@/views/configurationSys/noticeSys.vue')
-            },*/
+            }
         ]
     },
     {
