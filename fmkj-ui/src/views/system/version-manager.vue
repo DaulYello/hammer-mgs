@@ -236,6 +236,7 @@
                         saveVersion(this.quartzData).then(data => {
                             this.loading = false;
                             if (data.status === 200) {
+                                this.cancel();
                                 this.$Message.success(data.message);
                                 this.getData(this.page);
                             } else {
